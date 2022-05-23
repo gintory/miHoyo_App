@@ -1,0 +1,44 @@
+.login{
+    background-image: url('https://bbs.mihoyo.com/_nuxt/img/background.cd0a312.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: #F1F0F5;
+    height: 100%;
+    padding-top: 3%;
+}
+.login_header{
+    width: 10%;
+    margin: 0 45% 1% 45%;
+}
+.login_header_img{
+    width: 100%;
+}
+.login-content{
+    background-color: #FFF;
+    border-radius: 20px;
+    padding: 1% 2% 2% 2%;
+    width: 26%;
+    margin: 0 37% 0 37%;
+}
+.login_form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login_form_item{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 3% 10% 3% 10%;
+    font-weight: bold;
+}
+.login_form_span{
+    width: 30% ;
+}
+.login_form_input{
+    width: 70%;
+}
+.login_form_btn{
+    margin-top: 3%;
+}

@@ -1,0 +1,48 @@
+.waterFall{
+    background-color: #F0F1F5;
+}
+.waterList{
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* display: block; */
+    /* justify-content: space-around; */
+    padding: 20px 20px 0 20px;
+}
+.WaterLine{
+    width: 25%;
+    padding: 0 10px 0 10px;
+    display: block;
+}
+.WaterArticleTemp{
+    width: 100%;
+    margin: 0 2.5% 20px 2.5%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+}
+.WaterImgbox{
+    align-self: center;
+    width: 100%;
+    cursor: pointer;
+}
+.WaterImgbox .waterArticleImg{
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+}
+.showPicTab{
+    display: flex;
+    justify-content: center;
+}
+.showPicTab img{
+    width: 90%;
+}
+.ant-modal-header{
+    display: flex;
+    justify-content: space-around;
+}
+.ant-modal-footer{
+    padding: 10px !important;
+    display: flex;
+    justify-content: space-around;
+}

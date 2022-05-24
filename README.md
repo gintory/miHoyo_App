@@ -1,3 +1,3 @@
 # miHoyo_App
 
-try my connection
+try update

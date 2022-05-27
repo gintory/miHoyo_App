@@ -33,7 +33,7 @@ export default function ChangePassword(props) {
           duration: 2,
           onClose: () => {}
         })
-        navigate('/home/pictureShow')
+        navigate('/home/picture-show')
       } else if (data.code === 201) {
         notification.error({
           description: '密码错误，请重新输入！',
@@ -73,32 +73,32 @@ export default function ChangePassword(props) {
   return (
     <div className="changePassword">
       <div className="changePassword-content">
-        <div className="upload_header">修改密码</div>
-        <div className="change_form">
-          <div className="change_form_item">
-            <span className="change_form_span">当前密码：</span>
+        <div className="upload-header">修改密码</div>
+        <div className="change-form">
+          <div className="change-form-item">
+            <span className="change-form-span">当前密码：</span>
             <Input
-              className="change_form_input"
+              className="change-form-input"
               type="password"
               value={filterInfo.oldPassword}
               onChange={handleInputChange}
               name="oldPassword"
             ></Input>
           </div>
-          <div className="change_form_item">
-            <span className="change_form_span">修改密码：</span>
+          <div className="change-form-item">
+            <span className="change-form-span">修改密码：</span>
             <Input
-              className="change_form_input"
+              className="change-form-input"
               type="password"
               value={filterInfo.newPassword}
               onChange={handleInputChange}
               name="newPassword"
             ></Input>
           </div>
-          <div className="change_form_item">
-            <span className="change_form_span">确认修改密码：</span>
+          <div className="change-form-item">
+            <span className="change-form-span">确认修改密码：</span>
             <Input
-              className="change_form_input"
+              className="change-form-input"
               type="password"
               value={filterInfo.confirmNewPassword}
               onChange={handleInputChange}

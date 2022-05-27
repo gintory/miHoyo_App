@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { Popconfirm, Table, notification, Modal, Button } from 'antd'
+import { CheckCircleFilled, CloseCircleFilled, UpCircleFilled, EditFilled, DeleteFilled } from '@ant-design/icons'
 import { request } from '../../network/request'
 // import { DraggableBodyRow } from "../../components/dragTable";
 // import { useDrag, useDrop } from "react-dnd";
@@ -15,6 +16,13 @@ export default function Index(props) {
   let [showPicTab, setShowPicTab] = useState(false)
   let [showPicUrl, setShowPicUrl] = useState('')
   let [showPicIndex, setShowPicIndex] = useState(0)
+  let [showDetail, setShowDetail] = useState({
+    articleId: '',
+    articleTitle: '',
+    userName: '',
+    articleState: 0,
+    articleType: ''
+  })
   const [filterInfo, setFilterInfo] = useState({
     index: 1,
     pageSize: 20
@@ -92,9 +100,12 @@ export default function Index(props) {
       align: 'center',
       render: (item, record) => {
         return (
-          <div className="resume_picture">
-            <div className="imgbox" onClick={handleClickImg.bind(null, item)}>
-              <div className="articleImg" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
+          <div className="resume-picture">
+            <div className="article-temp-imgBox" onClick={handleClickImg.bind(null, item)}>
+              <div
+                className="article-temp-img"
+                style={{ backgroundImage: 'url(' + item.picUrl + ')', borderRadius: '5%' }}
+              ></div>
             </div>
           </div>
         )
@@ -165,6 +176,66 @@ export default function Index(props) {
       )
     }
   ]
+  const mobileColumns = [
+    {
+      title: '文章标题',
+      dataIndex: 'articleTitle',
+      key: 'articleTitle',
+      width: '100px',
+      ellipsis: true,
+      align: 'center'
+    },
+    {
+      title: '作者',
+      dataIndex: 'userName',
+      key: 'userName',
+      width: '80px',
+      align: 'center'
+    },
+    {
+      title: '操作',
+      key: 'userName',
+      align: 'center',
+      width: '50%',
+      ellipsis: true,
+      render: (item, record) => (
+        <div>
+          <CheckCircleFilled
+            onClick={handleStatusChange.bind(null, '审核通过', item)}
+            style={{ color: '#5cb85c', margin: '0 5px 0 5px', fontSize: '20px' }}
+          />
+          <CloseCircleFilled
+            onClick={handleStatusChange.bind(null, '审核未通过', item)}
+            style={{ color: '#f0a339', margin: '0 5px 0 5px', fontSize: '20px' }}
+          />
+          {item.articleType === '1' ? (
+            <UpCircleFilled
+              onClick={handleTopChange.bind(null, item)}
+              style={{ color: '#6fc7e2', margin: '0 5px 0 5px', fontSize: '20px' }}
+            />
+          ) : (
+            <UpCircleFilled
+              onClick={handleTopChange.bind(null, item)}
+              style={{ color: '#ccc', margin: '0 5px 0 5px', fontSize: '20px' }}
+            />
+          )}
+          <EditFilled
+            onClick={handleClickImg.bind(null, item)}
+            style={{ color: '#f0a339', margin: '0 5px 0 5px', fontSize: '20px' }}
+          />
+          <Popconfirm
+            placement="bottomRight"
+            title="确认删除吗？"
+            onConfirm={handleDeleteItem.bind(null, item)}
+            okText="确定"
+            cancelText="取消"
+          >
+            <DeleteFilled style={{ color: '#cc0000', margin: '0 5px 0 5px', fontSize: '20px' }} />
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
 
   async function getDataSource() {
     setLoading(true)
@@ -174,7 +245,6 @@ export default function Index(props) {
       method: 'get'
     })
     let data = res.data.data
-    console.log(data)
     if (data.code === 200) {
       source = data.content
       setLoading(false)
@@ -259,6 +329,7 @@ export default function Index(props) {
     setShowPicTab(true)
     setShowPicUrl(item.picUrl)
     setShowPicIndex(_.findIndex(dataSource, item))
+    setShowDetail(item)
   }
   function handleCancel() {
     setShowPicTab(false)
@@ -266,6 +337,7 @@ export default function Index(props) {
   function handleChangePic(num) {
     let newIndex = (showPicIndex + num + dataSource.length) % dataSource.length
     setShowPicIndex(newIndex)
+    setShowDetail(dataSource[newIndex])
   }
   function handlePageChange(event, pageSize) {
     const index = event
@@ -274,20 +346,37 @@ export default function Index(props) {
 
   return (
     <div className="pictureResume">
-      <div className="resume_content">
+      <div className="resume-content">
         <div className="table" style={{ overflowX: 'auto' }}>
           <Table
             rowKey="articleId"
             columns={columns}
             dataSource={table}
             loading={loading}
+            className="picture-table"
             // scroll={{ x: '1450px' }}
-            onRow={(record, index) => ({
-              record, // 当前数据
-              table, // 完整数据
-              index, // 当前数据索引
-              moveRow // 移动后修改数据的方法
-            })}
+            // onRow={(record, index) => ({
+            //   record, // 当前数据
+            //   table, // 完整数据
+            //   index, // 当前数据索引
+            //   moveRow // 移动后修改数据的方法
+            // })}
+            pagination={{
+              total: totalCount,
+              showTotal: (totalCount) => '共 ' + totalCount + ' 条记录',
+              current: filterInfo.index,
+              pageSize: filterInfo.pageSize,
+              pageSizeOptions: [10, 20, 30],
+              onChange: handlePageChange,
+              showSizeChanger: true
+            }}
+          />
+          <Table
+            rowKey="articleId"
+            columns={mobileColumns}
+            dataSource={table}
+            loading={loading}
+            className="picture-mobile-table"
             pagination={{
               total: totalCount,
               showTotal: (totalCount) => '共 ' + totalCount + ' 条记录',
@@ -301,7 +390,7 @@ export default function Index(props) {
         </div>
       </div>
       <Modal
-        title="查看图片"
+        title={document.body.clientWidth <= 992 ? '图片详情' : '查看图片'}
         visible={showPicTab}
         onCancel={handleCancel}
         footer={[
@@ -321,7 +410,29 @@ export default function Index(props) {
           <Button onClick={handleChangePic.bind(null, 1)}>Next</Button>
         ]}
       >
-        <div className="showPicTab">
+        <div className="article-detail">
+          <div className="article-detail-item">
+            <div className="article-detail-key">文章编号：</div>
+            <div className="article-detail-value">{showDetail.articleId}</div>
+          </div>
+          <div className="article-detail-item">
+            <div className="article-detail-key">文章标题：</div>
+            <div className="article-detail-value">{showDetail.articleTitle}</div>
+          </div>
+          <div className="article-detail-item">
+            <div className="article-detail-key">作者：</div>
+            <div className="article-detail-value">{showDetail.userName}</div>
+          </div>
+          <div className="article-detail-item">
+            <div className="article-detail-key">目前状态：</div>
+            <div className="article-detail-value">{showDetail.articleState}</div>
+          </div>
+          <div className="article-detail-item">
+            <div className="article-detail-key">置顶状态：</div>
+            <div className="article-detail-value">{showDetail.articleType === '2' ? '置顶中' : '未置顶'}</div>
+          </div>
+        </div>
+        <div className="article-showPicTab">
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>

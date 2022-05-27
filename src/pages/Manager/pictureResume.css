@@ -1,6 +1,32 @@
-.resume_content {
+.resume-content {
   margin-top: 20px;
   background-color: #fff;
   border-radius: 20px;
   padding: 3%;
+}
+@media screen and (min-width: 992px) {
+  .picture-mobile-table{
+    display: none;
+  }
+  .article-detail{
+    display: none;
+  }
+}
+@media screen and (max-width: 992px) {
+  .picture-table{
+    display: none;
+  }
+  .article-detail{
+    margin:10px 0 10px 0;
+  }
+  .article-detail-item{
+    display: flex;
+  }
+  .article-detail-key{
+    font-weight: bold;
+    width: 20%;
+  }
+  .article-detail-value{
+    width: 80%;
+  }
 }

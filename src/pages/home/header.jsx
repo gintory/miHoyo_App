@@ -54,8 +54,6 @@ export default function Header(props) {
 
   function handleMenuClick(event) {
     console.log(event)
-    console.log(this)
-    // props.history.push(`/home/${event.key}`);
   }
 
   function getMenuList() {
@@ -92,9 +90,9 @@ export default function Header(props) {
 
   return (
     <div className="header">
-      <img src="assets/miHoYo_Game.png" alt="" />
-      <div className="header_text">米游社·原神</div>
-      <div className="header_menu">
+      <img className="header-img" src="assets/miHoYo_Game.png" alt="" />
+      <div className="header-text">米游社·原神</div>
+      <div className="header-menu">
         <Menu
           // mode = 'inline'
           style={{ width: 250 }}

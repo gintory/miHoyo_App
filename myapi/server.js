@@ -102,9 +102,7 @@ router.post('/register', async function (ctx, next) {
   if (res.length == 0) {
     sql =
       'insert into user(userName, password, userType) values ("' + config.userName + '", "' + config.password + '", 2)'
-    console.log('register:', sql)
-    let ress = await getData(sql)
-    console.log(ress)
+    await getData(sql)
     data.code = 200
     data.message = '注册成功'
   } else {
@@ -183,9 +181,7 @@ router.post('/uploadArticle', async function (ctx, next) {
     }
     sql = sql + '(' + item + ')'
   })
-  console.log('here', sql)
-  let res22 = await getData(sql)
-  console.log(res22)
+  await getData(sql)
   let data = {
     code: 200,
     message: '发表成功！'

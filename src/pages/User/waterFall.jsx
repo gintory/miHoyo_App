@@ -6,7 +6,6 @@ import './waterFall.css'
 export default function WaterFall(props) {
   let pageSize = 20
   let imgBoxHeight = 0
-  let heightList = [0, 0, 0, 0]
   let [dataSource, setDataSource] = useState([])
   let [showDataSource, setShowDataSource] = useState([])
   let [totalCount, setTotalCount] = useState(0)
@@ -70,11 +69,15 @@ export default function WaterFall(props) {
 
   const onScroll = () => {
     let maxPageNum = getMaxPageNum()
+    let num = 4
+    if (document.body.clientWidth <= 992) {
+      num = 2
+    }
     // if(imgBoxHeight === 0) imgBoxHeight = document.getElementsByClassName('articleTemp')[0].offsetHeight
     if (imgBoxHeight === 0) {
-      let linedom = document.getElementsByClassName('WaterLine')
+      let linedom = document.getElementsByClassName('waterline')
       let LineHeight = linedom[0].offsetHeight
-      imgBoxHeight = LineHeight / (pageSize / 4 + 1)
+      imgBoxHeight = LineHeight / (pageSize / num + 1)
     }
     // console.log('当前scrollTop', dom.scrollTop, imgBoxHeight)
     const scrollPageNum = getPageNum({
@@ -101,7 +104,11 @@ export default function WaterFall(props) {
 
   // 计算分页
   function getPageNum({ scrollTop, pageSize, itemHeight }) {
-    const pageHeight = (pageSize / 4) * itemHeight
+    let num = 4
+    if (document.body.clientWidth <= 992) {
+      num = 2
+    }
+    const pageHeight = (pageSize / num) * itemHeight
     return Math.max(Math.ceil((dom.clientHeight + scrollTop) / pageHeight), 1)
   }
 
@@ -117,38 +124,58 @@ export default function WaterFall(props) {
   }
 
   //瀑布流根据图片高度布局
-  function returnpic() {
-    let lineDomList = [[], [], [], []]
-    let lineIndex = 0
-    let img = new Image()
-    showDataSource.map((item, index) => {
-      lineIndex = getMin(heightList)
-      img.src = item.picUrl
-      heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84
-      lineDomList[lineIndex].push(item)
-    })
-    return (
-      <div className="waterList">
-        <div className="WaterLine">{generateImgDom(lineDomList[0])}</div>
-        <div className="WaterLine">{generateImgDom(lineDomList[1])}</div>
-        <div className="WaterLine">{generateImgDom(lineDomList[2])}</div>
-        <div className="WaterLine">{generateImgDom(lineDomList[3])}</div>
-      </div>
-    )
+  function returnPicture() {
+    if (document.body.clientWidth >= 992) {
+      let heightList = [0, 0, 0, 0]
+      let lineDomList = [[], [], [], []]
+      let lineIndex = 0
+      let img = new Image()
+      showDataSource.map((item, index) => {
+        lineIndex = getMin(heightList)
+        img.src = item.picUrl
+        heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84
+        lineDomList[lineIndex].push(item)
+      })
+      return (
+        <div className="waterlist">
+          <div className="waterline">{generateImgDom(lineDomList[0])}</div>
+          <div className="waterline">{generateImgDom(lineDomList[1])}</div>
+          <div className="waterline">{generateImgDom(lineDomList[2])}</div>
+          <div className="waterline">{generateImgDom(lineDomList[3])}</div>
+        </div>
+      )
+    } else {
+      let lineDomList = [[], []]
+      let heightList = [0, 0]
+      let lineIndex = 0
+      let img = new Image()
+      showDataSource.map((item, index) => {
+        lineIndex = getMin(heightList)
+        img.src = item.picUrl
+        heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84
+        lineDomList[lineIndex].push(item)
+      })
+      return (
+        <div className="waterlist">
+          <div className="waterline">{generateImgDom(lineDomList[0])}</div>
+          <div className="waterline">{generateImgDom(lineDomList[1])}</div>
+        </div>
+      )
+    }
   }
 
   function generateImgDom(list) {
     return list.map((item, index) => (
-      <div className="WaterArticleTemp" key={item.picUrl + Math.random()}>
-        <div className="WaterImgbox" onClick={handleClickImg.bind(null, item, index)}>
-          <img className="waterArticleImg" src={item.picUrl}></img>
+      <div className="water-article-temp" key={item.picUrl + Math.random()}>
+        <div className="water-imgBox" onClick={handleClickImg.bind(null, item, index)}>
+          <img className="water-article-img" src={item.picUrl}></img>
         </div>
-        <div className="articleTitle">
-          <div className="articleTitle_content">{item.articleTitle}</div>
+        <div className="article-title">
+          <div className="article-title-content">{item.articleTitle}</div>
         </div>
-        <div className="userName">
+        <div className="article-userName">
           {item.userName}
-          <span className="topIcon" style={{ display: parseInt(item.articleType) === 2 ? 'true' : 'none' }}>
+          <span className="article-topIcon" style={{ display: parseInt(item.articleType) === 2 ? 'true' : 'none' }}>
             置顶中
           </span>
         </div>
@@ -177,8 +204,8 @@ export default function WaterFall(props) {
   }
 
   return (
-    <div className="waterFall">
-      {returnpic()}
+    <div className="waterfall">
+      {returnPicture()}
       <Modal
         title="查看图片"
         visible={showPicTab}
@@ -189,7 +216,7 @@ export default function WaterFall(props) {
           <Button onClick={handleChangePic.bind(null, 1)}>Next</Button>
         ]}
       >
-        <div className="showPicTab">
+        <div className="article-showPicTab">
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>

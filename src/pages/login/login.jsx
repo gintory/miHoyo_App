@@ -20,63 +20,63 @@ export default function Login(props) {
     <div className="login-content">
       <Tabs defaultActiveKey="1" tabPosition="top">
         <TabPane tab="登录" key="1">
-          <div className="login_form">
-            <div className="login_form_item">
-              <span className="login_form_span">账号：</span>
+          <div className="login-form">
+            <div className="login-form-item">
+              <span className="login-form-span">账号：</span>
               <Input
-                className="login_form_input"
+                className="login-form-input"
                 value={loginInfo.userName}
                 onChange={handleInputChange}
                 name="userName"
               ></Input>
             </div>
-            <div className="login_form_item">
-              <span className="login_form_span">密码：</span>
+            <div className="login-form-item">
+              <span className="login-form-span">密码：</span>
               <Input
-                className="login_form_input"
+                className="login-form-input"
                 type="password"
                 value={loginInfo.password}
                 onChange={handleInputChange}
                 name="password"
               ></Input>
             </div>
-            <Button className="login_form_btn" type="primary" onClick={handleLogin}>
+            <Button className="login-form-btn" type="primary" onClick={handleLogin}>
               登录
             </Button>
           </div>
         </TabPane>
         <TabPane tab="注册" key="2">
-          <div className="login_form">
-            <div className="login_form_item">
-              <span className="login_form_span">账号：</span>
+          <div className="login-form">
+            <div className="login-form-item">
+              <span className="login-form-span">账号：</span>
               <Input
-                className="login_form_input"
+                className="login-form-input"
                 value={registerInfo.userName}
                 onChange={handleRegisterInputChange}
                 name="userName"
               ></Input>
             </div>
-            <div className="login_form_item">
-              <span className="login_form_span">密码：</span>
+            <div className="login-form-item">
+              <span className="login-form-span">密码：</span>
               <Input
-                className="login_form_input"
+                className="login-form-input"
                 type="password"
                 value={registerInfo.password}
                 onChange={handleRegisterInputChange}
                 name="password"
               ></Input>
             </div>
-            <div className="login_form_item">
-              <span className="login_form_span">确认密码：</span>
+            <div className="login-form-item">
+              <span className="login-form-span">确认密码：</span>
               <Input
-                className="login_form_input"
+                className="login-form-input"
                 type="password"
                 value={registerInfo.confirmPassword}
                 onChange={handleRegisterInputChange}
                 name="confirmPassword"
               ></Input>
             </div>
-            <Button className="login_form_btn" type="primary" onClick={handleRegister}>
+            <Button className="login-form-btn" type="primary" onClick={handleRegister}>
               注册
             </Button>
           </div>
@@ -167,8 +167,8 @@ export default function Login(props) {
 
   return (
     <div className="login">
-      <div className="login_header">
-        <img className="login_header_img" src="assets/miHoYo_Logo.png" alt="" />
+      <div className="login-header">
+        <img className="login-header-img" src="assets/miHoYo_Logo.png" alt="" />
       </div>
       {myMenu()}
     </div>

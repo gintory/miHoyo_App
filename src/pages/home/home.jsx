@@ -63,7 +63,7 @@ export default function Home(props) {
   )
 
   function handleMenuClick(event) {
-    let menuDom = document.getElementsByClassName('header_menu_mobile')[0]
+    let menuDom = document.getElementsByClassName('header-menu-mobile')[0]
     menuDom.style.display = 'none'
   }
 
@@ -115,7 +115,7 @@ export default function Home(props) {
     return title
   }
   function openMenu() {
-    let menuDom = document.getElementsByClassName('header_menu_mobile')[0]
+    let menuDom = document.getElementsByClassName('header-menu-mobile')[0]
     if (menuDom.style.display === 'block') {
       menuDom.style.display = 'none'
     } else {
@@ -126,9 +126,9 @@ export default function Home(props) {
   return (
     <div className="home">
       <div className="header">
-        <img className="header_img" src="assets/miHoYo_Game.png" alt="" />
-        <div className="header_text">米游社·原神</div>
-        <div className="header_menu">
+        <img className="header-img" src="assets/miHoYo_Game.png" alt="" />
+        <div className="header-text">米游社·原神</div>
+        <div className="header-menu">
           <Menu
             // mode = 'inline'
             style={{ width: 250 }}
@@ -139,21 +139,21 @@ export default function Home(props) {
             {returnMenu()}
           </Menu>
         </div>
-        <div className="header_menu_mobile_btn" onClick={openMenu}>
+        <div className="header-menu-mobile-btn" onClick={openMenu}>
           <MenuUnfoldOutlined />
         </div>
-        <div className="header_user">
+        <div className="header-user">
           <Dropdown.Button overlay={loginMenu} placement="bottom" icon={<UserOutlined />}>
             {localStorage.getItem('userName')}
           </Dropdown.Button>
         </div>
       </div>
-      <div className="header_menu_mobile">
+      <div className="header-menu-mobile">
         <Menu mode="inline" style={{ width: 250 }} onClick={handleMenuClick} selectedKeys={getSelected()}>
           {returnMenu()}
         </Menu>
       </div>
-      <div className="home_content_main" id="home_content_main">
+      <div className="home-content-main" id="home-content-main">
         <Outlet></Outlet>
       </div>
     </div>

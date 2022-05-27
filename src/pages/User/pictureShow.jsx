@@ -45,7 +45,6 @@ export default function PictureShow(props, ref) {
       method: 'get'
     })
     let data = res.data.data
-    console.log(data)
     if (data.code === 200) {
       source = data.content
     }
@@ -66,7 +65,7 @@ export default function PictureShow(props, ref) {
 
   const onScroll = () => {
     let maxPageNum = getMaxPageNum()
-    if (imgBoxHeight === 0) imgBoxHeight = document.getElementsByClassName('articleTemp')[0].offsetHeight
+    if (imgBoxHeight === 0) imgBoxHeight = document.getElementsByClassName('article-temp')[0].offsetHeight
     // console.log('当前scrollTop', dom.scrollTop, imgBoxHeight);
     const scrollPageNum = getPageNum({
       scrollTop: dom.scrollTop,
@@ -110,18 +109,18 @@ export default function PictureShow(props, ref) {
     }
   }
 
-  function returnpic() {
+  function returnPicture() {
     return showDataSource.map((item, index) => (
-      <div className="articleTemp" key={item.picUrl + Math.random()}>
-        <div className="imgbox" onClick={handleClickImg.bind(null, item, index)}>
-          <div className="articleImg" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
+      <div className="article-temp" key={item.picUrl + Math.random()}>
+        <div className="article-temp-imgBox" onClick={handleClickImg.bind(null, item, index)}>
+          <div className="article-temp-img" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
         </div>
-        <div className="articleTitle">
-          <div className="articleTitle_content">{item.articleTitle}</div>
+        <div className="article-title">
+          <div className="article-title-content">{item.articleTitle}</div>
         </div>
-        <div className="userName">
+        <div className="article-userName">
           {item.userName}
-          <span className="topIcon" style={{ display: parseInt(item.articleType) === 2 ? 'true' : 'none' }}>
+          <span className="article-topIcon" style={{ display: parseInt(item.articleType) === 2 ? 'true' : 'none' }}>
             置顶中
           </span>
         </div>
@@ -144,8 +143,8 @@ export default function PictureShow(props, ref) {
   }
 
   return (
-    <div className="pictureShow" ref={scrollRef} onScroll={onScroll}>
-      <div className="picList">{returnpic()}</div>
+    <div className="picture-show" ref={scrollRef} onScroll={onScroll}>
+      <div className="picList">{returnPicture()}</div>
       <Modal
         title="查看图片"
         visible={showPicTab}
@@ -156,7 +155,7 @@ export default function PictureShow(props, ref) {
           <Button onClick={handleChangePic.bind(null, 1)}>Next</Button>
         ]}
       >
-        <div className="showPicTab">
+        <div className="article-showPicTab">
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>

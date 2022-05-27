@@ -19,8 +19,8 @@ export default function Index(props) {
   function returnPic() {
     return filterInfo.articlePictures.map((item, index) => (
       <div className="uploadImg" key={item.picUrl + Math.random()}>
-        <div className="uploadImg_imgbox" onClick={handleClickImg.bind(null, item, index)}>
-          <div className="uploadImg_image" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
+        <div className="uploadImg-imgBox" onClick={handleClickImg.bind(null, item, index)}>
+          <div className="uploadImg-image" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
         </div>
         <Popconfirm
           placement="top"
@@ -29,7 +29,7 @@ export default function Index(props) {
           okText="Yes"
           cancelText="No"
         >
-          <div className="deleteBtn" onClick={handleDelete}>
+          <div className="btn-delete" onClick={handleDelete}>
             <CloseOutlined />
           </div>
         </Popconfirm>
@@ -87,7 +87,7 @@ export default function Index(props) {
   }
   function handleBackCancel() {
     setShowBackTab(false)
-    navigate('/home/pictureShow')
+    navigate('/home/picture-show')
   }
   function handleBack() {
     setShowBackTab(false)
@@ -121,6 +121,7 @@ export default function Index(props) {
         })
       )
     })
+
     articleData.articlePictures = list
     return articleData
   }
@@ -135,6 +136,7 @@ export default function Index(props) {
       return
     }
     data = await handleUpload(data)
+    console.log(data)
     let list = data.articlePictures
     Promise.all(list).then(async function (listRes) {
       let res = await request({
@@ -164,12 +166,12 @@ export default function Index(props) {
   }
 
   return (
-    <div className="pictureUpload">
-      <div className="upload_content">
-        <div className="upload_header">发表图片</div>
-        <div className="upload_form">
-          <div className="form_input">
-            <div className="form_span">标题：</div>
+    <div className="picture-upload">
+      <div className="upload-content">
+        <div className="upload-header">发表图片</div>
+        <div className="upload-form">
+          <div className="form-input">
+            <div className="form-span">标题：</div>
             <Input
               placeholder="标题(必填)"
               value={filterInfo.articleTitle}
@@ -177,18 +179,18 @@ export default function Index(props) {
               name="articleTitle"
             ></Input>
           </div>
-          <div className="form_pictures">
-            <div className="form_span">上传图片：</div>
-            <div className="form_uploadbox">
+          <div className="form-pictures">
+            <div className="form-span">上传图片：</div>
+            <div className="form-uploadBox">
               {returnPic()}
-              <div className="form_upload" onClick={handleClickUploadDiv}>
-                <div className="form_upload_content">
-                  <div className="addBtn">
+              <div className="form-upload" onClick={handleClickUploadDiv}>
+                <div className="form-upload-content">
+                  <div className="btn-add">
                     <PlusCircleFilled />
                   </div>
                   <p style={{ color: '#000000', fontSize: '16px' }}>点击添加图片</p>
                   <p>最多可同时上传10张(支持格式jpg、png、jpeg、gif)</p>
-                  <div className="uploadBtn">
+                  <div className="btn-upload">
                     <input
                       id="upload_file"
                       type="file"
@@ -202,8 +204,8 @@ export default function Index(props) {
             </div>
           </div>
         </div>
-        <div className="form_btn">
-          <Button type="primary" className="form_btn" onClick={handleSubmit}>
+        <div className="form-btn">
+          <Button type="primary" className="form-btn" onClick={handleSubmit}>
             发布
           </Button>
         </div>
@@ -219,7 +221,7 @@ export default function Index(props) {
           <Button onClick={handleCancel}>Close</Button>
         ]}
       >
-        <div className="showPicTab">
+        <div className="article-showPicTab">
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>
@@ -234,7 +236,7 @@ export default function Index(props) {
           <Button onClick={handleBackCancel}>不了，谢谢</Button>
         ]}
       >
-        <div className="showPicTab">
+        <div className="article-showPicTab">
           <p>是否要继续上传图片？</p>
         </div>
       </Modal>

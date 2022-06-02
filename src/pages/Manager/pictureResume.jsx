@@ -2,10 +2,9 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { Popconfirm, Table, notification, Modal, Button } from 'antd'
 import { CheckCircleFilled, CloseCircleFilled, UpCircleFilled, EditFilled, DeleteFilled } from '@ant-design/icons'
 import { request } from '../../network/request'
-// import { DraggableBodyRow } from "../../components/dragTable";
-// import { useDrag, useDrop } from "react-dnd";
-// import { DndProvider } from "react-dnd";
-// import { HTML5Backend } from "react-dnd-html5-backend";
+// import { DraggableBodyRow } from '../../components/dragTable'
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import './pictureResume.css'
 var _ = require('lodash')
 
@@ -155,7 +154,7 @@ export default function Index(props) {
             onClick={handleTopChange.bind(null, item)}
             style={{ borderColor: '#6fc7e2', backgroundColor: '#6fc7e2', color: '#FFFFFF', margin: '0 5px 0 5px' }}
           >
-            {item.articleType === 1 ? '置顶' : '取消置顶'}
+            {item.articleType === '1' ? '置顶' : '取消置顶'}
           </Button>
           <Popconfirm
             placement="bottomRight"
@@ -355,12 +354,12 @@ export default function Index(props) {
             loading={loading}
             className="picture-table"
             // scroll={{ x: '1450px' }}
-            // onRow={(record, index) => ({
-            //   record, // 当前数据
-            //   table, // 完整数据
-            //   index, // 当前数据索引
-            //   moveRow // 移动后修改数据的方法
-            // })}
+            onRow={(record, index) => ({
+              record, // 当前数据
+              table, // 完整数据
+              index, // 当前数据索引
+              moveRow // 移动后修改数据的方法
+            })}
             pagination={{
               total: totalCount,
               showTotal: (totalCount) => '共 ' + totalCount + ' 条记录',

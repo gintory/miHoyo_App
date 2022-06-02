@@ -36,9 +36,7 @@ export const DraggableBodyRow = (props) => {
   }
 
   let isDrag = true // 是否可以拖拽，这里所有行均可拖拽，所以没有做判断限制
-
   const ref = useRef()
-
   // useDrop 是一个hook方法，提供了一种方法让你的组件可以作为放置目标连接到DnD系统。
   const [{ handlerId, isOver, dropClassName }, drop] = useDrop({
     accept: ItemTypes, // 只对useDrag的type的值为ItemTypes时才做出反应
@@ -83,7 +81,6 @@ export const DraggableBodyRow = (props) => {
       moveRow(opt) // 调用传入的方法完成数据修改
     }
   })
-
   // useDrag 是hook方法，提供了一种方法让你的组件可以作为拖动源连接到DnD系统。
   // isDragging是通过 collect收集并解构出来的属性
   const [{ isDragging }, drag] = useDrag({

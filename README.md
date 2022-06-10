@@ -1,11 +1,20 @@
 # miHoyo_App
-### 项目启动方式
+### 项目启动
 项目启动： `npm start`
-服务端启动： `npm run myapi`
+服务端启动： 
+- 使用Json：`npm run myJson`
+- 使用mysql：`npm run myApi`
 
-### 数据库说明
-数据库：`MySQL`
-数据库连接配置文件位置： `myapi/server.js`
+### 账号
+- 管理员：admin  密码：123456
+- 用户：user  密码：123456
+
+### Json数据
+- Json文件位置： `data/article.json` `data/user.json`
+
+### MySQL数据库
+- 数据库：`MySQL`
+- 数据库连接配置文件位置： `myApi/server.js`
 ```jsx
 host: 'localhost',
 user: 'root',
@@ -13,8 +22,7 @@ password: '',
 port: '3306',
 database: 'mihoyo'
 ```
-
-### 数据库表说明
+### 数据字段说明
 #### user 用户表
 `userld`：用户id
 `userName`：用户名

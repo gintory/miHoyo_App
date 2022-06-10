@@ -5,18 +5,18 @@ import { useNavigate } from 'react-router-dom'
 import './login.css'
 
 export default function Login(props) {
-  const navigate = useNavigate()
-  const { TabPane } = Tabs
+  const navigate = useNavigate();
+  const { TabPane } = Tabs;
   const [loginInfo, setLoginInfo] = useState({
     userName: '',
     password: ''
-  })
+  });
   const [registerInfo, setRegisterInfo] = useState({
     userName: '',
     password: '',
     confirmPassword: ''
-  })
-  const myMenu = () => (
+  });
+  const renderMenu = () => (
     <div className="login-content">
       <Tabs defaultActiveKey="1" tabPosition="top">
         <TabPane tab="登录" key="1">
@@ -83,60 +83,58 @@ export default function Login(props) {
         </TabPane>
       </Tabs>
     </div>
-  )
-  async function handleLogin() {
-    const res = await request({
-      url: '/api/userlogin',
+  );
+  function handleLogin() {
+    request({
+      url: '/api/userLogin',
       method: 'post',
       data: loginInfo
-    })
-    let data = res.data.data
-    console.log(data)
-    if (data.code === 200) {
-      setLoginInfo({
-        userName: '',
-        password: ''
-      })
-      localStorage.setItem('userId', data.userId)
-      localStorage.setItem('userName', data.userName)
-      localStorage.setItem('userType', data.userType)
-      navigate('/home/picture-show')
-    } else {
-      notification.error({
-        description: data.message,
-        message: '警告',
-        duration: 2
-      })
-    }
+    }).then((val) => {
+      if (val.data.data.code === 200) {
+        setLoginInfo({
+          userName: '',
+          password: ''
+        });
+        localStorage.setItem('userId', val.data.data.userId);
+        localStorage.setItem('userName', val.data.data.userName);
+        localStorage.setItem('userType', val.data.data.userType);
+        navigate('/home/picture-show');
+      } else {
+        notification.error({
+          description: val.data.data.message,
+          message: '警告',
+          duration: 2
+        });
+      }
+    });
   }
-  async function handleRegister() {
+  function handleRegister() {
     if (check()) {
-      const res = await request({
+      request({
         url: '/api/register',
         method: 'post',
         data: registerInfo
-      })
-      let data = res.data.data
-      console.log(data)
-      if (data.code === 200) {
-        notification.success({
-          description: '注册成功！',
-          message: '通知',
-          duration: 2,
-          onClose: () => {}
-        })
-      } else if (data.code === 201) {
-        notification.error({
-          description: '账号已存在，请重新输入！',
-          message: '警告',
-          duration: 2
-        })
-      }
-      setRegisterInfo({
-        userName: '',
-        password: '',
-        confirmPassword: ''
-      })
+      }).then((val) => {
+        if (val.data.data.code === 200) {
+          notification.success({
+            description: '注册成功！',
+            message: '通知',
+            duration: 2,
+            onClose: () => {}
+          });
+        } else if (val.data.data.code === 201) {
+          notification.error({
+            description: '账号已存在，请重新输入！',
+            message: '警告',
+            duration: 2
+          });
+        }
+        setRegisterInfo({
+          userName: '',
+          password: '',
+          confirmPassword: ''
+        });
+      });
     }
   }
   function check() {
@@ -145,24 +143,24 @@ export default function Login(props) {
         description: '两次密码不一致，请重新输入！',
         message: '警告',
         duration: 2
-      })
+      });
       setRegisterInfo({
         userName: '',
         password: '',
         confirmPassword: ''
-      })
-      return false
+      });
+      return false;
     } else {
-      return true
+      return true;
     }
   }
   function handleInputChange(event) {
-    const value = event.target.value
-    setLoginInfo({ ...loginInfo, [event.target.name]: value })
+    const value = event.target.value;
+    setLoginInfo({ ...loginInfo, [event.target.name]: value });
   }
   function handleRegisterInputChange(event) {
-    const value = event.target.value
-    setRegisterInfo({ ...registerInfo, [event.target.name]: value })
+    const value = event.target.value;
+    setRegisterInfo({ ...registerInfo, [event.target.name]: value });
   }
 
   return (
@@ -170,7 +168,7 @@ export default function Login(props) {
       <div className="login-header">
         <img className="login-header-img" src="assets/miHoYo_Logo.png" alt="" />
       </div>
-      {myMenu()}
+      {renderMenu()}
     </div>
-  )
+  );
 }

@@ -2,7 +2,7 @@
   margin-top: 20px;
   background-color: #fff;
   border-radius: 20px;
-  padding: 3%;
+  padding: 10px;
 }
 @media screen and (min-width: 992px) {
   .picture-mobile-table{
@@ -24,9 +24,9 @@
   }
   .article-detail-key{
     font-weight: bold;
-    width: 20%;
+    min-width: 80px;
   }
   .article-detail-value{
-    width: 80%;
+    overflow: hidden;
   }
 }

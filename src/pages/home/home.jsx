@@ -8,8 +8,8 @@ import './header.css'
 // const { SubMenu } = Menu
 
 export default function Home(props) {
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
   //管理员菜单
   const ManagerMenuList = [
     {
@@ -32,7 +32,7 @@ export default function Home(props) {
       key: 'pictureResume',
       url: 'picture-resume'
     }
-  ]
+  ];
   //用户菜单
   const UserMenuList = [
     {
@@ -50,7 +50,7 @@ export default function Home(props) {
       key: 'pictureUpload',
       url: 'picture-upload'
     }
-  ]
+  ];
   const loginMenu = (
     <Menu>
       <Menu.Item key="login_changePassword">
@@ -60,66 +60,66 @@ export default function Home(props) {
         <span onClick={handleLoginOut}>退出登录</span>
       </Menu.Item>
     </Menu>
-  )
+  );
 
   function handleMenuClick(event) {
-    let menuDom = document.getElementsByClassName('header-menu-mobile')[0]
-    menuDom.style.display = 'none'
+    const menuDom = document.getElementsByClassName('header-menu-mobile')[0];
+    menuDom.style.display = 'none';
   }
 
   function getMenuList() {
     //userType的值标识了用户的类型，1为管理员，2为用户
-    let userType = parseInt(localStorage.getItem('userType'))
-    switch (userType) {
-      case 1:
-        return ManagerMenuList
-      case 2:
-        return UserMenuList
-      default:
-        notification.error({
-          description: '您的会话已经过期，请重新登录',
-          message: '警告',
-          duration: 1,
-          onClose: () => {
-            navigate('/')
-          }
-        })
+    let userType = Number(localStorage.getItem('userType'));
+    const MenuMap = {
+      1: () => {
+        return ManagerMenuList;
+      },
+      2: () => {
+        return UserMenuList;
+      }
+    };
+    const handle = MenuMap[userType];
+    if (handle) {
+      return handle();
+    } else {
+      return handle;
     }
   }
-
   function handleOpenChangePasswordDialog() {
-    navigate('/home/change-password')
+    navigate('/home/change-password');
   }
-
   function handleLoginOut() {
-    localStorage.removeItem('userId')
-    localStorage.removeItem('userName')
-    localStorage.removeItem('userType')
-    navigate('/')
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userType');
+    navigate('/');
   }
-
   //生成菜单元素
-  function returnMenu() {
+  function renderMenu() {
     //获得菜单列表
-    const list = getMenuList()
-    return list.map((item) => (
-      <Menu.Item className="submenu" key={item.key}>
-        <NavLink to={item.url}>
-          <span>{item.title}</span>
-        </NavLink>
-      </Menu.Item>
-    ))
+    const list = getMenuList();
+    if (list) {
+      return list.map((item) => (
+        <Menu.Item className="submenu" key={item.key}>
+          <NavLink to={item.url}>
+            <span>{item.title}</span>
+          </NavLink>
+        </Menu.Item>
+      ));
+    } else {
+      navigate('/');
+    }
   }
-  function getSelected() {
-    let title = [location.pathname.split('/')[location.pathname.split('/').length - 1]]
-    return title
+  function getSelectedKey() {
+    const title = [location.pathname.split('/')[location.pathname.split('/').length - 1]];
+    return title;
   }
   function openMenu() {
-    let menuDom = document.getElementsByClassName('header-menu-mobile')[0]
+    const menuDom = document.getElementsByClassName('header-menu-mobile')[0];
     if (menuDom.style.display === 'block') {
-      menuDom.style.display = 'none'
+      menuDom.style.display = 'none';
     } else {
-      menuDom.style.display = 'block'
+      menuDom.style.display = 'block';
     }
   }
 
@@ -132,11 +132,11 @@ export default function Home(props) {
           <Menu
             // mode = 'inline'
             style={{ width: 250 }}
-            selectedKeys={getSelected()}
+            selectedKeys={getSelectedKey()}
             // defaultSelectedKeys={ [location.pathname.split('/')[location.pathname.split('/').length - 1]] }
             mode="horizontal"
           >
-            {returnMenu()}
+            {renderMenu()}
           </Menu>
         </div>
         <div className="header-menu-mobile-btn" onClick={openMenu}>
@@ -149,13 +149,13 @@ export default function Home(props) {
         </div>
       </div>
       <div className="header-menu-mobile">
-        <Menu mode="inline" style={{ width: 250 }} onClick={handleMenuClick} selectedKeys={getSelected()}>
-          {returnMenu()}
+        <Menu mode="inline" style={{ width: 250 }} onClick={handleMenuClick} selectedKeys={getSelectedKey()}>
+          {renderMenu()}
         </Menu>
       </div>
       <div className="home-content-main" id="home-content-main">
         <Outlet></Outlet>
       </div>
     </div>
-  )
+  );
 }

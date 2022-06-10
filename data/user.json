@@ -1,0 +1,15 @@
+{
+  "RECORDS": [
+    { "userId": 1, "userName": "admin", "password": "123456", "userType": 1 },
+    { "userId": 2, "userName": "Venti", "password": "123456", "userType": 2 },
+    { "userId": 3, "userName": "Zhongli", "password": "123456", "userType": 2 },
+    { "userId": 5, "userName": "Tartaglia", "password": "123456", "userType": 2 },
+    { "userId": 8, "userName": "klee", "password": "123456", "userType": 2 },
+    { "userId": 9, "userName": "Diluc", "password": "123456", "userType": 2 },
+    { "userId": 11, "userName": "KeQing", "password": "123456", "userType": 2 },
+    { "userId": 13, "userName": "Xiao", "password": "123456", "userType": 2 },
+    { "userId": 16, "userName": "XingQiu", "password": "123456", "userType": 2 },
+    { "userId": 18, "userName": "Thoma", "password": "123456", "userType": 2 },
+    { "userId": 19, "userName": "user", "password": "123456", "userType": 2 }
+  ]
+}

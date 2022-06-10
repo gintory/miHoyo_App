@@ -1,7 +1,7 @@
 .picture-show {
   background-color: #f0f1f5;
 }
-.article-temp-imgBox {
+.article-temp-box {
   align-self: center;
   position: relative;
   width: 100%;
@@ -9,7 +9,7 @@
   padding-bottom: 100%;
   cursor: pointer;
 }
-.article-temp-imgBox .article-temp-img {
+.article-temp-box .article-temp-img {
   border-radius: 5% 5% 0 0;
   position: absolute;
   top: 0;

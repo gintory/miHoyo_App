@@ -5,52 +5,51 @@ import { useNavigate } from 'react-router-dom'
 import './changePassword.css'
 
 export default function ChangePassword(props) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [filterInfo, setFilterInfo] = useState({
     oldPassword: '',
     newPassword: '',
     confirmNewPassword: ''
-  })
-  async function handleChangePassword() {
+  });
+  function handleChangePassword() {
     if (check()) {
       let data = {
-        userId: localStorage.getItem('userId'),
+        userId: Number(localStorage.getItem('userId')),
         oldPassword: filterInfo.oldPassword,
         newPassword: filterInfo.newPassword
-      }
-      console.log(data)
-      const res = await request({
+      };
+      request({
         url: '/api/changePassword',
         method: 'post',
         data: data
-      })
-      data = res.data.data
-      console.log(data)
-      if (data.code === 200) {
-        notification.success({
-          description: '修改成功！',
-          message: '通知',
-          duration: 2,
-          onClose: () => {}
-        })
-        navigate('/home/picture-show')
-      } else if (data.code === 201) {
-        notification.error({
-          description: '密码错误，请重新输入！',
-          message: '警告',
-          duration: 2
-        })
-      }
-      setFilterInfo({
-        oldPassword: '',
-        newPassword: '',
-        confirmNewPassword: ''
-      })
+      }).then((val) => {
+        console.log(val);
+        if (val.data.data.code === 200) {
+          notification.success({
+            description: '修改成功！',
+            message: '通知',
+            duration: 2,
+            onClose: () => {}
+          });
+          navigate('/home/picture-show');
+        } else if (val.data.data.code === 201) {
+          notification.error({
+            description: '密码错误，请重新输入！',
+            message: '警告',
+            duration: 2
+          });
+        }
+        setFilterInfo({
+          oldPassword: '',
+          newPassword: '',
+          confirmNewPassword: ''
+        });
+      });
     }
   }
   function handleInputChange(event) {
-    const value = event.target.value
-    setFilterInfo({ ...filterInfo, [event.target.name]: value })
+    const value = event.target.value;
+    setFilterInfo({ ...filterInfo, [event.target.name]: value });
   }
   function check() {
     if (filterInfo.newPassword !== filterInfo.confirmNewPassword) {
@@ -58,15 +57,15 @@ export default function ChangePassword(props) {
         description: '两次密码不一致，请重新输入！',
         message: '警告',
         duration: 2
-      })
+      });
       setFilterInfo({
         oldPassword: '',
         newPassword: '',
         confirmNewPassword: ''
-      })
-      return false
+      });
+      return false;
     } else {
-      return true
+      return true;
     }
   }
 

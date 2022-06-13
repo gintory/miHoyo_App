@@ -1,11 +1,12 @@
-import React, { useEffect, useState, createRef } from 'react'
-import { Modal, Button } from 'antd'
-import { request } from '../../network/request'
+import React, { useEffect, useState, createRef, useRef } from 'react';
+import { Modal, Button } from 'antd';
+import { request } from '../../network/request';
 import './pictureShow.css';
 
 export default function PictureShow(props, ref) {
-  const pageSize = 20;
+  const pageSize = 12;
   let imgBoxHeight = 0;
+  let contentDom = document.getElementById('home-content-main');
   const [dataSource, setDataSource] = useState([]);
   const [showDataSource, setShowDataSource] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -16,12 +17,12 @@ export default function PictureShow(props, ref) {
   const [showPicIndex, setShowPicIndex] = useState(0);
   const [showPicUrl, setShowPicUrl] = useState('');
   const scrollRef = createRef();
-  let [dom, setDom] = useState(document.getElementById('home_content_main'));
+  const articleContent = useRef();
 
   useEffect(() => {
-    dom = document.getElementById('home_content_main');
-    if (dom != null) {
-      dom.addEventListener('scroll', onScroll);
+    contentDom = document.getElementById('home-content-main');
+    if (contentDom != null) {
+      contentDom.addEventListener('scroll', onScroll);
     }
     getDataSource();
   }, []);
@@ -35,8 +36,8 @@ export default function PictureShow(props, ref) {
   }, [pageNum, dataSource.length]);
   useEffect(() => {
     return () => {
-      if (dom != null) {
-        dom.removeEventListener('scroll', onScroll);
+      if (contentDom != null) {
+        contentDom.removeEventListener('scroll', onScroll);
       }
     };
   }, []);
@@ -68,11 +69,11 @@ export default function PictureShow(props, ref) {
   const onScroll = () => {
     let maxPageNum = getMaxPageNum();
     if (imgBoxHeight === 0) {
-      imgBoxHeight = document.getElementsByClassName('article-temp')[0].offsetHeight;
+      imgBoxHeight = articleContent.current.offsetHeight;
     }
-    // console.log('当前scrollTop', dom.scrollTop, imgBoxHeight);
+    // console.log('当前scrollTop', contentDom.scrollTop, imgBoxHeight);
     const scrollPageNum = getPageNum({
-      scrollTop: dom.scrollTop,
+      scrollTop: contentDom.scrollTop,
       pageSize: pageSize,
       itemHeight: imgBoxHeight
     });
@@ -87,8 +88,8 @@ export default function PictureShow(props, ref) {
   // 获取最大页数
   function getMaxPageNum() {
     return getPageNum({
-      // scrollTop: Math.ceil(totalCount/4)*itemHeight - dom.clientHeight,
-      scrollTop: dom.scrollHeight - dom.clientHeight,
+      // scrollTop: Math.ceil(totalCount/4)*itemHeight - contentDom.clientHeight,
+      scrollTop: contentDom.scrollHeight - contentDom.clientHeight,
       pageSize: pageSize,
       itemHeight: imgBoxHeight
     });
@@ -96,12 +97,12 @@ export default function PictureShow(props, ref) {
 
   // 计算分页
   function getPageNum({ scrollTop, pageSize, itemHeight }) {
-    let num = 4;
+    let lineNum = 4;
     if (document.body.clientWidth <= 992) {
-      num = 2;
+      lineNum = 2;
     }
-    const pageHeight = (pageSize / num) * itemHeight;
-    return Math.max(Math.ceil((dom.clientHeight + scrollTop) / pageHeight), 1);
+    const pageHeight = (pageSize / lineNum) * itemHeight;
+    return Math.max(Math.ceil((contentDom.clientHeight + scrollTop) / pageHeight), 1);
   }
 
   // 数据切片
@@ -117,7 +118,7 @@ export default function PictureShow(props, ref) {
 
   function returnPicture() {
     return showDataSource.map((item, index) => (
-      <div className="article-temp" key={item.picUrl + Math.random()}>
+      <div className="article-temp" key={item.picUrl + Math.random()} ref={articleContent}>
         <div className="article-temp-box" onClick={() => handleClickImg(item, index)}>
           <div className="article-temp-img" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
         </div>

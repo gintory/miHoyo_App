@@ -38,7 +38,6 @@
 }
 .upload-item {
   width: 32%;
-  /* margin: 0 1.5% 20px 1.5%; */
   margin: 0 0 20px 0;
   background-color: #f5f5f5;
   position: relative;
@@ -86,10 +85,13 @@
 }
 @media screen and (min-width: 992px) {
   .form-upload {
-    width: 32%;
+    width: 30%;
     color: #ccc;
     margin: 0 0 20px 0;
     position: relative;
+  }
+  .upload-item {
+    margin: 0 3% 20px 0;
   }
   .form-span {
     width: 100px;
@@ -100,7 +102,7 @@
     width: 90%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start;
   }
 }
 @media screen and (max-width: 992px) {

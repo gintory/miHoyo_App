@@ -1,15 +1,16 @@
-import React from 'react'
-import { Menu, Dropdown, notification } from 'antd'
-import { UserOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
-import { useLocation, Outlet, NavLink, useNavigate } from 'react-router-dom'
-import './home.css'
-import './header.css'
+import React, { useRef, createRef } from 'react';
+import { Menu, Dropdown } from 'antd';
+import { UserOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { useLocation, Outlet, NavLink, useNavigate } from 'react-router-dom';
+import './home.css';
+import './header.css';
 
 // const { SubMenu } = Menu
 
 export default function Home(props) {
   const location = useLocation();
   const navigate = useNavigate();
+  const mobileMenu = useRef();
   //管理员菜单
   const ManagerMenuList = [
     {
@@ -63,8 +64,7 @@ export default function Home(props) {
   );
 
   function handleMenuClick(event) {
-    const menuDom = document.getElementsByClassName('header-menu-mobile')[0];
-    menuDom.style.display = 'none';
+    mobileMenu.current.style.display = 'none';
   }
 
   function getMenuList() {
@@ -115,12 +115,14 @@ export default function Home(props) {
     return title;
   }
   function openMenu() {
-    const menuDom = document.getElementsByClassName('header-menu-mobile')[0];
-    if (menuDom.style.display === 'block') {
-      menuDom.style.display = 'none';
+    if (mobileMenu.current.style.display === 'block') {
+      mobileMenu.current.style.display = 'none';
     } else {
-      menuDom.style.display = 'block';
+      mobileMenu.current.style.display = 'block';
     }
+  }
+  function pageScroll() {
+    // console.log('scroll');
   }
 
   return (
@@ -142,7 +144,7 @@ export default function Home(props) {
           </Dropdown.Button>
         </div>
       </div>
-      <div className="header-menu-mobile">
+      <div className="header-menu-mobile" ref={mobileMenu}>
         <Menu mode="inline" style={{ width: 250 }} onClick={handleMenuClick} selectedKeys={getSelectedKey()}>
           {renderMenu()}
         </Menu>

@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { notification, Popconfirm, Modal, Button, Input } from 'antd'
-import { PlusCircleFilled, CloseOutlined } from '@ant-design/icons'
-import { request } from '../../network/request'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useRef } from 'react';
+import { notification, Popconfirm, Modal, Button, Input } from 'antd';
+import { PlusCircleFilled, CloseOutlined } from '@ant-design/icons';
+import { request } from '../../network/request';
+import { useNavigate } from 'react-router-dom';
 import './pictureUpload.css';
 
 export default function Index(props) {
@@ -14,6 +14,7 @@ export default function Index(props) {
     articleTitle: '',
     articlePictures: []
   });
+  const uploadFile = useRef();
 
   function renderSelectedPicture() {
     return filterInfo.articlePictures.map((item, index) => (
@@ -40,7 +41,7 @@ export default function Index(props) {
     setFilterInfo({ ...filterInfo, [event.target.name]: value });
   }
   function handleClickUploadDiv() {
-    document.getElementById('upload_file').click();
+    uploadFile.current.click();
   }
   function handlePictureChange(event) {
     let files = event.target.files;
@@ -189,6 +190,7 @@ export default function Index(props) {
                   <p>最多可同时上传10张(支持格式jpg、png、jpeg、gif)</p>
                   <div className="btn-upload">
                     <input
+                      ref={uploadFile}
                       id="upload_file"
                       type="file"
                       multiple="multiple"

@@ -4,7 +4,7 @@ import { request } from '../../network/request'
 import './waterFall.css'
 
 export default function WaterFall(props) {
-  const pageSize = 20;
+  const pageSize = 8;
   let imgBoxHeight = 0;
   const [dataSource, setDataSource] = useState([]);
   const [showDataSource, setShowDataSource] = useState([]);
@@ -15,10 +15,10 @@ export default function WaterFall(props) {
   const [showPicTab, setShowPicTab] = useState(false);
   const [showPicIndex, setShowPicIndex] = useState(0);
   const [showPicUrl, setShowPicUrl] = useState('');
-  let [dom, setDom] = useState(document.getElementById('home_content_main'));
+  let [dom, setDom] = useState(document.getElementById('home-content-main'));
 
   useEffect(() => {
-    dom = document.getElementById('home_content_main');
+    dom = document.getElementById('home-content-main');
     if (dom != null) {
       dom.addEventListener('scroll', onScroll);
     }
@@ -78,8 +78,8 @@ export default function WaterFall(props) {
     }
     // if(imgBoxHeight === 0) imgBoxHeight = document.getElementsByClassName('articleTemp')[0].offsetHeight
     if (imgBoxHeight === 0) {
-      let linedom = document.getElementsByClassName('waterline');
-      let LineHeight = linedom[0].offsetHeight;
+      let lineDom = document.getElementsByClassName('waterLine');
+      let LineHeight = lineDom[0].offsetHeight;
       imgBoxHeight = LineHeight / (pageSize / num + 1);
     }
     // console.log('当前scrollTop', dom.scrollTop, imgBoxHeight)
@@ -107,11 +107,11 @@ export default function WaterFall(props) {
 
   // 计算分页
   function getPageNum({ scrollTop, pageSize, itemHeight }) {
-    let num = 4;
+    let lineNum = 4;
     if (document.body.clientWidth <= 992) {
-      num = 2;
+      lineNum = 2;
     }
-    const pageHeight = (pageSize / num) * itemHeight;
+    const pageHeight = (pageSize / lineNum) * itemHeight;
     return Math.max(Math.ceil((dom.clientHeight + scrollTop) / pageHeight), 1);
   }
 
@@ -132,36 +132,32 @@ export default function WaterFall(props) {
       let heightList = [0, 0, 0, 0];
       let lineDomList = [[], [], [], []];
       let lineIndex = 0;
-      let img = new Image();
       showDataSource.map((item, index) => {
         lineIndex = getMin(heightList);
-        img.src = item.picUrl;
         heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84;
         lineDomList[lineIndex].push(item);
       });
       return (
-        <div className="waterlist">
-          <div className="waterline">{generateImgDom(lineDomList[0])}</div>
-          <div className="waterline">{generateImgDom(lineDomList[1])}</div>
-          <div className="waterline">{generateImgDom(lineDomList[2])}</div>
-          <div className="waterline">{generateImgDom(lineDomList[3])}</div>
+        <div className="waterList">
+          <div className="waterLine">{generateImgDom(lineDomList[0])}</div>
+          <div className="waterLine">{generateImgDom(lineDomList[1])}</div>
+          <div className="waterLine">{generateImgDom(lineDomList[2])}</div>
+          <div className="waterLine">{generateImgDom(lineDomList[3])}</div>
         </div>
       );
     } else {
       let lineDomList = [[], []];
       let heightList = [0, 0];
       let lineIndex = 0;
-      let img = new Image();
       showDataSource.map((item, index) => {
         lineIndex = getMin(heightList);
-        img.src = item.picUrl;
         heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84;
         lineDomList[lineIndex].push(item);
       });
       return (
-        <div className="waterlist">
-          <div className="waterline">{generateImgDom(lineDomList[0])}</div>
-          <div className="waterline">{generateImgDom(lineDomList[1])}</div>
+        <div className="waterList">
+          <div className="waterLine">{generateImgDom(lineDomList[0])}</div>
+          <div className="waterLine">{generateImgDom(lineDomList[1])}</div>
         </div>
       );
     }
@@ -187,9 +183,9 @@ export default function WaterFall(props) {
   }
 
   function getMin(arr) {
-    let newarr = [...arr];
-    newarr.sort((a, b) => a - b);
-    return arr.indexOf(newarr[0]);
+    let newArr = [...arr];
+    newArr.sort((a, b) => a - b);
+    return arr.indexOf(newArr[0]);
   }
 
   function handleClickImg(item, index) {

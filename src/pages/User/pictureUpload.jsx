@@ -17,9 +17,9 @@ export default function Index(props) {
 
   function renderSelectedPicture() {
     return filterInfo.articlePictures.map((item, index) => (
-      <div className="uploadImg" key={item.picUrl + Math.random()}>
-        <div className="uploadImg-imgBox" onClick={() => handleClickImg(item, index)}>
-          <div className="uploadImg-image" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
+      <div className="upload-item" key={item.picUrl + Math.random()}>
+        <div className="upload-item-box" onClick={() => handleClickImg(item, index)}>
+          <div className="upload-item-image" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
         </div>
         <Popconfirm
           placement="top"
@@ -126,7 +126,7 @@ export default function Index(props) {
   }
   async function handleSubmit() {
     let data = filterInfo;
-    if (data.articleTitle === '' || data.articlePictures.lenght === 0) {
+    if (data.articleTitle === '' || data.articlePictures.length === 0) {
       notification.error({
         description: '标题或上传的图片不能为空！',
         message: '警告',
@@ -167,10 +167,9 @@ export default function Index(props) {
         <div className="upload-header">发表图片</div>
         <div className="upload-form">
           <div className="form-input">
-            <div className="form-span" style={{ width: 50 }}>
-              标题：
-            </div>
+            <div className="form-span">标题：</div>
             <Input
+              style={{ width: '90%' }}
               placeholder="标题(必填)"
               value={filterInfo.articleTitle}
               onChange={handleInputChange}
@@ -179,7 +178,7 @@ export default function Index(props) {
           </div>
           <div className="form-pictures">
             <div className="form-span">上传图片：</div>
-            <div className="form-uploadBox">
+            <div className="form-upload-box">
               {renderSelectedPicture()}
               <div className="form-upload" style={{ backgroundColor: '#f5f5f5' }} onClick={handleClickUploadDiv}>
                 <div className="form-upload-content">

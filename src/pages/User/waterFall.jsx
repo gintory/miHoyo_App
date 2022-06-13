@@ -170,7 +170,7 @@ export default function WaterFall(props) {
   function generateImgDom(list) {
     return list.map((item, index) => (
       <div className="water-article-temp" key={item.picUrl + Math.random()}>
-        <div className="water-imgBox" onClick={() => handleClickImg(item, index)}>
+        <div className="water-box" onClick={() => handleClickImg(item, index)}>
           <img className="water-article-img" src={item.picUrl}></img>
         </div>
         <div className="article-title">

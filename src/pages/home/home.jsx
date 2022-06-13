@@ -129,13 +129,7 @@ export default function Home(props) {
         <img className="header-img" src="assets/miHoYo_Game.png" alt="" />
         <div className="header-text">米游社·原神</div>
         <div className="header-menu">
-          <Menu
-            // mode = 'inline'
-            style={{ width: 250 }}
-            selectedKeys={getSelectedKey()}
-            // defaultSelectedKeys={ [location.pathname.split('/')[location.pathname.split('/').length - 1]] }
-            mode="horizontal"
-          >
+          <Menu style={{ width: 250 }} selectedKeys={getSelectedKey()} mode="horizontal">
             {renderMenu()}
           </Menu>
         </div>

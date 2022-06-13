@@ -46,7 +46,7 @@ export default function Index(props) {
       title: '作者',
       dataIndex: 'userName',
       key: 'userName',
-      width: '90px',
+      width: '80px',
       align: 'center'
     },
     {
@@ -69,7 +69,7 @@ export default function Index(props) {
     {
       title: '图片',
       key: 'picUrl',
-      width: '140px',
+      width: '120px',
       align: 'center',
       render: (item, record) => {
         return (
@@ -87,7 +87,7 @@ export default function Index(props) {
     {
       title: '置顶状态',
       key: 'articleType',
-      width: '100px',
+      width: '90px',
       align: 'center',
       render: (item, record) => {
         if (Number(item.articleType) === 1) {
@@ -103,9 +103,7 @@ export default function Index(props) {
       title: '操作',
       key: 'userName',
       align: 'center',
-      width: '400px',
-      fixed: 'right',
-      ellipsis: true,
+      width: '350px',
       render: (item, record) => (
         <div>
           <Button
@@ -255,19 +253,18 @@ export default function Index(props) {
     [table]
   );
 
-   function getDataSource() {
+  function getDataSource() {
     setLoading(true);
     request({
       url: '/api/getAllPicture',
       method: 'get'
-    }).then(val=>{
+    }).then((val) => {
       if (val.data.data.code === 200) {
         setLoading(false);
         setDataSource(val.data.data.content);
         setTotalCount(val.data.data.content.length);
       }
-    })
-    
+    });
   }
   function handleStatusChange(type, item) {
     let data = Object.assign({}, item);

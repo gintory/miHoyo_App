@@ -10,12 +10,12 @@
   flex-direction: column;
   border-radius: 5px;
 }
-.water-imgBox {
+.water-box {
   align-self: center;
   width: 100%;
   cursor: pointer;
 }
-.water-imgBox .water-article-img {
+.water-box .water-article-img {
   border-radius: 5px 5px 0 0;
   width: 100%;
 }

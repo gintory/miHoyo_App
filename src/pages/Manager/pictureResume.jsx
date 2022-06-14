@@ -423,7 +423,7 @@ export default function Index(props) {
             <div className="article-detail-value">{Number(showDetail.articleType) === 2 ? '置顶中' : '未置顶'}</div>
           </div>
         </div>
-        <div className="article-showPicTab">
+        <div className="article-show-tab">
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>

@@ -1,7 +1,6 @@
 .waterfall {
   background-color: #f0f1f5;
 }
-
 .water-article-temp {
   width: 100%;
   margin: 0 2.5% 20px 2.5%;
@@ -19,11 +18,11 @@
   border-radius: 5px 5px 0 0;
   width: 100%;
 }
-.article-showPicTab {
+.article-show-tab {
   display: flex;
   justify-content: center;
 }
-.article-showPicTab img {
+.article-show-tab img {
   width: 90%;
 }
 .ant-modal-header {
@@ -36,23 +35,24 @@
   justify-content: space-around;
 }
 @media screen and (min-width: 992px) {
-  .waterLine {
+  .water-line {
     width: 25%;
     padding: 0 10px 0 10px;
     display: block;
   }
-  .waterList {
+  .water-list {
     display: flex;
     padding: 20px 20px 0 20px;
   }
 }
+
 @media screen and (max-width: 992px) {
-  .waterLine {
+  .water-line {
     width: 50%;
     padding: 0 10px 0 10px;
     display: block;
   }
-  .waterList {
+  .water-list {
     display: flex;
     padding: 20px 0 0 0;
   }

@@ -9,10 +9,10 @@
   line-height: 50px;
   font-size: 20px;
   font-weight: bold;
-  padding-left: 3%;
+  padding-left: 30px;
 }
 .upload-form {
-  padding: 3%;
+  padding: 30px;
 }
 
 .form-pictures {
@@ -76,7 +76,7 @@
   line-height: 40px;
   font-size: 32px;
 }
-.btn-add-text{
+.btn-add-text {
   color: #000;
   font-size: 16px;
 }
@@ -87,7 +87,7 @@
   display: flex;
   align-items: center;
 }
-.form-input-item{
+.form-input-item {
   width: 90%;
 }
 .form-upload {

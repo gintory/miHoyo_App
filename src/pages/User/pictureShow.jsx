@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createRef, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Modal, Button } from 'antd';
 import { request } from '../../network/request';
 import './pictureShow.css';
@@ -16,12 +16,11 @@ export default function PictureShow(props, ref) {
   const [showPicTab, setShowPicTab] = useState(false);
   const [showPicIndex, setShowPicIndex] = useState(0);
   const [showPicUrl, setShowPicUrl] = useState('');
-  const scrollRef = createRef();
   const articleContent = useRef();
 
   useEffect(() => {
     contentDom = document.getElementById('home-content-main');
-    if (contentDom != null) {
+    if (contentDom) {
       contentDom.addEventListener('scroll', onScroll);
     }
     getDataSource();
@@ -116,7 +115,7 @@ export default function PictureShow(props, ref) {
     };
   }
 
-  function returnPicture() {
+  function renderPicture() {
     return showDataSource.map((item, index) => (
       <div className="article-temp" key={item.picUrl + Math.random()} ref={articleContent}>
         <div className="article-temp-box" onClick={() => handleClickImg(item, index)}>
@@ -125,9 +124,9 @@ export default function PictureShow(props, ref) {
         <div className="article-title">
           <div className="article-title-content">{item.articleTitle}</div>
         </div>
-        <div className="article-userName">
+        <div className="article-user-name">
           {item.userName}
-          <span className="article-topIcon" style={{ display: Number(item.articleType) === 2 ? 'true' : 'none' }}>
+          <span className="article-icon-top" style={{ display: Number(item.articleType) === 2 ? 'true' : 'none' }}>
             置顶中
           </span>
         </div>
@@ -150,8 +149,8 @@ export default function PictureShow(props, ref) {
   }
 
   return (
-    <div className="picture-show" ref={scrollRef} onScroll={onScroll}>
-      <div className="picList">{returnPicture()}</div>
+    <div className="picture-show" onScroll={onScroll}>
+      <div className="pic-list">{renderPicture()}</div>
       <Modal
         title="查看图片"
         visible={showPicTab}
@@ -168,7 +167,7 @@ export default function PictureShow(props, ref) {
           </Button>
         ]}
       >
-        <div className="article-showPicTab">
+        <div className="article-show-tab">
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>

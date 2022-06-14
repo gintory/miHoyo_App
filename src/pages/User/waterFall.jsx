@@ -78,7 +78,7 @@ export default function WaterFall(props) {
     }
     // if(imgBoxHeight === 0) imgBoxHeight = document.getElementsByClassName('articleTemp')[0].offsetHeight
     if (imgBoxHeight === 0) {
-      let lineDom = document.getElementsByClassName('waterLine');
+      let lineDom = document.getElementsByClassName('water-line');
       let LineHeight = lineDom[0].offsetHeight;
       imgBoxHeight = LineHeight / (pageSize / num + 1);
     }
@@ -138,11 +138,11 @@ export default function WaterFall(props) {
         lineDomList[lineIndex].push(item);
       });
       return (
-        <div className="waterList">
-          <div className="waterLine">{generateImgDom(lineDomList[0])}</div>
-          <div className="waterLine">{generateImgDom(lineDomList[1])}</div>
-          <div className="waterLine">{generateImgDom(lineDomList[2])}</div>
-          <div className="waterLine">{generateImgDom(lineDomList[3])}</div>
+        <div className="water-list">
+          <div className="water-line">{generateImgDom(lineDomList[0])}</div>
+          <div className="water-line">{generateImgDom(lineDomList[1])}</div>
+          <div className="water-line">{generateImgDom(lineDomList[2])}</div>
+          <div className="water-line">{generateImgDom(lineDomList[3])}</div>
         </div>
       );
     } else {
@@ -155,9 +155,9 @@ export default function WaterFall(props) {
         lineDomList[lineIndex].push(item);
       });
       return (
-        <div className="waterList">
-          <div className="waterLine">{generateImgDom(lineDomList[0])}</div>
-          <div className="waterLine">{generateImgDom(lineDomList[1])}</div>
+        <div className="water-list">
+          <div className="water-line">{generateImgDom(lineDomList[0])}</div>
+          <div className="water-line">{generateImgDom(lineDomList[1])}</div>
         </div>
       );
     }
@@ -172,9 +172,9 @@ export default function WaterFall(props) {
         <div className="article-title">
           <div className="article-title-content">{item.articleTitle}</div>
         </div>
-        <div className="article-userName">
+        <div className="article-user-name">
           {item.userName}
-          <span className="article-topIcon" style={{ display: Number(item.articleType) === 2 ? 'true' : 'none' }}>
+          <span className="article-icon-top" style={{ display: Number(item.articleType) === 2 ? 'true' : 'none' }}>
             置顶中
           </span>
         </div>
@@ -221,7 +221,7 @@ export default function WaterFall(props) {
           </Button>
         ]}
       >
-        <div className="article-showPicTab">
+        <div className="article-show-tab">
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>

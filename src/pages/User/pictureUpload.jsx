@@ -229,7 +229,7 @@ export default function Index(props) {
           </Button>
         ]}
       >
-        <div className="article-showPicTab">
+        <div className="article-show-tab">
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>
@@ -246,7 +246,7 @@ export default function Index(props) {
           </Button>
         ]}
       >
-        <div className="article-showPicTab">
+        <div className="article-show-tab">
           <p>是否要继续上传图片？</p>
         </div>
       </Modal>

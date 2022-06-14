@@ -88,10 +88,7 @@ export default function Header(props) {
       <div className="header-text">米游社·原神</div>
       <div className="header-menu">
         <Menu
-          // mode = 'inline'
-          style={{ width: 250 }}
           onClick={handleMenuClick}
-          // defaultOpenKeys = { getMenuList().map(item => item.key)}
           defaultSelectedKeys={[location.pathname.split('/')[location.pathname.split('/').length - 1]]}
           mode="horizontal"
         >

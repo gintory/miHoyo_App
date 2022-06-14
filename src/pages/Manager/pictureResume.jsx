@@ -56,11 +56,11 @@ export default function Index(props) {
       align: 'center',
       render: (item, record) => {
         if (item.articleState === '审核通过') {
-          return <span style={{ color: '#5cb85c' }}>{item.articleState}</span>;
+          return <span className="text-success">{item.articleState}</span>;
         } else if (item.articleState === '审核中') {
-          return <span style={{ color: '#f0a339' }}>{item.articleState}</span>;
+          return <span className="text-wait">{item.articleState}</span>;
         } else if (item.articleState === '审核未通过') {
-          return <span style={{ color: '#cc0000' }}>{item.articleState}</span>;
+          return <span className="text-delete">{item.articleState}</span>;
         } else {
           return <span>{item.articleState}</span>;
         }
@@ -91,11 +91,11 @@ export default function Index(props) {
       align: 'center',
       render: (item, record) => {
         if (Number(item.articleType) === 1) {
-          return <span style={{ color: '#a19f9f' }}>未置顶</span>;
+          return <span className="text-none">未置顶</span>;
         } else if (Number(item.articleType) === 2) {
-          return <span style={{ color: '#c00' }}>置顶中</span>;
+          return <span className="text-delete">置顶中</span>;
         } else {
-          return <span style={{ color: '#000' }}>未知</span>;
+          return <span>未知</span>;
         }
       }
     },
@@ -108,23 +108,19 @@ export default function Index(props) {
         <div>
           <Button
             size="small"
+            className="resume-button button-success"
             onClick={() => handleStatusChange('审核通过', item)}
-            style={{ borderColor: '#5cb85c', backgroundColor: '#5cb85c', color: '#fff', margin: '0 5px 0 5px' }}
           >
             审核通过
           </Button>
           <Button
             size="small"
+            className="resume-button button-wait"
             onClick={() => handleStatusChange('审核未通过', item)}
-            style={{ borderColor: '#f0a339', backgroundColor: '#f0a339', color: '#fff', margin: '0 5px 0 5px' }}
           >
             审核未通过
           </Button>
-          <Button
-            size="small"
-            onClick={() => handleTopChange(item)}
-            style={{ borderColor: '#6fc7e2', backgroundColor: '#6fc7e2', color: '#fff', margin: '0 5px 0 5px' }}
-          >
+          <Button size="small" className="resume-button button-top" onClick={() => handleTopChange(item)}>
             {item.articleType === 1 ? '置顶' : '取消置顶'}
           </Button>
           <Popconfirm
@@ -134,11 +130,7 @@ export default function Index(props) {
             okText="确定"
             cancelText="取消"
           >
-            <Button
-              type="danger"
-              size="small"
-              style={{ borderColor: '#cc0000', backgroundColor: '#cc0000', color: '#fff', margin: '0 5px 0 5px' }}
-            >
+            <Button type="danger" size="small" className="resume-button button-delete">
               删除
             </Button>
           </Popconfirm>
@@ -171,28 +163,20 @@ export default function Index(props) {
       render: (item, record) => (
         <div>
           <CheckCircleFilled
+            className="resume-button-mobile text-success"
             onClick={() => handleStatusChange('审核通过', item)}
-            style={{ color: '#5cb85c', margin: '0 5px 0 5px', fontSize: '20px' }}
           />
           <CloseCircleFilled
+            className="resume-button-mobile text-wait"
             onClick={() => handleStatusChange('审核未通过', item)}
-            style={{ color: '#f0a339', margin: '0 5px 0 5px', fontSize: '20px' }}
           />
-          {item.articleType === '1' ? (
-            <UpCircleFilled
-              onClick={() => handleTopChange(item)}
-              style={{ color: '#6fc7e2', margin: '0 5px 0 5px', fontSize: '20px' }}
-            />
-          ) : (
-            <UpCircleFilled
-              onClick={() => handleTopChange(item)}
-              style={{ color: '#ccc', margin: '0 5px 0 5px', fontSize: '20px' }}
-            />
-          )}
-          <EditFilled
-            onClick={() => handleClickImg(item)}
-            style={{ color: '#f0a339', margin: '0 5px 0 5px', fontSize: '20px' }}
+          <UpCircleFilled
+            onClick={() => handleTopChange(item)}
+            className={
+              Number(item.articleType) === 1 ? 'resume-button-mobile text-top' : 'resume-button-mobile text-none'
+            }
           />
+          <EditFilled className="resume-button-mobile text-wait" onClick={() => handleClickImg(item)} />
           <Popconfirm
             placement="bottomRight"
             title="确认删除吗？"
@@ -200,7 +184,7 @@ export default function Index(props) {
             okText="确定"
             cancelText="取消"
           >
-            <DeleteFilled style={{ color: '#cc0000', margin: '0 5px 0 5px', fontSize: '20px' }} />
+            <DeleteFilled className="resume-button-mobile text-delete" />
           </Popconfirm>
         </div>
       )
@@ -350,7 +334,7 @@ export default function Index(props) {
   return (
     <div className="pictureResume">
       <div className="resume-content">
-        <div className="table" style={{ overflowX: 'auto' }}>
+        <div className="table">
           <DndProvider backend={HTML5Backend}>
             <Table
               rowKey="articleId"
@@ -404,16 +388,12 @@ export default function Index(props) {
           </Button>,
           <Button
             key="picture-success"
+            className="resume-button button-success"
             onClick={() => handleStatusChangeByModal(2)}
-            style={{ borderColor: '#5cb85c', backgroundColor: '#5cb85c', color: '#fff' }}
           >
             审核通过
           </Button>,
-          <Button
-            key="picture-fail"
-            onClick={() => handleStatusChangeByModal(3)}
-            style={{ borderColor: '#f0a339', backgroundColor: '#f0a339', color: '#fff' }}
-          >
+          <Button key="picture-fail" className="resume-button button-wait" onClick={() => handleStatusChangeByModal(3)}>
             审核未通过
           </Button>,
           <Button key="click-next-picture" onClick={() => handleChangePic(1)}>
@@ -440,7 +420,7 @@ export default function Index(props) {
           </div>
           <div className="article-detail-item">
             <div className="article-detail-key">置顶状态：</div>
-            <div className="article-detail-value">{showDetail.articleType === '2' ? '置顶中' : '未置顶'}</div>
+            <div className="article-detail-value">{Number(showDetail.articleType) === 2 ? '置顶中' : '未置顶'}</div>
           </div>
         </div>
         <div className="article-showPicTab">

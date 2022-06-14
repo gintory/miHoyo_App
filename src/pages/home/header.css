@@ -30,14 +30,4 @@
     color: #fff;
     border: 0;
   }
-  ul.ant-menu-title-content {
-    font-size: 14px;
-    font-weight: bold;
-    color: blue;
-    border: 0;
-  }
-  ul.ant-menu-submenu ::selection {
-    background-color: red;
-    color: red;
-  }
 }

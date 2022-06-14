@@ -5,20 +5,67 @@
 }
 .submenu:hover {
   font-size: 17px;
-  /* font-weight: bold !important; */
+}
+ul.ant-menu {
+  background-color: #2d2f33;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  border: 0;
+}
+.resume-button {
+  color: #fff;
+  margin: 0 5px 0 5px;
+}
+.resume-button-mobile {
+  font-size: 20px;
+  margin: 0 5px 0 5px;
+}
+.button-success {
+  border-color: #5cb85c;
+  background-color: #5cb85c;
+}
+.button-wait {
+  border-color: #f0a339;
+  background-color: #f0a339;
+}
+.button-top {
+  border-color: #6fc7e2;
+  background-color: #6fc7e2;
+}
+.button-delete {
+  border-color: #c00;
+  background-color: #c00;
+}
+.text-success {
+  color: #5cb85c;
+}
+.text-wait {
+  color: #f0a339;
+}
+.text-top {
+  color: #6fc7e2;
+}
+.text-delete {
+  color: #c00;
+}
+.text-none{
+  color: #a19f9f;
 }
 @media screen and (min-width: 992px) {
   .header {
-    padding: 0 20% 0 17%;
+    padding: 0 20% 0 20%;
     height: 70px;
     background-color: #2d2f33;
     display: flex;
     align-items: center;
   }
   .header .header-text {
+    min-width: 140px;
     font-size: 14px;
     font-weight: bold;
     color: #fff;
+    text-align: center;
     padding: 0 30px 0 30px;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
   }

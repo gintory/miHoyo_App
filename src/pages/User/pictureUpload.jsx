@@ -170,7 +170,7 @@ export default function Index(props) {
           <div className="form-input">
             <div className="form-span">标题：</div>
             <Input
-              style={{ width: '90%' }}
+              className="form-input-item"
               placeholder="标题(必填)"
               value={filterInfo.articleTitle}
               onChange={handleInputChange}
@@ -181,12 +181,12 @@ export default function Index(props) {
             <div className="form-span">上传图片：</div>
             <div className="form-upload-box">
               {renderSelectedPicture()}
-              <div className="form-upload" style={{ backgroundColor: '#f5f5f5' }} onClick={handleClickUploadDiv}>
+              <div className="form-upload" onClick={handleClickUploadDiv}>
                 <div className="form-upload-content">
                   <div className="btn-add">
                     <PlusCircleFilled />
                   </div>
-                  <p style={{ color: '#000', fontSize: '16px' }}>点击添加图片</p>
+                  <p className="btn-add-text">点击添加图片</p>
                   <p>最多可同时上传10张(支持格式jpg、png、jpeg、gif)</p>
                   <div className="btn-upload">
                     <input

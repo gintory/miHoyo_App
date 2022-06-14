@@ -3,9 +3,6 @@ import { Menu, Dropdown } from 'antd';
 import { UserOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useLocation, Outlet, NavLink, useNavigate } from 'react-router-dom';
 import './home.css';
-import './header.css';
-
-// const { SubMenu } = Menu
 
 export default function Home(props) {
   const location = useLocation();
@@ -131,7 +128,7 @@ export default function Home(props) {
         <img className="header-img" src="assets/miHoYo_Game.png" alt="" />
         <div className="header-text">米游社·原神</div>
         <div className="header-menu">
-          <Menu style={{ width: 250 }} selectedKeys={getSelectedKey()} mode="horizontal">
+          <Menu selectedKeys={getSelectedKey()} mode="horizontal">
             {renderMenu()}
           </Menu>
         </div>
@@ -145,7 +142,7 @@ export default function Home(props) {
         </div>
       </div>
       <div className="header-menu-mobile" ref={mobileMenu}>
-        <Menu mode="inline" style={{ width: 250 }} onClick={handleMenuClick} selectedKeys={getSelectedKey()}>
+        <Menu mode="inline" onClick={handleMenuClick} selectedKeys={getSelectedKey()}>
           {renderMenu()}
         </Menu>
       </div>

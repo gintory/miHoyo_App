@@ -17,7 +17,6 @@ export default function PictureShow(props, ref) {
   const [showPicIndex, setShowPicIndex] = useState(0);
   const [showPicUrl, setShowPicUrl] = useState('');
   const articleContent = useRef();
-
   useEffect(() => {
     contentDom = document.getElementById('home-content-main');
     if (contentDom) {
@@ -53,7 +52,6 @@ export default function PictureShow(props, ref) {
       }
     });
   }
-
   function sliceShowDataSource() {
     const { showDataSource, beforeCount, totalCount } = getRenderData({
       pageNum: pageNum,
@@ -64,36 +62,29 @@ export default function PictureShow(props, ref) {
     setBeforeCount(beforeCount);
     setTotalCount(totalCount);
   }
-
   const onScroll = () => {
     let maxPageNum = getMaxPageNum();
     if (imgBoxHeight === 0) {
       imgBoxHeight = articleContent.current.offsetHeight;
     }
-    // console.log('当前scrollTop', contentDom.scrollTop, imgBoxHeight);
     const scrollPageNum = getPageNum({
       scrollTop: contentDom.scrollTop,
       pageSize: pageSize,
       itemHeight: imgBoxHeight
     });
     const currPageNum = Math.min(scrollPageNum, maxPageNum);
-    // console.log(maxPageNum,scrollPageNum,currPageNum,pageNum);
     if (currPageNum === pageNum) {
       return;
     }
     setPageNum(currPageNum);
   };
-
-  // 获取最大页数
   function getMaxPageNum() {
     return getPageNum({
-      // scrollTop: Math.ceil(totalCount/4)*itemHeight - contentDom.clientHeight,
       scrollTop: contentDom.scrollHeight - contentDom.clientHeight,
       pageSize: pageSize,
       itemHeight: imgBoxHeight
     });
   }
-
   // 计算分页
   function getPageNum({ scrollTop, pageSize, itemHeight }) {
     let lineNum = 4;
@@ -103,7 +94,6 @@ export default function PictureShow(props, ref) {
     const pageHeight = (pageSize / lineNum) * itemHeight;
     return Math.max(Math.ceil((contentDom.clientHeight + scrollTop) / pageHeight), 1);
   }
-
   // 数据切片
   function getRenderData({ pageNum, pageSize, dataSource }) {
     const startIndex = (pageNum - 1) * pageSize;
@@ -114,7 +104,17 @@ export default function PictureShow(props, ref) {
       totalCount: dataSource.length
     };
   }
-
+  function handleClickImg(item, index) {
+    setShowPicTab(true);
+    setShowPicIndex(index);
+  }
+  function handleChangePic(num) {
+    const newIndex = (showPicIndex + num + showDataSource.length) % showDataSource.length;
+    setShowPicIndex(newIndex);
+  }
+  function handleCancel() {
+    setShowPicTab(false);
+  }
   function renderPicture() {
     return showDataSource.map((item, index) => (
       <div className="article-temp" key={item.picUrl + Math.random()} ref={articleContent}>
@@ -132,20 +132,6 @@ export default function PictureShow(props, ref) {
         </div>
       </div>
     ));
-  }
-
-  function handleClickImg(item, index) {
-    setShowPicTab(true);
-    setShowPicIndex(index);
-  }
-
-  function handleChangePic(num) {
-    const newIndex = (showPicIndex + num + showDataSource.length) % showDataSource.length;
-    setShowPicIndex(newIndex);
-  }
-
-  function handleCancel() {
-    setShowPicTab(false);
   }
 
   return (

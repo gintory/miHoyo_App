@@ -15,27 +15,7 @@ export default function Index(props) {
     articlePictures: []
   });
   const uploadFile = useRef();
-
-  function renderSelectedPicture() {
-    return filterInfo.articlePictures.map((item, index) => (
-      <div className="upload-item" key={item.picUrl + Math.random()}>
-        <div className="upload-item-box" onClick={() => handleClickImg(item, index)}>
-          <div className="upload-item-image" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
-        </div>
-        <Popconfirm
-          placement="top"
-          title="确认删除这张图片吗?"
-          onConfirm={() => handleDeleteImg(item)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <div className="btn-delete">
-            <CloseOutlined />
-          </div>
-        </Popconfirm>
-      </div>
-    ));
-  }
+ 
   function handleInputChange(event) {
     const value = event.target.value;
     setFilterInfo({ ...filterInfo, [event.target.name]: value });
@@ -160,6 +140,27 @@ export default function Index(props) {
       onClose: () => {}
     });
     setShowBackTab(true);
+  }
+
+  function renderSelectedPicture() {
+    return filterInfo.articlePictures.map((item, index) => (
+      <div className="upload-item" key={item.picUrl + Math.random()}>
+        <div className="upload-item-box" onClick={() => handleClickImg(item, index)}>
+          <div className="upload-item-image" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
+        </div>
+        <Popconfirm
+          placement="top"
+          title="确认删除这张图片吗?"
+          onConfirm={() => handleDeleteImg(item)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <div className="btn-delete">
+            <CloseOutlined />
+          </div>
+        </Popconfirm>
+      </div>
+    ));
   }
 
   return (

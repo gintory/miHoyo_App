@@ -190,6 +190,11 @@ export default function Index(props) {
       )
     }
   ];
+  const components = {
+    body: {
+      row: DraggableBodyRow
+    }
+  };
   const handleState = {
     1: (item) => {
       item.articleState = '审核中';
@@ -205,7 +210,9 @@ export default function Index(props) {
     getDataSource();
   }, []);
   useEffect(() => {
-    if (dataSource[showPicIndex]) setShowPicUrl(dataSource[showPicIndex].picUrl);
+    if (dataSource[showPicIndex]) {
+      setShowPicUrl(dataSource[showPicIndex].picUrl);
+    }
   }, [showPicIndex]);
   const table = useMemo(() => {
     dataSource.forEach((item) => {
@@ -217,11 +224,6 @@ export default function Index(props) {
     setDataSource(dataSource);
     return dataSource;
   }, [dataSource]);
-  const components = {
-    body: {
-      row: DraggableBodyRow
-    }
-  };
   const moveRow = useCallback(
     (dragIndex, hoverIndex) => {
       const dragRow = table[dragIndex];

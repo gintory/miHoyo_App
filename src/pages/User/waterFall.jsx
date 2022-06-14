@@ -4,27 +4,25 @@ import { request } from '../../network/request'
 import './waterFall.css'
 
 export default function WaterFall(props) {
-  const pageSize = 8;
+  const pageSize = 12;
   let imgBoxHeight = 0;
+  let contentDom = document.getElementById('home-content-main');
   const [dataSource, setDataSource] = useState([]);
   const [showDataSource, setShowDataSource] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [beforeCount, setBeforeCount] = useState(0);
   const [pageNum, setPageNum] = useState(1);
   const [showPicTab, setShowPicTab] = useState(false);
   const [showPicIndex, setShowPicIndex] = useState(0);
   const [showPicUrl, setShowPicUrl] = useState('');
-  let [dom, setDom] = useState(document.getElementById('home-content-main'));
 
   useEffect(() => {
-    dom = document.getElementById('home-content-main');
-    if (dom != null) {
-      dom.addEventListener('scroll', onScroll);
+    contentDom = document.getElementById('home-content-main');
+    if (contentDom) {
+      contentDom.addEventListener('scroll', onScroll);
     }
     getDataSource();
   }, []);
-  //以下为原有
   useEffect(() => {
     if (dataSource.length > 0) {
       setShowPicUrl(dataSource[showPicIndex].picUrl);
@@ -40,8 +38,8 @@ export default function WaterFall(props) {
   }, [pageNum, dataSource.length]);
   useEffect(() => {
     return () => {
-      if (dom != null) {
-        dom.removeEventListener('scroll', onScroll);
+      if (contentDom != null) {
+        contentDom.removeEventListener('scroll', onScroll);
       }
     };
   }, []);
@@ -58,7 +56,6 @@ export default function WaterFall(props) {
       }
     });
   }
-
   function sliceShowDataSource() {
     const { showDataSource, beforeCount, totalCount } = getRenderData({
       pageNum: pageNum,
@@ -69,42 +66,36 @@ export default function WaterFall(props) {
     setBeforeCount(beforeCount);
     setTotalCount(totalCount);
   }
-
   const onScroll = () => {
     let maxPageNum = getMaxPageNum();
     let num = 4;
     if (document.body.clientWidth <= 992) {
       num = 2;
     }
-    // if(imgBoxHeight === 0) imgBoxHeight = document.getElementsByClassName('articleTemp')[0].offsetHeight
     if (imgBoxHeight === 0) {
       let lineDom = document.getElementsByClassName('water-line');
       let LineHeight = lineDom[0].offsetHeight;
       imgBoxHeight = LineHeight / (pageSize / num + 1);
     }
-    // console.log('当前scrollTop', dom.scrollTop, imgBoxHeight)
     const scrollPageNum = getPageNum({
-      scrollTop: dom.scrollTop,
+      scrollTop: contentDom.scrollTop,
       pageSize: pageSize,
       itemHeight: imgBoxHeight
     });
     const currPageNum = Math.min(scrollPageNum, maxPageNum);
-    // console.log(maxPageNum,scrollPageNum,currPageNum,pageNum);
-    if (currPageNum === pageNum) return;
-    // console.log('next page')
+    if (currPageNum === pageNum) {
+      return;
+    }
     setPageNum(currPageNum);
   };
-
   // 获取最大页数
   function getMaxPageNum() {
     return getPageNum({
-      // scrollTop: Math.ceil(totalCount/4)*itemHeight - dom.clientHeight,
-      scrollTop: dom.scrollHeight - dom.clientHeight,
+      scrollTop: contentDom.scrollHeight - contentDom.clientHeight,
       pageSize: pageSize,
       itemHeight: imgBoxHeight
     });
   }
-
   // 计算分页
   function getPageNum({ scrollTop, pageSize, itemHeight }) {
     let lineNum = 4;
@@ -112,9 +103,24 @@ export default function WaterFall(props) {
       lineNum = 2;
     }
     const pageHeight = (pageSize / lineNum) * itemHeight;
-    return Math.max(Math.ceil((dom.clientHeight + scrollTop) / pageHeight), 1);
+    return Math.max(Math.ceil((contentDom.clientHeight + scrollTop) / pageHeight), 1);
   }
-
+  function getMin(arr) {
+    let newArr = [...arr];
+    newArr.sort((a, b) => a - b);
+    return arr.indexOf(newArr[0]);
+  }
+  function handleClickImg(item, index) {
+    setShowPicIndex(dataSource.indexOf(item));
+    setShowPicTab(true);
+  }
+  function handleChangePic(num) {
+    let newIndex = (showPicIndex + num + dataSource.length) % dataSource.length;
+    setShowPicIndex(newIndex);
+  }
+  function handleCancel() {
+    setShowPicTab(false);
+  }
   // 数据切片
   function getRenderData({ pageNum, pageSize, dataSource }) {
     const startIndex = (pageNum - 1) * pageSize;
@@ -125,7 +131,6 @@ export default function WaterFall(props) {
       totalCount: dataSource.length
     };
   }
-
   //瀑布流根据图片高度布局
   function renderPicture() {
     if (document.body.clientWidth >= 992) {
@@ -162,7 +167,6 @@ export default function WaterFall(props) {
       );
     }
   }
-
   function generateImgDom(list) {
     return list.map((item, index) => (
       <div className="water-article-temp" key={item.picUrl + Math.random()}>
@@ -180,26 +184,6 @@ export default function WaterFall(props) {
         </div>
       </div>
     ));
-  }
-
-  function getMin(arr) {
-    let newArr = [...arr];
-    newArr.sort((a, b) => a - b);
-    return arr.indexOf(newArr[0]);
-  }
-
-  function handleClickImg(item, index) {
-    setShowPicIndex(dataSource.indexOf(item));
-    setShowPicTab(true);
-  }
-
-  function handleChangePic(num) {
-    let newIndex = (showPicIndex + num + dataSource.length) % dataSource.length;
-    setShowPicIndex(newIndex);
-  }
-
-  function handleCancel() {
-    setShowPicTab(false);
   }
 
   return (

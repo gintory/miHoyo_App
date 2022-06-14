@@ -5,9 +5,6 @@ import { useLocation, Outlet, NavLink, useNavigate } from 'react-router-dom';
 import './home.css';
 
 export default function Home(props) {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const mobileMenu = useRef();
   //管理员菜单
   const ManagerMenuList = [
     {
@@ -59,11 +56,13 @@ export default function Home(props) {
       </Menu.Item>
     </Menu>
   );
+  const mobileMenu = useRef();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   function handleMenuClick(event) {
     mobileMenu.current.style.display = 'none';
   }
-
   function getMenuList() {
     //userType的值标识了用户的类型，1为管理员，2为用户
     let userType = Number(localStorage.getItem('userType'));
@@ -91,6 +90,17 @@ export default function Home(props) {
     localStorage.removeItem('userType');
     navigate('/');
   }
+  function getSelectedKey() {
+    const title = [location.pathname.split('/')[location.pathname.split('/').length - 1]];
+    return title;
+  }
+  function openMenu() {
+    if (mobileMenu.current.style.display === 'block') {
+      mobileMenu.current.style.display = 'none';
+    } else {
+      mobileMenu.current.style.display = 'block';
+    }
+  }
   //生成菜单元素
   function renderMenu() {
     //获得菜单列表
@@ -106,20 +116,6 @@ export default function Home(props) {
     } else {
       navigate('/');
     }
-  }
-  function getSelectedKey() {
-    const title = [location.pathname.split('/')[location.pathname.split('/').length - 1]];
-    return title;
-  }
-  function openMenu() {
-    if (mobileMenu.current.style.display === 'block') {
-      mobileMenu.current.style.display = 'none';
-    } else {
-      mobileMenu.current.style.display = 'block';
-    }
-  }
-  function pageScroll() {
-    // console.log('scroll');
   }
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { notification, Popconfirm, Modal, Button, Input } from 'antd';
-import { PlusCircleFilled, CloseOutlined } from '@ant-design/icons';
+import { PlusCircleFilled, CloseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import { useNavigate } from 'react-router-dom';
 import './pictureUpload.css';
@@ -10,12 +10,13 @@ export default function Index(props) {
   const [showPicTab, setShowPicTab] = useState(false);
   const [showPicUrl, setShowPicUrl] = useState('');
   const [showBackTab, setShowBackTab] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const [filterInfo, setFilterInfo] = useState({
     articleTitle: '',
     articlePictures: []
   });
   const uploadFile = useRef();
- 
+
   function handleInputChange(event) {
     const value = event.target.value;
     setFilterInfo({ ...filterInfo, [event.target.name]: value });
@@ -82,26 +83,22 @@ export default function Index(props) {
       let formData = new FormData();
       formData.append('file', item.picFile);
       list.push(
-        new Promise((resolve, reject) => {
-          request({
-            url: '/api/uploadPicture',
-            method: 'post',
-            data: formData
-          }).then((res) => {
-            if (res.data.data.code === 200) {
-              console.log('here');
-              let temp = {
-                picFinalUrl: res.data.data.url,
-                width: item.width,
-                height: item.height
-              };
-              resolve(temp);
-            }
-          });
+        request({
+          url: '/api/uploadPicture',
+          method: 'post',
+          data: formData
+        }).then((res) => {
+          if (res.data.data.code === 200) {
+            let temp = {
+              picFinalUrl: res.data.data.url,
+              width: item.width,
+              height: item.height
+            };
+            return temp;
+          }
         })
       );
     });
-
     articleData.articlePictures = list;
     return articleData;
   }
@@ -115,10 +112,10 @@ export default function Index(props) {
       });
       return;
     }
+    setShowLoading(true);
     let res = await handleUpload(data);
     let list = res.articlePictures;
     Promise.all(list).then((listRes) => {
-      console;
       request({
         url: '/api/uploadArticle',
         method: 'post',
@@ -139,6 +136,7 @@ export default function Index(props) {
       duration: 2,
       onClose: () => {}
     });
+    setShowLoading(false);
     setShowBackTab(true);
   }
 
@@ -233,6 +231,9 @@ export default function Index(props) {
         <div className="article-show-tab">
           <img src={showPicUrl} alt="" />
         </div>
+      </Modal>
+      <Modal title="图片上传中" visible={showLoading}>
+        <LoadingOutlined />
       </Modal>
       <Modal
         title="发布成功"

@@ -5,7 +5,7 @@ import { request } from '../../network/request';
 import './pictureShow.css';
 
 export default function PictureShow(props, ref) {
-  const pageSize = 12;
+  const pageSize = 20;
   let imgBoxHeight = 0;
   let contentDom = document.getElementById('home-content-main');
   const [dataSource, setDataSource] = useState([]);
@@ -67,7 +67,7 @@ export default function PictureShow(props, ref) {
   }
   const onScroll = () => {
     let maxPageNum = getMaxPageNum();
-    if (imgBoxHeight === 0) {
+    if (imgBoxHeight === 0 && articleContent.current) {
       imgBoxHeight = articleContent.current.offsetHeight;
     }
     const scrollPageNum = getPageNum({

@@ -5,7 +5,7 @@ import { request } from '../../network/request';
 import './waterFall.css';
 
 export default function WaterFall(props) {
-  const pageSize = 12;
+  const pageSize = 20;
   let imgBoxHeight = 0;
   let contentDom = document.getElementById('home-content-main');
   const [dataSource, setDataSource] = useState([]);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Modal, Button } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import './pictureShow.css';
 
@@ -17,6 +18,7 @@ export default function PictureShow(props, ref) {
   const [showPicIndex, setShowPicIndex] = useState(0);
   const [showPicUrl, setShowPicUrl] = useState('');
   const articleContent = useRef();
+  const loading = useRef();
   useEffect(() => {
     contentDom = document.getElementById('home-content-main');
     if (contentDom) {
@@ -49,6 +51,7 @@ export default function PictureShow(props, ref) {
       if (data.code === 200) {
         setDataSource([...data.content]);
         setTotalCount(data.content.length);
+        loading.current.style.display = 'none';
       }
     });
   }
@@ -136,6 +139,7 @@ export default function PictureShow(props, ref) {
 
   return (
     <div className="picture-show" onScroll={onScroll}>
+      <LoadingOutlined ref={loading} className="loading" />
       <div className="pic-list">{renderPicture()}</div>
       <Modal
         title="查看图片"

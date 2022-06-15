@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { Modal, notification, Button, Input } from 'antd'
-import { request } from '../../network/request'
-import './waterFall.css'
+import React, { useEffect, useState, useRef } from 'react';
+import { Modal, notification, Button, Input } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { request } from '../../network/request';
+import './waterFall.css';
 
 export default function WaterFall(props) {
   const pageSize = 12;
@@ -15,6 +16,7 @@ export default function WaterFall(props) {
   const [showPicTab, setShowPicTab] = useState(false);
   const [showPicIndex, setShowPicIndex] = useState(0);
   const [showPicUrl, setShowPicUrl] = useState('');
+  const loading = useRef();
 
   useEffect(() => {
     contentDom = document.getElementById('home-content-main');
@@ -53,6 +55,7 @@ export default function WaterFall(props) {
       if (data.code === 200) {
         setDataSource([...data.content]);
         setTotalCount(data.content.length);
+        loading.current.style.display = 'none';
       }
     });
   }
@@ -188,6 +191,7 @@ export default function WaterFall(props) {
 
   return (
     <div className="waterfall">
+      <LoadingOutlined ref={loading} className="loading" />
       {renderPicture()}
       <Modal
         title="查看图片"

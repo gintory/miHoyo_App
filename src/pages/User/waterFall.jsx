@@ -14,6 +14,7 @@ export default function WaterFall(props) {
   const [beforeCount, setBeforeCount] = useState(0);
   const [pageNum, setPageNum] = useState(1);
   const [showPicTab, setShowPicTab] = useState(false);
+  const [showBottomText, setShowBottomText] = useState('false');
   const [showPicIndex, setShowPicIndex] = useState(0);
   const [showPicUrl, setShowPicUrl] = useState('');
   const loading = useRef();
@@ -45,16 +46,22 @@ export default function WaterFall(props) {
       }
     };
   }, []);
+  useEffect(() => {
+    if (showDataSource.length == dataSource.length) {
+      setShowBottomText('true');
+    } else {
+      setShowBottomText('false');
+    }
+  }, [showDataSource.length]);
 
   function getDataSource() {
     request({
       url: '/api/getPicture',
       method: 'get'
     }).then((val) => {
-      let data = val.data.data;
-      if (data.code === 200) {
-        setDataSource([...data.content]);
-        setTotalCount(data.content.length);
+      if (val.data.data.code === 200) {
+        setDataSource([...val.data.data.content]);
+        setTotalCount(val.data.data.content.length);
         loading.current.style.display = 'none';
       }
     });
@@ -213,6 +220,9 @@ export default function WaterFall(props) {
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>
+      <p className="bottom-text" visible={showBottomText}>
+        没有更多数据了~
+      </p>
     </div>
   );
 }

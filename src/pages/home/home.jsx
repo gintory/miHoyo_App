@@ -121,7 +121,7 @@ export default function Home(props) {
   return (
     <div className="home">
       <div className="header">
-        <img className="header-img" src="assets/miHoYo_Game.png" alt="" />
+        <img className="header-img" src="../assets/miHoYo_Game.png" alt="" />
         <div className="header-text">米游社·原神</div>
         <div className="header-menu">
           <Menu selectedKeys={getSelectedKey()} mode="horizontal">

@@ -4,6 +4,7 @@ import { PlusCircleFilled, CloseOutlined, LoadingOutlined } from '@ant-design/ic
 import { request } from '../../network/request';
 import { useNavigate } from 'react-router-dom';
 import './pictureUpload.css';
+import { reject } from 'lodash';
 
 export default function Index(props) {
   const navigate = useNavigate();
@@ -113,7 +114,7 @@ export default function Index(props) {
       return;
     }
     setShowLoading(true);
-    let res = await handleUpload(data);
+    let res = handleUpload(data);
     let list = res.articlePictures;
     Promise.all(list).then((listRes) => {
       request({
@@ -124,27 +125,28 @@ export default function Index(props) {
           articleTitle: res.articleTitle,
           articlePictures: listRes
         }
+      }).then((res) => {
+        setFilterInfo({
+          articleTitle: '',
+          articlePictures: []
+        });
+        notification.success({
+          description: '发布成功！',
+          message: '通知',
+          duration: 2,
+          onClose: () => {}
+        });
+        setShowLoading(false);
+        setShowBackTab(true);
       });
     });
-    setFilterInfo({
-      articleTitle: '',
-      articlePictures: []
-    });
-    notification.success({
-      description: '发布成功！',
-      message: '通知',
-      duration: 2,
-      onClose: () => {}
-    });
-    setShowLoading(false);
-    setShowBackTab(true);
   }
 
   function renderSelectedPicture() {
     return filterInfo.articlePictures.map((item, index) => (
       <div className="upload-item" key={item.picUrl + Math.random()}>
         <div className="upload-item-box" onClick={() => handleClickImg(item, index)}>
-          <div className="upload-item-image" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
+          <div className="upload-item-image" style={{ backgroundImage: `url(${item.picUrl})` }}></div>
         </div>
         <Popconfirm
           placement="top"
@@ -232,7 +234,7 @@ export default function Index(props) {
           <img src={showPicUrl} alt="" />
         </div>
       </Modal>
-      <Modal title="图片上传中" visible={showLoading}>
+      <Modal title="图片上传中" style={{ textAlign: 'center' }} visible={showLoading} footer={null}>
         <LoadingOutlined />
       </Modal>
       <Modal

@@ -129,7 +129,7 @@ export default function PictureShow(props, ref) {
     return showDataSource.map((item, index) => (
       <div className="article-temp" key={item.picUrl + Math.random()} ref={articleContent}>
         <div className="article-temp-box" onClick={() => handleClickImg(item, index)}>
-          <div className="article-temp-img" style={{ backgroundImage: 'url(' + item.picUrl + ')' }}></div>
+          <div className="article-temp-img" style={{ backgroundImage: `url(${item.picUrl})` }}></div>
         </div>
         <div className="article-title">
           <div className="article-title-content">{item.articleTitle}</div>

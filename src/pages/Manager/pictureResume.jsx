@@ -77,7 +77,7 @@ export default function Index(props) {
             <div className="article-temp-box" onClick={() => handleClickImg(item)}>
               <div
                 className="article-temp-img"
-                style={{ backgroundImage: 'url(' + item.picUrl + ')', borderRadius: '5%' }}
+                style={{ backgroundImage: `url(${item.picUrl})`, borderRadius: '5%' }}
               ></div>
             </div>
           </div>

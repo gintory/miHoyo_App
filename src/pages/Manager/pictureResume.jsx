@@ -226,12 +226,12 @@ export default function Index(props) {
   }, [dataSource]);
   const moveRow = useCallback(
     (dragIndex, hoverIndex) => {
-      const dragRow = table[dragIndex];
+      const dragRow = table[(filterInfo.currIndex - 1) * filterInfo.pageSize + dragIndex];
       setDataSource(
         update(table, {
           $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, dragRow]
+            [(filterInfo.currIndex - 1) * filterInfo.pageSize + dragIndex, 1],
+            [(filterInfo.currIndex - 1) * filterInfo.pageSize + hoverIndex, 0, dragRow]
           ]
         })
       );

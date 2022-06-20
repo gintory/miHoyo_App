@@ -37,13 +37,13 @@ export default function PictureShow(props, ref) {
   }, [pageNum, dataSource.length]);
   useEffect(() => {
     return () => {
-      if (contentDom != null) {
+      if (contentDom !== null) {
         contentDom.removeEventListener('scroll', onScroll);
       }
     };
   }, []);
   useEffect(() => {
-    if (showDataSource.length == dataSource.length) {
+    if (showDataSource.length === dataSource.length) {
       setShowBottomText('true');
     } else {
       setShowBottomText('false');

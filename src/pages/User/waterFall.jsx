@@ -3,13 +3,17 @@ import { Modal, notification, Button, Input } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import './waterFall.css';
+import { useMemo } from 'react';
 
 export default function WaterFall(props) {
   const pageSize = 20;
   let imgBoxHeight = 0;
   let contentDom = document.getElementById('home-content-main');
+  let LoadingImg = new Image();
+  LoadingImg.src = '../assets/loading.gif';
   const [dataSource, setDataSource] = useState([]);
   const [showDataSource, setShowDataSource] = useState([]);
+  const [showPicSource, setShowPicSource] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [beforeCount, setBeforeCount] = useState(0);
   const [pageNum, setPageNum] = useState(1);
@@ -53,6 +57,36 @@ export default function WaterFall(props) {
       setShowBottomText('false');
     }
   }, [showDataSource.length]);
+  // useMemo(() => {
+  //   showDataSource.forEach((item, index) => {
+  //     let img = new Image();
+  //     img.src = item.picUrl;
+  //     img.onload = function () {
+  //       item.loadingUrl = item.picUrl;
+  //       setShowDataSource([...showDataSource]);
+  //     };
+  //   });
+  // }, [showDataSource]);
+  useMemo(() => {
+    let loadedLength = showPicSource.length;
+    let arr = [...showDataSource];
+    for (let i = 0; i < loadedLength; i++) {
+      arr[i].loadingUrl = showPicSource[i].loadingUrl;
+    }
+    for (let i = loadedLength; i < arr.length; i++) {
+      arr[i].loadingUrl = '../assets/loading.gif';
+    }
+    setShowPicSource([...arr]);
+    for (let i = loadedLength; i < showDataSource.length; i++) {
+      let item = showDataSource[i];
+      let img = new Image();
+      img.src = item.picUrl;
+      img.onload = function () {
+        arr[i].loadingUrl = item.picUrl;
+        setShowPicSource([...arr]);
+      };
+    }
+  }, [showDataSource]);
 
   function getDataSource() {
     request({
@@ -147,7 +181,7 @@ export default function WaterFall(props) {
       let heightList = [0, 0, 0, 0];
       let lineDomList = [[], [], [], []];
       let lineIndex = 0;
-      showDataSource.map((item, index) => {
+      showPicSource.map((item, index) => {
         lineIndex = getMin(heightList);
         heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84;
         lineDomList[lineIndex].push(item);
@@ -164,7 +198,7 @@ export default function WaterFall(props) {
       let lineDomList = [[], []];
       let heightList = [0, 0];
       let lineIndex = 0;
-      showDataSource.map((item, index) => {
+      showPicSource.map((item, index) => {
         lineIndex = getMin(heightList);
         heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84;
         lineDomList[lineIndex].push(item);
@@ -181,7 +215,7 @@ export default function WaterFall(props) {
     return list.map((item, index) => (
       <div className="water-article-temp" key={item.picUrl + Math.random()}>
         <div className="water-box" onClick={() => handleClickImg(item, index)}>
-          <img className="water-article-img" src={item.picUrl}></img>
+          <img className="water-article-img" src={item.loadingUrl}></img>
         </div>
         <div className="article-title">
           <div className="article-title-content">{item.articleTitle}</div>

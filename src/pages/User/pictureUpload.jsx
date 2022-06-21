@@ -103,7 +103,7 @@ export default function Index(props) {
     articleData.articlePictures = list;
     return articleData;
   }
-  async function handleSubmit() {
+  function handleSubmit() {
     let data = filterInfo;
     if (data.articleTitle === '' || data.articlePictures.length === 0) {
       notification.error({

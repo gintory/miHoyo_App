@@ -9,7 +9,10 @@ import update from 'immutability-helper';
 import './pictureResume.css';
 
 export default function Index(props) {
+  let LoadingImg = new Image();
+  LoadingImg.src = '../assets/loading.gif';
   const [dataSource, setDataSource] = useState([]);
+  const [showPicSource, setShowPicSource] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(null);
   const [showPicTab, setShowPicTab] = useState(false);
@@ -71,13 +74,13 @@ export default function Index(props) {
       key: 'picUrl',
       width: '120px',
       align: 'center',
-      render: (item, record) => {
+      render: (item, record, index) => {
         return (
           <div className="resume-picture">
             <div className="article-temp-box" onClick={() => handleClickImg(item)}>
               <div
                 className="article-temp-img"
-                style={{ backgroundImage: `url(${item.picUrl})`, borderRadius: '5%' }}
+                style={{ backgroundImage: `url(${showPicSource[index]})`, borderRadius: '5%' }}
               ></div>
             </div>
           </div>
@@ -215,11 +218,19 @@ export default function Index(props) {
     }
   }, [showPicIndex]);
   const table = useMemo(() => {
-    dataSource.forEach((item) => {
+    let arr = new Array(dataSource.length).fill('../assets/loading.gif');
+    setShowPicSource([...arr]);
+    dataSource.forEach((item, index) => {
       let handle = handleState[Number(item.articleState)];
       if (handle) {
         handle(item);
       }
+      let img = new Image();
+      img.src = item.picUrl;
+      img.onload = function () {
+        arr[index] = item.picUrl;
+        setShowPicSource([...arr]);
+      };
     });
     setDataSource(dataSource);
     return dataSource;

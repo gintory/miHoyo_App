@@ -8,8 +8,11 @@ export default function PictureShow(props, ref) {
   const pageSize = 20;
   let imgBoxHeight = 0;
   let contentDom = document.getElementById('home-content-main');
+  let LoadingImg = new Image();
+  LoadingImg.src = '../assets/loading.gif';
   const [dataSource, setDataSource] = useState([]);
   const [showDataSource, setShowDataSource] = useState([]);
+  const [showPicSource, setShowPicSource] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [beforeCount, setBeforeCount] = useState(0);
@@ -25,6 +28,7 @@ export default function PictureShow(props, ref) {
     if (contentDom) {
       contentDom.addEventListener('scroll', onScroll);
     }
+
     getDataSource();
   }, []);
   useEffect(() => {
@@ -49,6 +53,23 @@ export default function PictureShow(props, ref) {
       setShowBottomText('false');
     }
   }, [showDataSource.length]);
+  useEffect(() => {
+    console.log('count');
+    let loadedLength = showPicSource.length;
+    let arr = [...showPicSource];
+    arr.length = showDataSource.length;
+    arr = arr.fill('../assets/loading.gif', loadedLength);
+    setShowPicSource([...arr]);
+    for (let i = loadedLength; i < showDataSource.length; i++) {
+      let item = showDataSource[i];
+      let img = new Image();
+      img.src = item.picUrl;
+      img.onload = function () {
+        arr[i] = item.picUrl;
+        setShowPicSource([...arr]);
+      };
+    }
+  }, [showDataSource]);
 
   function getDataSource() {
     request({
@@ -129,7 +150,7 @@ export default function PictureShow(props, ref) {
     return showDataSource.map((item, index) => (
       <div className="article-temp" key={item.picUrl + Math.random()} ref={articleContent}>
         <div className="article-temp-box" onClick={() => handleClickImg(item, index)}>
-          <div className="article-temp-img" style={{ backgroundImage: `url(${item.picUrl})` }}></div>
+          <div className="article-temp-img" style={{ backgroundImage: `url(${showPicSource[index]})` }}></div>
         </div>
         <div className="article-title">
           <div className="article-title-content">{item.articleTitle}</div>

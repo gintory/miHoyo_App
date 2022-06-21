@@ -8,7 +8,6 @@ import { reject } from 'lodash';
 
 export default function Index(props) {
   const navigate = useNavigate();
-  const [test, setTest] = useState([]);
   const [showPicTab, setShowPicTab] = useState(false);
   const [showPicUrl, setShowPicUrl] = useState('');
   const [showBackTab, setShowBackTab] = useState(false);
@@ -104,7 +103,7 @@ export default function Index(props) {
     articleData.articlePictures = list;
     return articleData;
   }
-  async function handleSubmit() {
+  function handleSubmit() {
     let data = filterInfo;
     if (data.articleTitle === '' || data.articlePictures.length === 0) {
       notification.error({
@@ -115,37 +114,35 @@ export default function Index(props) {
       return;
     }
     setShowLoading(true);
-    let res = await handleUpload(data);
+    let res = handleUpload(data);
     let list = res.articlePictures;
-    Promise.all(list)
-      .then((listRes) => {
-        setShowLoading(false);
-        return listRes;
-      })
-      .then((listRes) => {
-        request({
-          url: '/api/uploadArticle',
-          method: 'post',
-          data: {
-            userId: Number(localStorage.getItem('userId')),
-            articleTitle: res.articleTitle,
-            articlePictures: listRes
-          }
-        }).then((res) => {
-          setFilterInfo({
-            articleTitle: '',
-            articlePictures: []
-          });
-          notification.success({
-            description: '发布成功！',
-            message: '通知',
-            duration: 2,
-            onClose: () => {}
-          });
-          setShowBackTab(true);
-        });
-      });
+    Promise.all(list).then((listRes) => {
+      console.log(listRes);
+      // request({
+      //   url: '/api/uploadArticle',
+      //   method: 'post',
+      //   data: {
+      //     userId: Number(localStorage.getItem('userId')),
+      //     articleTitle: res.articleTitle,
+      //     articlePictures: listRes
+      //   }
+      // }).then((res) => {
+      //   setFilterInfo({
+      //     articleTitle: '',
+      //     articlePictures: []
+      //   });
+      //   notification.success({
+      //     description: '发布成功！',
+      //     message: '通知',
+      //     duration: 2,
+      //     onClose: () => {}
+      //   });
+      //   setShowLoading(false);
+      //   setShowBackTab(true);
+      // });
+    });
   }
+
   function renderSelectedPicture() {
     return filterInfo.articlePictures.map((item, index) => (
       <div className="upload-item" key={item.picUrl + Math.random()}>

@@ -153,6 +153,7 @@ router.post('/uploadPicture', imageUploader.single('file'), (ctx, next) => {
     url: fileName,
     message: '上传成功！'
   };
+  console.log('upload pic!');
   ctx.response.body = { data };
 });
 router.post('/uploadArticle', function (ctx, next) {
@@ -178,6 +179,7 @@ router.post('/uploadArticle', function (ctx, next) {
     code: 200,
     message: '发表成功！'
   };
+  console.log('upload article!');
   ctx.response.body = { data };
 });
 router.post('/deleteArticle', function (ctx, next) {

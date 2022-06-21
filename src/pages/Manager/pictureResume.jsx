@@ -27,6 +27,7 @@ export default function Index(props) {
   });
   const [filterInfo, setFilterInfo] = useState({
     index: 1,
+    currIndex: 1,
     pageSize: 20
   });
   const columns = [
@@ -80,7 +81,10 @@ export default function Index(props) {
             <div className="article-temp-box" onClick={() => handleClickImg(item)}>
               <div
                 className="article-temp-img"
-                style={{ backgroundImage: `url(${showPicSource[index]})`, borderRadius: '5%' }}
+                style={{
+                  backgroundImage: `url(${showPicSource[(filterInfo.currIndex - 1) * filterInfo.pageSize + index]})`,
+                  borderRadius: '5%'
+                }}
               ></div>
             </div>
           </div>

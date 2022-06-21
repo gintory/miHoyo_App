@@ -54,7 +54,6 @@ export default function PictureShow(props, ref) {
     }
   }, [showDataSource.length]);
   useEffect(() => {
-    console.log('count');
     let loadedLength = showPicSource.length;
     let arr = [...showPicSource];
     arr.length = showDataSource.length;

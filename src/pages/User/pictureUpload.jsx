@@ -83,7 +83,7 @@ export default function Index(props) {
       articlePictures: []
     };
     const list = [];
-    data.articlePictures.map(function (item) {
+    data.articlePictures.forEach(function (item) {
       let formData = new FormData();
       formData.append('file', item.picFile);
       list.push(

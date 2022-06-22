@@ -31,16 +31,6 @@ export default function WaterFall(props) {
     getDataSource();
   }, []);
   useEffect(() => {
-    if (dataSource.length > 0) {
-      setShowPicUrl(dataSource[showPicIndex].picUrl);
-    }
-  }, [showPicIndex]);
-  useEffect(() => {
-    if (showDataSource[showPicIndex]) {
-      setShowPicUrl(showDataSource[showPicIndex].picUrl);
-    }
-  }, [showPicIndex]);
-  useEffect(() => {
     sliceShowDataSource();
   }, [pageNum, dataSource.length]);
   useEffect(() => {
@@ -153,11 +143,13 @@ export default function WaterFall(props) {
   }
   function handleClickImg(item, index) {
     setShowPicIndex(dataSource.indexOf(item));
+    setShowPicUrl(dataSource[dataSource.indexOf(item)].picUrl);
     setShowPicTab(true);
   }
   function handleChangePic(num) {
     let newIndex = (showPicIndex + num + dataSource.length) % dataSource.length;
     setShowPicIndex(newIndex);
+    setShowPicUrl(dataSource[newIndex].picUrl);
   }
   function handleCancel() {
     setShowPicTab(false);

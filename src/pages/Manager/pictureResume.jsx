@@ -216,11 +216,6 @@ export default function Index(props) {
   useEffect(() => {
     getDataSource();
   }, []);
-  useEffect(() => {
-    if (dataSource[showPicIndex]) {
-      setShowPicUrl(dataSource[showPicIndex].picUrl);
-    }
-  }, [showPicIndex]);
   const table = useMemo(() => {
     let arr = new Array(dataSource.length).fill('../assets/loading.gif');
     setShowPicSource([...arr]);
@@ -331,8 +326,8 @@ export default function Index(props) {
   function handleClickImg(item) {
     setShowPicTab(true);
     setShowPicUrl(item.picUrl);
-    // setShowPicIndex(_.findIndex(dataSource, item));
     setShowPicIndex(dataSource.indexOf(item));
+    setShowPicUrl(dataSource[dataSource.indexOf(item)].picUrl);
     setShowDetail(item);
   }
   function handleCancel() {
@@ -341,6 +336,7 @@ export default function Index(props) {
   function handleChangePic(num) {
     const newIndex = (showPicIndex + num + dataSource.length) % dataSource.length;
     setShowPicIndex(newIndex);
+    setShowPicUrl(dataSource[newIndex].picUrl);
     setShowDetail(dataSource[newIndex]);
   }
   function handlePageChange(event, pageSize) {

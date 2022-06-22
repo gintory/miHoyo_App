@@ -32,11 +32,6 @@ export default function PictureShow(props, ref) {
     getDataSource();
   }, []);
   useEffect(() => {
-    if (showDataSource[showPicIndex]) {
-      setShowPicUrl(showDataSource[showPicIndex].picUrl);
-    }
-  }, [showPicIndex]);
-  useEffect(() => {
     sliceShowDataSource();
   }, [pageNum, dataSource.length]);
   useEffect(() => {
@@ -134,10 +129,12 @@ export default function PictureShow(props, ref) {
   function handleClickImg(item, index) {
     setShowPicTab(true);
     setShowPicIndex(index);
+    setShowPicUrl(showDataSource[index].picUrl);
   }
   function handleChangePic(num) {
     const newIndex = (showPicIndex + num + showDataSource.length) % showDataSource.length;
     setShowPicIndex(newIndex);
+    setShowPicUrl(showDataSource[newIndex].picUrl);
   }
   function handleCancel() {
     setShowPicTab(false);
@@ -173,9 +170,9 @@ export default function PictureShow(props, ref) {
         visible={showPicTab}
         onCancel={handleCancel}
         footer={[
-          <Button key="close-modal" onClick={handleCancel}>
-            关闭
-          </Button>,
+          // <Button key="close-modal" onClick={handleCancel}>
+          //   关闭
+          // </Button>,
           <Button key="click-modal-last" onClick={() => handleChangePic(-1)}>
             上一张
           </Button>,

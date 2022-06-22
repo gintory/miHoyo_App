@@ -142,10 +142,7 @@ export default function WaterFall(props) {
   }
   // 计算分页
   function getPageNum({ scrollTop, pageSize, itemHeight }) {
-    let lineNum = 4;
-    if (document.body.clientWidth <= 992) {
-      lineNum = 2;
-    }
+    let lineNum = document.body.clientWidth <= 992 ? 2 : 4;
     const pageHeight = (pageSize / lineNum) * itemHeight;
     return Math.max(Math.ceil((contentDom.clientHeight + scrollTop) / pageHeight), 1);
   }

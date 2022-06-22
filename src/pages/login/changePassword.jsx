@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { request } from '../../network/request'
 import { notification, Button, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import './changePassword.css'
+import { encrypt } from '../../components/encode';
+import './changePassword.css';
 
 export default function ChangePassword(props) {
   const navigate = useNavigate();
@@ -15,8 +16,8 @@ export default function ChangePassword(props) {
     if (check()) {
       let data = {
         userId: Number(localStorage.getItem('userId')),
-        oldPassword: filterInfo.oldPassword,
-        newPassword: filterInfo.newPassword
+        oldPassword: encrypt(filterInfo.oldPassword),
+        newPassword: encrypt(filterInfo.newPassword)
       };
       request({
         url: '/api/changePassword',
@@ -110,5 +111,5 @@ export default function ChangePassword(props) {
         </div>
       </div>
     </div>
-  )
+  );
 }

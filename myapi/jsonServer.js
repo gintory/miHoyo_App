@@ -7,6 +7,7 @@ const path = require('path');
 const multer = require('koa-multer');
 const fs = require('fs');
 const body = require('koa-body');
+const nodeRSA = require('node-rsa');
 
 const fileSqlUrl = 'http://localhost:3000/uploads/';
 const storage = multer.diskStorage({
@@ -32,6 +33,26 @@ const imageUploader = multer({
   storage,
   limits
 });
+const priKey = `-----BEGIN RSA PRIVATE KEY-----
+MIICWwIBAAKBgQCKoqw0AfDnmVubjWqCFEKxyWAmGrt7M95G9barVZt6vQu2msZE
+lEgAegVNHjKfquqYjEn5cNTD9g2jaTI36mu4ffGHSXoyulCteLWwIXU7fl4BcPBl
+GwnZldUJRClDc1yP88/ZhOUSny9pX903r/YPLfntXyUNDTl8ikEFR0A6MQIDAQAB
+AoGAGTRoEHCF5uVn1UkJoyqh0YbmFydnDIgqkkYb9txyjwcNuR48i71Vtdh5XELw
+Oz0st51R2arc09/JLPt0KNxSxwxWVH7FEh10hl0ent7EEddcsM0ws8wuyiMqo8XL
+5hiejRIjbO8+bd7DJZjWFmz90WXkBvfdG2LWw6LLRykX5v0CQQDK2X43tKdrAlZa
+ikSlzJd+RyMxLWFds0nNPtRaLAamxfgXqHisMc6n71jlyiv/YoGYJflKV2d9tq3t
++jxJjHzjAkEArvXmBj5GF/eQbWiW4CBYTC37qlGzQd6k4h3IGhozyR18aHyRHC2w
+AyyiPCjvDD/3TOAeBfoHyybLvaq3G2pM2wJAeVgJrQEgdV78kUTNM/FjXmLnpm9j
+I04xA9pl5VsYz4L1mhFpvng9CzCemTeLgkZHB+EPc209t3IkMYvTrJuhyQJAIImi
+ia6zImnr9izpQi1BvokesIIZMDrTtymKuS/+SXyuUlA4PGFSxoRad421RzXuK+HS
+M5JYOLOyWEeTXgna2QJAO2mkDs6h7BHgB2SujX+cTdAtzqp19GycwRkKQiE8QaY+
+DwPT74M/um/1tzjSmLzCg2uJIS4M88iGvnTAyLa8Og==
+-----END RSA PRIVATE KEY-----`;
+const privateKey = new nodeRSA(priKey);
+privateKey.setOptions({ encryptionScheme: 'pkcs1' });
+const decrypt = function (rsaPassWord) {
+  return privateKey.decrypt(rsaPassWord, 'utf8');
+};
 const app = new Koa();
 const router = new Router();
 app
@@ -50,6 +71,7 @@ router.prefix('/api');
 router.post('/userLogin', function (ctx, next) {
   const config = ctx.request.body;
   let data = {};
+  config.password = decrypt(config.password);
   let findUser = userData.RECORDS.find(
     (item) => item.userName === config.userName && item.password === config.password
   );
@@ -79,7 +101,7 @@ router.post('/register', function (ctx, next) {
     let newUser = {
       userId: userData.RECORDS[userData.RECORDS.length - 1].userId + 1,
       userName: config.userName,
-      password: config.password,
+      password: decrypt(config.password),
       userType: 2
     };
     userData.RECORDS.push(newUser);
@@ -96,13 +118,13 @@ router.post('/changePassword', function (ctx, next) {
   const config = ctx.request.body;
   let data = {};
   let findUser = userData.RECORDS.find(
-    (item) => item.userId === Number(config.userId) && item.password === config.oldPassword
+    (item) => item.userId === Number(config.userId) && item.password === decrypt(config.oldPassword)
   );
   if (!findUser) {
     data.code = 201;
     data.message = '密码错误！';
   } else {
-    findUser.password = config.newPassword;
+    findUser.password = decrypt(config.newPassword);
     fs.writeFile('data/user.json', JSON.stringify(userData), (err) => {});
     data.code = 200;
     data.message = '修改成功！';

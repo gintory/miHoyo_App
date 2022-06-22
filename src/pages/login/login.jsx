@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { request } from '../../network/request'
 import { notification, Button, Tabs, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import './login.css'
+import { encrypt } from '../../components/encode';
+import './login.css';
 
 export default function Login(props) {
   const navigate = useNavigate();
@@ -88,7 +89,10 @@ export default function Login(props) {
     request({
       url: '/api/userLogin',
       method: 'post',
-      data: loginInfo
+      data: {
+        userName: loginInfo.userName,
+        password: encrypt(loginInfo.password)
+      }
     }).then((val) => {
       if (val.data.data.code === 200) {
         setLoginInfo({
@@ -113,7 +117,10 @@ export default function Login(props) {
       request({
         url: '/api/register',
         method: 'post',
-        data: registerInfo
+        data: {
+          userName: registerInfo.userName,
+          password: encrypt(registerInfo.password)
+        }
       }).then((val) => {
         if (val.data.data.code === 200) {
           notification.success({

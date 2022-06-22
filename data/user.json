@@ -10,6 +10,7 @@
     { "userId": 13, "userName": "Xiao", "password": "123456", "userType": 2 },
     { "userId": 16, "userName": "XingQiu", "password": "123456", "userType": 2 },
     { "userId": 18, "userName": "Thoma", "password": "123456", "userType": 2 },
-    { "userId": 19, "userName": "user", "password": "123456", "userType": 2 }
+    { "userId": 19, "userName": "user", "password": "123456", "userType": 2 },
+    { "userId": 20, "userName": "Gintory", "password": "123456", "userType": 2 }
   ]
 }

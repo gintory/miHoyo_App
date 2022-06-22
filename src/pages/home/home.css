@@ -92,6 +92,9 @@ ul.ant-menu {
     background-repeat: no-repeat;
     background-color: #f1f0f5;
   }
+  .header-menu-mobile {
+    display: none !important;
+  }
 }
 @media screen and (max-width: 992px) {
   .header {
@@ -145,6 +148,4 @@ ul.ant-menu {
     background-color: #f1f0f5;
   }
 }
-.header-menu-mobile {
-  display: none;
-}
+

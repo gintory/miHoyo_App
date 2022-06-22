@@ -32,6 +32,7 @@ code {
 }
 
 .ant-menu-item, .ant-menu-item-active, .ant-menu-item-selected {
+  
   border: 0 !important;
   padding: 0 !important;
 }
@@ -52,6 +53,13 @@ code {
 .ant-menu-submenu > .ant-menu {
   width: 100px;
   min-width: 100px;
+}
+
+.ant-menu-sub {
+  background-color: #2D2F33 !important;
+}
+.ant-menu-inline .ant-menu-item{
+  width: 100%;
 }
 
 #root{

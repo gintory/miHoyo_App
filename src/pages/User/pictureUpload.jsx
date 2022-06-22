@@ -37,7 +37,7 @@ export default function Index(props) {
         img.src = re.result;
         img.onload = function () {
           list.push({ picFile: file, picUrl: re.result, width: img.width, height: img.height });
-          setFilterInfo({ ...filterInfo, ['articlePictures']: list });
+          setFilterInfo({ ...filterInfo });
         };
       };
     });
@@ -47,13 +47,14 @@ export default function Index(props) {
     setShowPicUrl(item.picUrl);
   }
   function handleDelete() {
-    let url = showPicUrl;
     let list = filterInfo.articlePictures;
-    let index = list.indexOf((item) => {
-      return item.picUrl === url;
+    let index = list.findIndex((item) => {
+      return item.picUrl === showPicUrl;
     });
-    list.splice(index, 1);
-    setFilterInfo({ ...filterInfo, ['articlePictures']: list });
+    if (index != -1) {
+      list.splice(index, 1);
+    }
+    setFilterInfo({ ...filterInfo });
     setShowPicTab(false);
   }
   function handleDeleteImg(item) {
@@ -62,8 +63,10 @@ export default function Index(props) {
     let index = list.findIndex((item) => {
       return item.picUrl === url;
     });
-    list.splice(index, 1);
-    setFilterInfo({ ...filterInfo, ['articlePictures']: list });
+    if (index !== -1) {
+      list.splice(index, 1);
+    }
+    setFilterInfo({ ...filterInfo });
   }
   function handleCancel() {
     setShowPicTab(false);
@@ -227,10 +230,10 @@ export default function Index(props) {
             okText="Yes"
             cancelText="No"
           >
-            <Button type="danger">Delete</Button>
+            <Button type="danger">删除</Button>
           </Popconfirm>,
           <Button key="cancel-delete" onClick={handleCancel}>
-            Close
+            关闭
           </Button>
         ]}
       >

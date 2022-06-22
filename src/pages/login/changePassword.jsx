@@ -24,7 +24,6 @@ export default function ChangePassword(props) {
         method: 'post',
         data: data
       }).then((val) => {
-        console.log(val);
         if (val.data.data.code === 200) {
           notification.success({
             description: '修改成功！',

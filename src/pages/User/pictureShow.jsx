@@ -174,13 +174,13 @@ export default function PictureShow(props, ref) {
         onCancel={handleCancel}
         footer={[
           <Button key="close-modal" onClick={handleCancel}>
-            Close
+            关闭
           </Button>,
           <Button key="click-modal-last" onClick={() => handleChangePic(-1)}>
-            Last
+            上一张
           </Button>,
           <Button key="click-modal-next" onClick={() => handleChangePic(1)}>
-            Next
+            下一张
           </Button>
         ]}
       >

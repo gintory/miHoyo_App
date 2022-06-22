@@ -237,13 +237,13 @@ export default function WaterFall(props) {
         onCancel={handleCancel}
         footer={[
           <Button key="show-back" onClick={handleCancel}>
-            Close
+            关闭
           </Button>,
           <Button key="show-last" onClick={() => handleChangePic(-1)}>
-            Last
+            上一张
           </Button>,
           <Button key="show-next" onClick={() => handleChangePic(1)}>
-            Next
+            下一张
           </Button>
         ]}
       >

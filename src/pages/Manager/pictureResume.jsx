@@ -401,7 +401,7 @@ export default function Index(props) {
         onCancel={handleCancel}
         footer={[
           <Button key="click-last-picture" onClick={() => handleChangePic(-1)}>
-            Last
+            上一张
           </Button>,
           <Button
             key="picture-success"
@@ -414,7 +414,7 @@ export default function Index(props) {
             审核未通过
           </Button>,
           <Button key="click-next-picture" onClick={() => handleChangePic(1)}>
-            Next
+            下一张
           </Button>
         ]}
       >

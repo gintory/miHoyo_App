@@ -28,7 +28,6 @@ export default function Index(props) {
   }
   function handlePictureChange(event) {
     let files = event.target.files;
-    let list = filterInfo.articlePictures;
     [...files].forEach((file, index) => {
       let re = new FileReader();
       re.readAsDataURL(file);
@@ -36,7 +35,7 @@ export default function Index(props) {
         let img = new Image();
         img.src = re.result;
         img.onload = function () {
-          list.push({ picFile: file, picUrl: re.result, width: img.width, height: img.height });
+          filterInfo.articlePictures.push({ picFile: file, picUrl: re.result, width: img.width, height: img.height });
           setFilterInfo({ ...filterInfo });
         };
       };

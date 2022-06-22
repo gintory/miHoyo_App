@@ -203,14 +203,14 @@ export default function Index(props) {
     }
   };
   const handleState = {
-    1: (item) => {
-      item.articleState = '审核中';
+    1: () => {
+      return '审核中';
     },
-    2: (item) => {
-      item.articleState = '审核通过';
+    2: () => {
+      return '审核通过';
     },
-    3: (item) => {
-      item.articleState = '审核未通过';
+    3: () => {
+      return '审核未通过';
     }
   };
   useEffect(() => {
@@ -227,7 +227,7 @@ export default function Index(props) {
     dataSource.forEach((item, index) => {
       let handle = handleState[Number(item.articleState)];
       if (handle) {
-        handle(item);
+        item.articleState = handle();
       }
       let img = new Image();
       img.src = item.picUrl;

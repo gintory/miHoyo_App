@@ -4,6 +4,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import './waterFall.css';
 import { useMemo } from 'react';
+import { divideLine, getPageNum, getMaxPageNum, getRenderData } from '../../components/common';
 
 export default function WaterFall(props) {
   const pageSize = 20;
@@ -89,7 +90,7 @@ export default function WaterFall(props) {
     setTotalCount(totalCount);
   }
   const onScroll = () => {
-    let maxPageNum = getMaxPageNum();
+    let maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);
     let num = 4;
     if (document.body.clientWidth <= 992) {
       num = 2;
@@ -99,7 +100,7 @@ export default function WaterFall(props) {
       let LineHeight = lineDom[0].offsetHeight;
       imgBoxHeight = LineHeight / (pageSize / num + 1);
     }
-    const scrollPageNum = getPageNum({
+    const scrollPageNum = getPageNum(contentDom, {
       scrollTop: contentDom.scrollTop,
       pageSize: pageSize,
       itemHeight: imgBoxHeight
@@ -110,25 +111,7 @@ export default function WaterFall(props) {
     }
     setPageNum(currPageNum);
   };
-  // 获取最大页数
-  function getMaxPageNum() {
-    return getPageNum({
-      scrollTop: contentDom.scrollHeight - contentDom.clientHeight,
-      pageSize: pageSize,
-      itemHeight: imgBoxHeight
-    });
-  }
-  // 计算分页
-  function getPageNum({ scrollTop, pageSize, itemHeight }) {
-    let lineNum = document.body.clientWidth <= 992 ? 2 : 4;
-    const pageHeight = (pageSize / lineNum) * itemHeight;
-    return Math.max(Math.ceil((contentDom.clientHeight + scrollTop) / pageHeight), 1);
-  }
-  function getMin(arr) {
-    let newArr = [...arr];
-    newArr.sort((a, b) => a - b);
-    return arr.indexOf(newArr[0]);
-  }
+
   function handleClickImg(item, index) {
     setShowPicIndex(dataSource.indexOf(item));
     setShowPicUrl(dataSource[dataSource.indexOf(item)].picUrl);
@@ -142,51 +125,19 @@ export default function WaterFall(props) {
   function handleCancel() {
     setShowPicTab(false);
   }
-  // 数据切片
-  function getRenderData({ pageNum, pageSize, dataSource }) {
-    const startIndex = (pageNum - 1) * pageSize;
-    const endIndex = Math.min((pageNum + 0) * pageSize, dataSource.length);
-    return {
-      showDataSource: dataSource.slice(0, endIndex),
-      beforeCount: 0,
-      totalCount: dataSource.length
-    };
-  }
-  //瀑布流根据图片高度布局
   function renderPicture() {
-    if (document.body.clientWidth >= 992) {
-      let heightList = [0, 0, 0, 0];
-      let lineDomList = [[], [], [], []];
-      let lineIndex = 0;
-      showPicSource.map((item, index) => {
-        lineIndex = getMin(heightList);
-        heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84;
-        lineDomList[lineIndex].push(item);
-      });
-      return (
-        <div className="water-list">
-          <div className="water-line">{generateImgDom(lineDomList[0])}</div>
-          <div className="water-line">{generateImgDom(lineDomList[1])}</div>
-          <div className="water-line">{generateImgDom(lineDomList[2])}</div>
-          <div className="water-line">{generateImgDom(lineDomList[3])}</div>
-        </div>
-      );
-    } else {
-      let lineDomList = [[], []];
-      let heightList = [0, 0];
-      let lineIndex = 0;
-      showPicSource.map((item, index) => {
-        lineIndex = getMin(heightList);
-        heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84;
-        lineDomList[lineIndex].push(item);
-      });
-      return (
-        <div className="water-list">
-          <div className="water-line">{generateImgDom(lineDomList[0])}</div>
-          <div className="water-line">{generateImgDom(lineDomList[1])}</div>
-        </div>
-      );
-    }
+    const lineDomList = divideLine(dataSource);
+    return (
+      <div className="water-list">
+        {lineDomList.map((item, index) => {
+          return (
+            <div className="water-line" key={index}>
+              {generateImgDom(item)}
+            </div>
+          );
+        })}
+      </div>
+    );
   }
   function generateImgDom(list) {
     return list.map((item, index) => (
@@ -216,9 +167,6 @@ export default function WaterFall(props) {
         visible={showPicTab}
         onCancel={handleCancel}
         footer={[
-          // <Button key="show-back" onClick={handleCancel}>
-          //   关闭
-          // </Button>,
           <Button key="show-last" onClick={() => handleChangePic(-1)}>
             上一张
           </Button>,

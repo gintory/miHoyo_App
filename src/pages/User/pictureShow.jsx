@@ -3,6 +3,7 @@ import { Modal, Button } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import './pictureShow.css';
+import { getPageNum, getMaxPageNum, getRenderData } from '../../components/common';
 
 export default function PictureShow(props, ref) {
   const pageSize = 20;
@@ -85,11 +86,11 @@ export default function PictureShow(props, ref) {
     setTotalCount(totalCount);
   }
   const onScroll = () => {
-    let maxPageNum = getMaxPageNum();
+    let maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);
     if (imgBoxHeight === 0 && articleContent.current) {
       imgBoxHeight = articleContent.current.offsetHeight;
     }
-    const scrollPageNum = getPageNum({
+    const scrollPageNum = getPageNum(contentDom, {
       scrollTop: contentDom.scrollTop,
       pageSize: pageSize,
       itemHeight: imgBoxHeight
@@ -100,29 +101,6 @@ export default function PictureShow(props, ref) {
     }
     setPageNum(currPageNum);
   };
-  function getMaxPageNum() {
-    return getPageNum({
-      scrollTop: contentDom.scrollHeight - contentDom.clientHeight,
-      pageSize: pageSize,
-      itemHeight: imgBoxHeight
-    });
-  }
-  // 计算分页
-  function getPageNum({ scrollTop, pageSize, itemHeight }) {
-    let lineNum = document.body.clientWidth <= 992 ? 2 : 4;
-    const pageHeight = (pageSize / lineNum) * itemHeight;
-    return Math.max(Math.ceil((contentDom.clientHeight + scrollTop) / pageHeight), 1);
-  }
-  // 数据切片
-  function getRenderData({ pageNum, pageSize, dataSource }) {
-    const startIndex = (pageNum - 1) * pageSize;
-    const endIndex = Math.min((pageNum + 0) * pageSize, dataSource.length);
-    return {
-      showDataSource: dataSource.slice(0, endIndex),
-      beforeCount: 0,
-      totalCount: dataSource.length
-    };
-  }
   function handleClickImg(item, index) {
     setShowPicTab(true);
     setShowPicIndex(index);
@@ -167,9 +145,6 @@ export default function PictureShow(props, ref) {
         visible={showPicTab}
         onCancel={handleCancel}
         footer={[
-          // <Button key="close-modal" onClick={handleCancel}>
-          //   关闭
-          // </Button>,
           <Button key="click-modal-last" onClick={() => handleChangePic(-1)}>
             上一张
           </Button>,

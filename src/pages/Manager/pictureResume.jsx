@@ -218,7 +218,10 @@ export default function Index(props) {
     getDataSource();
   }, []);
   const table = useMemo(() => {
-    let arr = new Array(dataSource.length).fill('../assets/loading.gif');
+    let arr = showPicSource;
+    let len = arr.length;
+    arr.length = dataSource.length;
+    arr = arr.fill('../assets/loading.gif', len);
     setShowPicSource([...arr]);
     dataSource.forEach((item, index) => {
       let handle = handleState[Number(item.articleState)];

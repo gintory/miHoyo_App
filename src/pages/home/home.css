@@ -52,19 +52,38 @@ ul.ant-menu {
 .text-none{
   color: #a19f9f;
 }
+.header {
+  height: 70px;
+  background-color: #2d2f33;
+  display: flex;
+  align-items: center;
+}
+.header .header-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+.home-content {
+  display: flex;
+  flex-direction: row;
+}
+.home-content-main {
+  flex-grow: 1;
+  height: calc(100vh - 70px);
+  overflow: auto;
+  padding: 0 200px 0 200px;
+  background-image: url('https://bbs.mihoyo.com/_nuxt/img/background.cd0a312.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-color: #f1f0f5;
+}
 @media screen and (min-width: 992px) {
   .header {
     padding: 0 250px 0 200px;
-    height: 70px;
-    background-color: #2d2f33;
-    display: flex;
-    align-items: center;
   }
   .header .header-text {
     min-width: 140px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
     text-align: center;
     padding: 0 30px 0 30px;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
@@ -78,31 +97,24 @@ ul.ant-menu {
   .header .header-menu ul {
     width: 100% !important;
   }
-  .home-content {
-    display: flex;
-    flex-direction: row;
-  }
   .home-content-main {
-    flex-grow: 1;
-    height: calc(100vh - 70px);
-    overflow: auto;
     padding: 0 200px 0 200px;
-    background-image: url('https://bbs.mihoyo.com/_nuxt/img/background.cd0a312.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-color: #f1f0f5;
   }
   .header-menu-mobile {
     display: none !important;
   }
 }
-@media screen and (max-width: 992px) {
+@media screen and (min-width: 992px) and (max-width:1370px){
+  .header {
+    padding: 0 100px 0 100px;
+  }
+  .home-content-main {
+    padding: 0 5px 0 5px;
+  }
+}
+@media screen and (max-width: 991px) {
   .header {
     padding: 0 20px 0 20px;
-    height: 70px;
-    background-color: #2d2f33;
-    display: flex;
-    align-items: center;
   }
   .header-menu-mobile-btn {
     color: #fff;
@@ -111,9 +123,6 @@ ul.ant-menu {
     right: 2.5rem;
   }
   .header .header-text {
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
     padding: 0 1rem 0 1rem;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
   }
@@ -134,19 +143,8 @@ ul.ant-menu {
     background-color: #2d2f33 !important;
     width: 100% !important;
   }
-  .home-content {
-    display: flex;
-    flex-direction: row;
-  }
   .home-content-main {
-    flex-grow: 1;
-    height: calc(100vh - 70px);
-    overflow: auto;
     padding: 0 5px 0 5px;
-    background-image: url('https://bbs.mihoyo.com/_nuxt/img/background.cd0a312.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-color: #f1f0f5;
   }
 }
 

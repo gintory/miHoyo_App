@@ -15,7 +15,7 @@
     display: none;
   }
 }
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 991px) {
   .picture-table{
     display: none;
   }

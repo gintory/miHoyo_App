@@ -106,7 +106,7 @@ export default function Index(props) {
     articleData.articlePictures = list;
     return articleData;
   }
-  async function handleSubmit() {
+  function handleSubmit() {
     let data = filterInfo;
     if (data.articleTitle === '' || data.articlePictures.length === 0) {
       notification.error({
@@ -117,7 +117,7 @@ export default function Index(props) {
       return;
     }
     setShowLoading(true);
-    let res = await handleUpload(data);
+    let res = handleUpload(data);
     let list = res.articlePictures;
     Promise.all(list)
       .then((listRes) => {

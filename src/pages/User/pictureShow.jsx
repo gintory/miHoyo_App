@@ -5,7 +5,7 @@ import { request } from '../../network/request';
 import './pictureShow.css';
 import { getPageNum, getMaxPageNum, getRenderData } from '../../components/common';
 
-export default function PictureShow(props, ref) {
+export default function PictureShow(props) {
   const pageSize = 20;
   let imgBoxHeight = 0;
   let contentDom = document.getElementById('home-content-main');

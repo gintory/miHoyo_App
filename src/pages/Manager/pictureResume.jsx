@@ -51,7 +51,8 @@ export default function Index(props) {
       dataIndex: 'userName',
       key: 'userName',
       width: '80px',
-      align: 'center'
+      align: 'center',
+      ellipsis: true
     },
     {
       title: '目前状态',
@@ -371,6 +372,7 @@ export default function Index(props) {
                 onChange: handlePageChange,
                 showSizeChanger: true
               }}
+              sticky="top"
             />
           </DndProvider>
           <Table

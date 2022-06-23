@@ -1,7 +1,17 @@
 //瀑布流数据分页
 export function divideLine(showPicSource, clientWidth) {
-  //计算每列列宽
-  let lineWidth = clientWidth >= 992 ? (clientWidth - 440) / 4 - 25 : (clientWidth - 30) / 2 - 20;
+  //计算每列列宽，需要减去显示区域的padding和每列的padding值
+  let lineWidth;
+  if (clientWidth >= 992) {
+    if (clientWidth <= 1370) {
+      lineWidth = (clientWidth - 50) / 4 - 24;
+    } else {
+      lineWidth = (clientWidth - 440) / 4 - 24;
+    }
+  } else {
+    lineWidth = (clientWidth - 30) / 2 - 18;
+  }
+  console.log(lineWidth);
   let lineDomList = [];
   let lineIndex = 0;
   let heightList = [];
@@ -13,7 +23,7 @@ export function divideLine(showPicSource, clientWidth) {
     heightList = [0, 0];
   }
   showPicSource.forEach((item, index) => {
-    //列高包括图片放入瀑布流后的相对高度和图片之间的间距84px
+    //列高包括图片放入瀑布流后的相对高度和每两张图片之间的间距84px
     lineIndex = getMin(heightList);
     heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * lineWidth + 85;
     lineDomList[lineIndex].push(item);

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { request } from '../../network/request'
 import { notification, Button, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { encrypt } from '../../components/encode';
+import { encrypt } from '../../components/encrypt';
 import './changePassword.css';
 
 export default function ChangePassword(props) {

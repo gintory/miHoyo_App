@@ -105,7 +105,6 @@ export default function Home(props) {
   function renderMenu() {
     //获得菜单列表
     const list = getMenuList();
-    console.log(list);
     if (list) {
       return list.map((item) => (
         <Menu.Item className="submenu" key={item.key}>

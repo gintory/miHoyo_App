@@ -29,11 +29,6 @@ export default function WaterFall(props) {
       contentDom.addEventListener('scroll', onScroll);
     }
     getDataSource();
-  }, []);
-  useEffect(() => {
-    sliceShowDataSource();
-  }, [pageNum, dataSource.length]);
-  useEffect(() => {
     return () => {
       if (contentDom !== null) {
         contentDom.removeEventListener('scroll', onScroll);
@@ -41,22 +36,15 @@ export default function WaterFall(props) {
     };
   }, []);
   useEffect(() => {
+    sliceShowDataSource();
+  }, [pageNum, dataSource.length]);
+  useEffect(() => {
     if (showDataSource.length === dataSource.length) {
       setShowBottomText('true');
     } else {
       setShowBottomText('false');
     }
   }, [showDataSource.length]);
-  // useMemo(() => {
-  //   showDataSource.forEach((item, index) => {
-  //     let img = new Image();
-  //     img.src = item.picUrl;
-  //     img.onload = function () {
-  //       item.loadingUrl = item.picUrl;
-  //       setShowDataSource([...showDataSource]);
-  //     };
-  //   });
-  // }, [showDataSource]);
   useMemo(() => {
     let loadedLength = showPicSource.length;
     let arr = [...showDataSource];
@@ -228,9 +216,9 @@ export default function WaterFall(props) {
         visible={showPicTab}
         onCancel={handleCancel}
         footer={[
-          <Button key="show-back" onClick={handleCancel}>
-            关闭
-          </Button>,
+          // <Button key="show-back" onClick={handleCancel}>
+          //   关闭
+          // </Button>,
           <Button key="show-last" onClick={() => handleChangePic(-1)}>
             上一张
           </Button>,

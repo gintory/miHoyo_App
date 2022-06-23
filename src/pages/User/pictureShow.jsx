@@ -28,19 +28,16 @@ export default function PictureShow(props, ref) {
     if (contentDom) {
       contentDom.addEventListener('scroll', onScroll);
     }
-
     getDataSource();
-  }, []);
-  useEffect(() => {
-    sliceShowDataSource();
-  }, [pageNum, dataSource.length]);
-  useEffect(() => {
     return () => {
       if (contentDom !== null) {
         contentDom.removeEventListener('scroll', onScroll);
       }
     };
   }, []);
+  useEffect(() => {
+    sliceShowDataSource();
+  }, [pageNum, dataSource.length]);
   useEffect(() => {
     if (showDataSource.length === dataSource.length) {
       setShowBottomText('true');

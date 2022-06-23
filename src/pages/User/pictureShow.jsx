@@ -15,7 +15,6 @@ export default function PictureShow(props, ref) {
   const [showDataSource, setShowDataSource] = useState([]);
   const [showPicSource, setShowPicSource] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [beforeCount, setBeforeCount] = useState(0);
   const [pageNum, setPageNum] = useState(1);
   const [showPicTab, setShowPicTab] = useState(false);
@@ -134,7 +133,7 @@ export default function PictureShow(props, ref) {
   }
 
   return (
-    <div className="picture-show" onScroll={onScroll}>
+    <div className="picture-show">
       <LoadingOutlined ref={loading} className="loading" />
       <div className="pic-list">{renderPicture()}</div>
       <p className="bottom-text" visible={showBottomText}>

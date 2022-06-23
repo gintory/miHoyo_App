@@ -23,6 +23,7 @@ export default function WaterFall(props) {
   const [showPicIndex, setShowPicIndex] = useState(0);
   const [showPicUrl, setShowPicUrl] = useState('');
   const loading = useRef();
+  const waterLineDom = useRef();
 
   useEffect(() => {
     contentDom = document.getElementById('home-content-main');
@@ -91,14 +92,10 @@ export default function WaterFall(props) {
   }
   const onScroll = () => {
     let maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);
-    let num = 4;
-    if (document.body.clientWidth <= 992) {
-      num = 2;
-    }
+    let lineNum = document.body.clientWidth <= 992 ? 2 : 4;
     if (imgBoxHeight === 0) {
-      let lineDom = document.getElementsByClassName('water-line');
-      let LineHeight = lineDom[0].offsetHeight;
-      imgBoxHeight = LineHeight / (pageSize / num + 1);
+      let LineHeight = waterLineDom.current.offsetHeight;
+      imgBoxHeight = LineHeight / (pageSize / lineNum + 1);
     }
     const scrollPageNum = getPageNum(contentDom, {
       scrollTop: contentDom.scrollTop,
@@ -126,12 +123,12 @@ export default function WaterFall(props) {
     setShowPicTab(false);
   }
   function renderPicture() {
-    const lineDomList = divideLine(dataSource);
+    const lineDomList = divideLine(dataSource, document.body.clientWidth);
     return (
       <div className="water-list">
         {lineDomList.map((item, index) => {
           return (
-            <div className="water-line" key={index}>
+            <div className="water-line" ref={waterLineDom} key={index}>
               {generateImgDom(item)}
             </div>
           );

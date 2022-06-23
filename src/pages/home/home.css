@@ -122,6 +122,7 @@ ul.ant-menu {
     display: none;
   }
   .header-menu-mobile {
+    display: none;
     position: absolute;
     background-color: #535558 !important;
     height: 0;

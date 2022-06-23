@@ -1,5 +1,7 @@
 //瀑布流数据分页
-export function divideLine(showPicSource) {
+export function divideLine(showPicSource, clientWidth) {
+  //计算每列列宽
+  let lineWidth = clientWidth >= 992 ? (clientWidth - 440) / 4 - 25 : (clientWidth - 30) / 2 - 20;
   let lineDomList = [];
   let lineIndex = 0;
   let heightList = [];
@@ -10,14 +12,15 @@ export function divideLine(showPicSource) {
     lineDomList = [[], []];
     heightList = [0, 0];
   }
-  showPicSource.map((item, index) => {
+  showPicSource.forEach((item, index) => {
+    //列高包括图片放入瀑布流后的相对高度和图片之间的间距84px
     lineIndex = getMin(heightList);
-    heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * 253 + 84;
+    heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * lineWidth + 85;
     lineDomList[lineIndex].push(item);
   });
   return lineDomList;
 }
-export function getMin(arr) {
+function getMin(arr) {
   let newArr = [...arr];
   newArr.sort((a, b) => a - b);
   return arr.indexOf(newArr[0]);

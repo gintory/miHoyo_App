@@ -86,6 +86,14 @@ export default function Login(props) {
     </div>
   );
   function handleLogin() {
+    if (!loginInfo.userName.length || !loginInfo.password.length) {
+      notification.error({
+        description: '账号或密码不能为空！',
+        message: '警告',
+        duration: 2
+      });
+      return;
+    }
     request({
       url: '/api/userLogin',
       method: 'post',
@@ -145,21 +153,28 @@ export default function Login(props) {
     }
   }
   function check() {
-    if (registerInfo.password !== registerInfo.confirmPassword) {
-      notification.error({
-        description: '两次密码不一致，请重新输入！',
-        message: '警告',
-        duration: 2
-      });
-      setRegisterInfo({
-        userName: '',
-        password: '',
-        confirmPassword: ''
-      });
-      return false;
-    } else {
-      return true;
-    }
+   if (!registerInfo.userName.length || !registerInfo.password.length || !registerInfo.confirmPassword.length) {
+     notification.error({
+       description: '账号和密码不能为空，请重新输入！',
+       message: '警告',
+       duration: 2
+     });
+     return false;
+   } else if (registerInfo.password !== registerInfo.confirmPassword) {
+     notification.error({
+       description: '两次密码不一致，请重新输入！',
+       message: '警告',
+       duration: 2
+     });
+     setRegisterInfo({
+       userName: '',
+       password: '',
+       confirmPassword: ''
+     });
+     return false;
+   } else {
+     return true;
+   }
   }
   function handleInputChange(event) {
     const value = event.target.value;

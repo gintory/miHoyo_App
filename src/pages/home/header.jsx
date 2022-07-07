@@ -60,15 +60,10 @@ export default function Header(props) {
   function getMenuList() {
     let roleSid = JSON.parse(localStorage.userInfo).roleSid;
     const MenuMap = {
-      1: () => {
-        return ManagerMenuList;
-      },
-      2: () => {
-        return UserMenuList;
-      }
+      1: ManagerMenuList,
+      2: UserMenuList
     };
-    const handle = MenuMap[roleSid];
-    handle();
+    return MenuMap[roleSid];
   }
 
   //生成菜单元素

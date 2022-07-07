@@ -67,19 +67,10 @@ export default function Home(props) {
     //userType的值标识了用户的类型，1为管理员，2为用户
     let userType = Number(localStorage.getItem('userType'));
     const MenuMap = {
-      1: () => {
-        return ManagerMenuList;
-      },
-      2: () => {
-        return UserMenuList;
-      }
+      1: ManagerMenuList,
+      2: UserMenuList
     };
-    const handle = MenuMap[userType];
-    if (handle) {
-      return handle();
-    } else {
-      return handle;
-    }
+    return MenuMap[userType];
   }
   function handleOpenChangePasswordDialog() {
     navigate('/home/change-password');

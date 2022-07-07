@@ -7,6 +7,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import './pictureResume.css';
+import { isNumber } from 'lodash';
 
 export default function Index(props) {
   let LoadingImg = new Image();
@@ -204,15 +205,9 @@ export default function Index(props) {
     }
   };
   const handleState = {
-    1: () => {
-      return '审核中';
-    },
-    2: () => {
-      return '审核通过';
-    },
-    3: () => {
-      return '审核未通过';
-    }
+    1: '审核中',
+    2: '审核通过',
+    3: '审核未通过'
   };
   useEffect(() => {
     getDataSource();
@@ -224,9 +219,8 @@ export default function Index(props) {
     arr = arr.fill('../assets/loading.gif', len);
     setShowPicSource([...arr]);
     dataSource.forEach((item, index) => {
-      let handle = handleState[Number(item.articleState)];
-      if (handle) {
-        item.articleState = handle();
+      if (isNumber(item.articleState)) {
+        item.articleState = handleState[Number(item.articleState)];
       }
       let img = new Image();
       img.src = item.picUrl;

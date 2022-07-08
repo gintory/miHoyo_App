@@ -3,7 +3,7 @@ import { Modal, Button } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import './pictureShow.css';
-import { getPageNum, getMaxPageNum, getRenderData } from '../../components/common';
+import { getPageNum, getMaxPageNum, getRenderData } from '../../utils/common.js';
 
 export default function PictureShow(props) {
   const pageSize = 20;

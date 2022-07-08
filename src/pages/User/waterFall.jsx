@@ -4,7 +4,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import './waterFall.css';
 import { useMemo } from 'react';
-import { divideLine, getPageNum, getMaxPageNum, getRenderData } from '../../components/common';
+import { divideLine, getPageNum, getMaxPageNum, getRenderData } from '../../utils/common.js';
 
 export default function WaterFall(props) {
   const pageSize = 20;

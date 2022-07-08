@@ -11,7 +11,6 @@ export function divideLine(showPicSource, clientWidth) {
   } else {
     lineWidth = (clientWidth - 30) / 2 - 18;
   }
-  console.log(lineWidth);
   let lineDomList = [];
   let lineIndex = 0;
   let heightList = [];

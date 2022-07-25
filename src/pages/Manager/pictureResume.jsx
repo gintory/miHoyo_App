@@ -233,17 +233,46 @@ export default function Index(props) {
   }, [dataSource]);
   const moveRow = useCallback(
     (dragIndex, hoverIndex) => {
-      const dragRow = table[(filterInfo.currIndex - 1) * filterInfo.pageSize + dragIndex];
-      setDataSource(
-        update(table, {
-          $splice: [
-            [(filterInfo.currIndex - 1) * filterInfo.pageSize + dragIndex, 1],
-            [(filterInfo.currIndex - 1) * filterInfo.pageSize + hoverIndex, 0, dragRow]
-          ]
-        })
-      );
+      const dragFullIndex = (filterInfo.currIndex - 1) * filterInfo.pageSize + dragIndex;
+      const hoverFullIndex = (filterInfo.currIndex - 1) * filterInfo.pageSize + hoverIndex;
+      const dragRow = table[dragFullIndex];
+      const betweenIndex = dragFullIndex > hoverFullIndex ? hoverFullIndex - 1 : hoverFullIndex + 1;
+      let betweenPosition;
+      if (betweenIndex < 0) {
+        betweenPosition = table[0].position - 1;
+      } else if (betweenIndex === table.length) {
+        betweenPosition = table[table.length - 1].position + 1;
+      } else {
+        betweenPosition = table[betweenIndex].articleId;
+      }
+      request({
+        url: '/api/updateArticleSort',
+        method: 'post',
+        data: {
+          dragIndex: table[dragFullIndex].articleId,
+          hoverIndex: table[hoverFullIndex].articleId,
+          hoverIndexBefore: betweenPosition
+        }
+      }).then((res) => {
+        if (res.data.data.code === 200) {
+          notification.success({
+            description: '修改排序成功！',
+            message: '通知',
+            duration: 2,
+            onClose: () => {}
+          });
+        }
+        setDataSource(
+          update(table, {
+            $splice: [
+              [dragFullIndex, 1],
+              [hoverFullIndex, 0, dragRow]
+            ]
+          })
+        );
+      });
     },
-    [table]
+    [table, filterInfo]
   );
 
   function getDataSource() {

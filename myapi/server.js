@@ -150,7 +150,7 @@ router.post('/changePassword', async function (ctx, next) {
 router.get('/getPicture', async function (ctx, next) {
   let data = {};
   let sql =
-    'select A.*, U.userName from article as A left join user as U on A.userId = U.userId where A.articleState = 2 order by A.articleType desc';
+    'select A.*, U.userName from article as A left join user as U on A.userId = U.userId where A.articleState = 2 order by A.articleType desc,A.position asc';
   let res = await getData(sql);
   if (res.length > 0) {
     data.code = 200;
@@ -164,7 +164,7 @@ router.get('/getPicture', async function (ctx, next) {
 router.get('/getAllPicture', async function (ctx, next) {
   let data = {};
   let sql =
-    'select A.*, U.userName from article as A left join user as U on A.userId = U.userId order by A.articleType desc';
+    'select A.*, U.userName from article as A left join user as U on A.userId = U.userId order by A.articleType desc,A.position asc';
   let res = await getData(sql);
   if (res.length > 0) {
     data.code = 200;
@@ -187,13 +187,25 @@ router.post('/uploadPicture', imageUploader.single('file'), async (ctx, next) =>
 });
 router.post('/uploadArticle', async function (ctx, next) {
   const config = ctx.request.body;
+  const finalSql = `select * from article order by articleId DESC limit 1`;
+  const finalRow = await getData(finalSql);
   let title = "'" + config.articleTitle + "'";
   let userId = config.userId;
   let fileLists = config.articlePictures;
   let multi = false;
-  let sql = 'insert into article(articleTitle, userId, picUrl, articleState, articleType, picWidth, picHeight) values ';
-  fileLists.forEach(async function (file) {
-    let item = [title, userId, "'" + file.picFinalUrl + "'", 1, 1, file.width, file.height].join(',');
+  let sql =
+    'insert into article(articleTitle, userId, picUrl, articleState, articleType, picWidth, picHeight, position) values ';
+  fileLists.forEach(async function (file, index) {
+    let item = [
+      title,
+      userId,
+      "'" + file.picFinalUrl + "'",
+      1,
+      1,
+      file.width,
+      file.height,
+      finalRow[0].position + index + 1
+    ].join(',');
     if (multi) {
       sql += ',';
     } else {
@@ -201,6 +213,7 @@ router.post('/uploadArticle', async function (ctx, next) {
     }
     sql = sql + '(' + item + ')';
   });
+  console.log(sql);
   await getData(sql);
   let data = {
     code: 200,
@@ -229,6 +242,21 @@ router.post('/updateArticle', async function (ctx, next) {
     ' where articleId = ' +
     config.articleId;
   let res = await getData(sql);
+  let data = {
+    code: 200,
+    message: '修改成功！'
+  };
+  ctx.response.body = { data };
+});
+router.post('/updateArticleSort', async function (ctx, next) {
+  const config = ctx.request.body;
+  console.log(config);
+  const insertRowEndIndex = `select * from article where articleId = ${config.hoverIndex}`;
+  const insertRowEnd = await getData(insertRowEndIndex);
+  const newPosition = (insertRowEnd[0].position + config.hoverIndexBefore) / 2;
+  console.log(newPosition);
+  const updateSql = `update article set position = ${newPosition} where articleId = ${config.dragIndex}`;
+  await getData(updateSql);
   let data = {
     code: 200,
     message: '修改成功！'

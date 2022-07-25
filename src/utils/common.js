@@ -6,6 +6,7 @@ const LINE_PADDING_MOBILE = 18;
 const LINE_NUM = 4;
 const LINE_NUM_MOBILE = 2;
 const DISTANCE_BETWEEN_PICTURES = 85;
+
 //瀑布流数据分页
 export function divideLine(showPicSource, clientWidth) {
   //计算每列列宽，需要减去显示区域的padding和每列的padding值
@@ -38,17 +39,20 @@ export function divideLine(showPicSource, clientWidth) {
   });
   return lineDomList;
 }
+
 function getMin(arr) {
   let newArr = [...arr];
   newArr.sort((a, b) => a - b);
   return arr.indexOf(newArr[0]);
 }
+
 //当前页数
 export function getPageNum(contentDom, { scrollTop, pageSize, itemHeight }) {
   let lineNum = document.body.clientWidth <= 992 ? LINE_NUM_MOBILE : LINE_NUM;
   const pageHeight = (pageSize / lineNum) * itemHeight;
   return Math.max(Math.ceil((contentDom.clientHeight + scrollTop) / pageHeight), 1);
 }
+
 //最大页数
 export function getMaxPageNum(contentDom, pageSize, imgBoxHeight) {
   return getPageNum(contentDom, {
@@ -57,6 +61,7 @@ export function getMaxPageNum(contentDom, pageSize, imgBoxHeight) {
     itemHeight: imgBoxHeight
   });
 }
+
 //数据切片
 export function getRenderData({ pageNum, pageSize, dataSource }) {
   const startIndex = (pageNum - 1) * pageSize;

@@ -38,4 +38,5 @@ database: 'mihoyo'
 `articleState`：文章状态，1代表未审核，2代表审核通过，3代表审核未通过
 `picWidth`：图片宽度
 `picHeight`：图片高度
+`position`: 图片排序
 

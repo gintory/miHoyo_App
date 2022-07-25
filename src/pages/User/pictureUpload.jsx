@@ -83,7 +83,9 @@ export default function Index(props) {
       articlePictures: []
     };
     const list = [];
+    console.log('begin pics');
     data.articlePictures.forEach(function (item) {
+      console.log('single pic');
       let formData = new FormData();
       formData.append('file', item.picFile);
       list.push(
@@ -106,7 +108,7 @@ export default function Index(props) {
     articleData.articlePictures = list;
     return articleData;
   }
-  function handleSubmit() {
+  async function handleSubmit() {
     let data = filterInfo;
     if (data.articleTitle === '' || data.articlePictures.length === 0) {
       notification.error({
@@ -117,14 +119,18 @@ export default function Index(props) {
       return;
     }
     setShowLoading(true);
-    let res = handleUpload(data);
+    console.log('begin await');
+    let res = await handleUpload(data);
+    console.log('end await');
     let list = res.articlePictures;
+    console.log('begin pro all');
     Promise.all(list)
       .then((listRes) => {
         setShowLoading(false);
         return listRes;
       })
       .then((listRes) => {
+        console.log('begin upload article');
         request({
           url: '/api/uploadArticle',
           method: 'post',

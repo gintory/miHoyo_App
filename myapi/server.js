@@ -3,17 +3,13 @@ const Router = require('koa-router');
 const Koa_static = require('koa-static');
 const path = require('path');
 const multer = require('koa-multer');
-const os = require('os');
-const fs = require('fs');
 const body = require('koa-body');
-const bodyparser = require('koa-bodyparser');
 const mysql = require('mysql');
-const { fileURLToPath } = require('url');
-const { isCompositeComponentWithType } = require('react-dom/test-utils');
+const nodeRSA = require('node-rsa');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '',
+  password: '123456',
   port: '3306',
   database: 'mihoyo'
 });
@@ -43,6 +39,26 @@ const imageUploader = multer({
   storage,
   limits
 });
+const priKey = `-----BEGIN RSA PRIVATE KEY-----
+MIICWwIBAAKBgQCKoqw0AfDnmVubjWqCFEKxyWAmGrt7M95G9barVZt6vQu2msZE
+lEgAegVNHjKfquqYjEn5cNTD9g2jaTI36mu4ffGHSXoyulCteLWwIXU7fl4BcPBl
+GwnZldUJRClDc1yP88/ZhOUSny9pX903r/YPLfntXyUNDTl8ikEFR0A6MQIDAQAB
+AoGAGTRoEHCF5uVn1UkJoyqh0YbmFydnDIgqkkYb9txyjwcNuR48i71Vtdh5XELw
+Oz0st51R2arc09/JLPt0KNxSxwxWVH7FEh10hl0ent7EEddcsM0ws8wuyiMqo8XL
+5hiejRIjbO8+bd7DJZjWFmz90WXkBvfdG2LWw6LLRykX5v0CQQDK2X43tKdrAlZa
+ikSlzJd+RyMxLWFds0nNPtRaLAamxfgXqHisMc6n71jlyiv/YoGYJflKV2d9tq3t
++jxJjHzjAkEArvXmBj5GF/eQbWiW4CBYTC37qlGzQd6k4h3IGhozyR18aHyRHC2w
+AyyiPCjvDD/3TOAeBfoHyybLvaq3G2pM2wJAeVgJrQEgdV78kUTNM/FjXmLnpm9j
+I04xA9pl5VsYz4L1mhFpvng9CzCemTeLgkZHB+EPc209t3IkMYvTrJuhyQJAIImi
+ia6zImnr9izpQi1BvokesIIZMDrTtymKuS/+SXyuUlA4PGFSxoRad421RzXuK+HS
+M5JYOLOyWEeTXgna2QJAO2mkDs6h7BHgB2SujX+cTdAtzqp19GycwRkKQiE8QaY+
+DwPT74M/um/1tzjSmLzCg2uJIS4M88iGvnTAyLa8Og==
+-----END RSA PRIVATE KEY-----`;
+const privateKey = new nodeRSA(priKey);
+privateKey.setOptions({ encryptionScheme: 'pkcs1' });
+const decrypt = function (rsaPassWord) {
+  return privateKey.decrypt(rsaPassWord, 'utf8');
+};
 const app = new Koa();
 const router = new Router();
 app
@@ -73,7 +89,7 @@ router.prefix('/api');
 router.post('/userLogin', async function (ctx, next) {
   const config = ctx.request.body;
   let data = {};
-  let sql = 'select * from user where userName = "' + config.userName + '" and password = ' + config.password;
+  let sql = 'select * from user where userName = "' + config.userName + '" and password = ' + decrypt(config.password);
   let res = await getData(sql);
   if (res.length === 1) {
     data.code = 200;
@@ -100,7 +116,11 @@ router.post('/register', async function (ctx, next) {
   let res = await getData(sql);
   if (res.length === 0) {
     sql =
-      'insert into user(userName, password, userType) values ("' + config.userName + '", "' + config.password + '", 2)';
+      'insert into user(userName, password, userType) values ("' +
+      config.userName +
+      '", "' +
+      decrypt(config.password) +
+      '", 2)';
     await getData(sql);
     data.code = 200;
     data.message = '注册成功';
@@ -113,13 +133,14 @@ router.post('/register', async function (ctx, next) {
 router.post('/changePassword', async function (ctx, next) {
   const config = ctx.request.body;
   let data = {};
-  let sql = 'select * from user where userId = ' + config.userId + ' and password = "' + config.oldPassword + '"';
+  let sql =
+    'select * from user where userId = ' + config.userId + ' and password = "' + decrypt(config.oldPassword) + '"';
   let res = await getData(sql);
   if (res.length != 1) {
     data.code = 201;
     data.message = '密码错误！';
   } else {
-    sql = 'update user set password = "' + config.newPassword + '" where userId = ' + config.userId;
+    sql = 'update user set password = "' + decrypt(config.newPassword) + '" where userId = ' + config.userId;
     res = await getData(sql);
     data.code = 200;
     data.message = '修改成功！';
@@ -216,10 +237,10 @@ router.post('/updateArticle', async function (ctx, next) {
 });
 
 app.use(router.routes()).use(router.allowedMethods());
-app.listen('3006', (err) => {
+app.listen('3007', (err) => {
   if (err) {
     console.log('服务器失败');
   } else {
-    console.log('服务器启动成功:地址为:http://localhost:3006');
+    console.log('服务器启动成功:地址为:http://localhost:3007');
   }
 });

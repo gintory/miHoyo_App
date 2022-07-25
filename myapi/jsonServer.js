@@ -232,10 +232,10 @@ router.post('/updateArticle', function (ctx, next) {
 });
 
 app.use(router.routes()).use(router.allowedMethods());
-app.listen('3006', (err) => {
+app.listen('3007', (err) => {
   if (err) {
     console.log('服务器失败');
   } else {
-    console.log('服务器启动成功:地址为:http://localhost:3006');
+    console.log('服务器启动成功:地址为:http://localhost:3007');
   }
 });

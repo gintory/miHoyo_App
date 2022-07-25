@@ -8,7 +8,11 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import './pictureResume.css';
 import { isNumber } from 'lodash';
-
+const handleState = {
+  1: '审核中',
+  2: '审核通过',
+  3: '审核未通过'
+};
 export default function Index(props) {
   let LoadingImg = new Image();
   LoadingImg.src = '../assets/loading.gif';
@@ -204,11 +208,6 @@ export default function Index(props) {
       row: DraggableBodyRow
     }
   };
-  const handleState = {
-    1: '审核中',
-    2: '审核通过',
-    3: '审核未通过'
-  };
   useEffect(() => {
     getDataSource();
   }, []);
@@ -289,17 +288,9 @@ export default function Index(props) {
     });
   }
   function handleTopChange(item) {
-    let data = Object.assign({}, item);
-    if (Number(data.articleType) === 1) {
-      data.articleType = 2;
-    } else if (Number(data.articleType) === 2) {
-      data.articleType = 1;
-    }
-    if (data.articleState === '审核通过') {
-      data.articleState = 2;
-    } else if (data.articleState === '审核未通过') {
-      data.articleState = 3;
-    }
+    let data = JSON.parse(JSON.stringify(item));
+    data.articleType = Number(data.articleType) === 1 ? 2 : 1;
+    data.articleState = data.articleState === '审核通过' ? 2 : 3;
     request({
       url: '/api/updateArticle',
       method: 'post',

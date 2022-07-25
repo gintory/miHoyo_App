@@ -1,15 +1,23 @@
+const CONTENT_PADDING = 440;
+const CONTENT_PADDING_MIDDLE = 50;
+const CONTENT_PADDING_MOBILE = 30;
+const LINE_PADDING = 24;
+const LINE_PADDING_MOBILE = 18;
+const LINE_NUM = 4;
+const LINE_NUM_MOBILE = 2;
+const DISTANCE_BETWEEN_PICTURES = 85;
 //瀑布流数据分页
 export function divideLine(showPicSource, clientWidth) {
   //计算每列列宽，需要减去显示区域的padding和每列的padding值
   let lineWidth;
   if (clientWidth >= 992) {
     if (clientWidth <= 1370) {
-      lineWidth = (clientWidth - 50) / 4 - 24;
+      lineWidth = (clientWidth - CONTENT_PADDING_MIDDLE) / LINE_NUM - LINE_PADDING;
     } else {
-      lineWidth = (clientWidth - 440) / 4 - 24;
+      lineWidth = (clientWidth - CONTENT_PADDING) / LINE_NUM - LINE_PADDING;
     }
   } else {
-    lineWidth = (clientWidth - 30) / 2 - 18;
+    lineWidth = (clientWidth - CONTENT_PADDING_MOBILE) / LINE_NUM_MOBILE - LINE_PADDING_MOBILE;
   }
   let lineDomList = [];
   let lineIndex = 0;
@@ -24,7 +32,8 @@ export function divideLine(showPicSource, clientWidth) {
   showPicSource.forEach((item, index) => {
     //列高包括图片放入瀑布流后的相对高度和每两张图片之间的间距84px
     lineIndex = getMin(heightList);
-    heightList[lineIndex] = heightList[lineIndex] + (item.picHeight / item.picWidth) * lineWidth + 85;
+    heightList[lineIndex] =
+      heightList[lineIndex] + (item.picHeight / item.picWidth) * lineWidth + DISTANCE_BETWEEN_PICTURES;
     lineDomList[lineIndex].push(item);
   });
   return lineDomList;
@@ -36,7 +45,7 @@ function getMin(arr) {
 }
 //当前页数
 export function getPageNum(contentDom, { scrollTop, pageSize, itemHeight }) {
-  let lineNum = document.body.clientWidth <= 992 ? 2 : 4;
+  let lineNum = document.body.clientWidth <= 992 ? LINE_NUM_MOBILE : LINE_NUM;
   const pageHeight = (pageSize / lineNum) * itemHeight;
   return Math.max(Math.ceil((contentDom.clientHeight + scrollTop) / pageHeight), 1);
 }

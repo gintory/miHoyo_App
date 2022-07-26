@@ -61,8 +61,10 @@ const decrypt = function (rsaPassWord) {
 };
 const app = new Koa();
 const router = new Router();
-console.log(__dirname, __filename);
-app.use(Koa_static(__dirname, '/uploads')).use(
+console.log(path.join(__dirname, './uploads'));
+
+// 设置图片缓存30000 ms
+app.use(Koa_static(__dirname, { maxage: 30000 })).use(
   body({
     multipart: true,
     formidable: {
@@ -84,6 +86,13 @@ async function getData(sql) {
   });
 }
 
+// 设置缓存的方式
+// ctx.response.set('Cache-Control', 'max-age=300');
+// ctx.response.set('Expires', new Date(Date.now() + 300000).toGMTString());
+
+router.get('/upload', async function (ctx, next) {
+  console.log(ctx.request);
+});
 router.prefix('/api');
 router.post('/userLogin', async function (ctx, next) {
   const config = ctx.request.body;

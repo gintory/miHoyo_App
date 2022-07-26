@@ -58,7 +58,7 @@ export default function Header(props) {
   }
 
   function getMenuList() {
-    let roleSid = JSON.parse(localStorage.userInfo).roleSid;
+    const roleSid = JSON.parse(localStorage.userInfo).roleSid;
     const MenuMap = {
       1: ManagerMenuList,
       2: UserMenuList

@@ -88,8 +88,9 @@ router.prefix('/api');
 router.post('/userLogin', async function (ctx, next) {
   const config = ctx.request.body;
   let data = {};
-  let sql = 'select * from user where userName = "' + config.userName + '" and password = ' + decrypt(config.password);
-  let res = await getData(sql);
+  const sql =
+    'select * from user where userName = "' + config.userName + '" and password = ' + decrypt(config.password);
+  const res = await getData(sql);
   if (res.length === 1) {
     data.code = 200;
     data.userId = res[0].userId;
@@ -97,7 +98,7 @@ router.post('/userLogin', async function (ctx, next) {
     data.userType = res[0].userType;
     data.message = '登陆成功';
   } else {
-    let exist = await getData('select * from user where userName = "' + config.userName + '"');
+    const exist = await getData('select * from user where userName = "' + config.userName + '"');
     if (exist.length === 1) {
       data.code = 201;
       data.message = '密码错误！';
@@ -112,7 +113,7 @@ router.post('/register', async function (ctx, next) {
   const config = ctx.request.body;
   let data = {};
   let sql = 'select * from user where userName = "' + config.userName + '"';
-  let res = await getData(sql);
+  const res = await getData(sql);
   if (res.length === 0) {
     sql =
       'insert into user(userName, password, userType) values ("' +
@@ -134,13 +135,13 @@ router.post('/changePassword', async function (ctx, next) {
   let data = {};
   let sql =
     'select * from user where userId = ' + config.userId + ' and password = "' + decrypt(config.oldPassword) + '"';
-  let res = await getData(sql);
+  const res = await getData(sql);
   if (res.length != 1) {
     data.code = 201;
     data.message = '密码错误！';
   } else {
     sql = 'update user set password = "' + decrypt(config.newPassword) + '" where userId = ' + config.userId;
-    res = await getData(sql);
+    await getData(sql);
     data.code = 200;
     data.message = '修改成功！';
   }
@@ -148,9 +149,9 @@ router.post('/changePassword', async function (ctx, next) {
 });
 router.get('/getPicture', async function (ctx, next) {
   let data = {};
-  let sql =
+  const sql =
     'select A.*, U.userName from article as A left join user as U on A.userId = U.userId where A.articleState = 2 order by A.articleType desc,A.position asc';
-  let res = await getData(sql);
+  const res = await getData(sql);
   if (res.length > 0) {
     data.code = 200;
     data.content = res;
@@ -162,9 +163,9 @@ router.get('/getPicture', async function (ctx, next) {
 });
 router.get('/getAllPicture', async function (ctx, next) {
   let data = {};
-  let sql =
+  const sql =
     'select A.*, U.userName from article as A left join user as U on A.userId = U.userId order by A.articleType desc,A.position asc';
-  let res = await getData(sql);
+  const res = await getData(sql);
   if (res.length > 0) {
     data.code = 200;
     data.content = res;
@@ -176,8 +177,8 @@ router.get('/getAllPicture', async function (ctx, next) {
 });
 router.post('/uploadPicture', imageUploader.single('file'), async (ctx, next) => {
   const file = ctx.request.files.file;
-  let fileName = fileSqlUrl + path.basename(file.path);
-  let data = {
+  const fileName = fileSqlUrl + path.basename(file.path);
+  const data = {
     code: 200,
     url: fileName,
     message: '上传成功！'
@@ -195,7 +196,7 @@ router.post('/uploadPhoto', imageUploader.array('file'), (ctx, next) => {
   } else {
     fileName = [fileSqlUrl + path.basename(file.path)];
   }
-  let data = {
+  const data = {
     code: 200,
     url: fileName,
     message: '上传成功！'
@@ -209,14 +210,14 @@ router.post('/uploadArticle', async function (ctx, next) {
   const config = ctx.request.body;
   const finalSql = `select * from article order by position DESC limit 1`;
   const finalRow = await getData(finalSql);
-  let title = "'" + config.articleTitle + "'";
-  let userId = config.userId;
-  let fileLists = config.articlePictures;
+  const title = "'" + config.articleTitle + "'";
+  const userId = config.userId;
+  const fileLists = config.articlePictures;
   let multi = false;
   let sql =
     'insert into article(articleTitle, userId, picUrl, articleState, articleType, picWidth, picHeight, position) values ';
   fileLists.forEach(async function (file, index) {
-    let item = [
+    const item = [
       title,
       userId,
       "'" + file.picFinalUrl + "'",
@@ -235,7 +236,7 @@ router.post('/uploadArticle', async function (ctx, next) {
   });
   console.log('upload article successfully');
   await getData(sql);
-  let data = {
+  const data = {
     code: 200,
     message: '发表成功！'
   };
@@ -243,10 +244,10 @@ router.post('/uploadArticle', async function (ctx, next) {
 });
 router.post('/deleteArticle', async function (ctx, next) {
   const config = ctx.request.body;
-  let airticleId = config.articleId;
-  let sql = 'delete from article where articleId = ' + airticleId;
-  let res = await getData(sql);
-  let data = {
+  const airticleId = config.articleId;
+  const sql = 'delete from article where articleId = ' + airticleId;
+  await getData(sql);
+  const data = {
     code: 200,
     message: '删除成功！'
   };
@@ -254,15 +255,15 @@ router.post('/deleteArticle', async function (ctx, next) {
 });
 router.post('/updateArticle', async function (ctx, next) {
   const config = ctx.request.body;
-  let sql =
+  const sql =
     'update article set articleState = ' +
     config.articleState +
     ', articleType = ' +
     config.articleType +
     ' where articleId = ' +
     config.articleId;
-  let res = await getData(sql);
-  let data = {
+  const res = await getData(sql);
+  const data = {
     code: 200,
     message: '修改成功！'
   };
@@ -275,7 +276,7 @@ router.post('/updateArticleSort', async function (ctx, next) {
   const newPosition = (insertRowEnd[0].position + config.hoverIndexBefore) / 2;
   const updateSql = `update article set position = ${newPosition} where articleId = ${config.dragIndex}`;
   await getData(updateSql);
-  let data = {
+  const data = {
     code: 200,
     message: '修改成功！'
   };

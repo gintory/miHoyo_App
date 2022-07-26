@@ -4,13 +4,13 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import './pictureShow.css';
 import { getPageNum, getMaxPageNum, getRenderData } from '../../utils/common.js';
+const pageSize = 20;
+const LoadingImg = new Image();
+LoadingImg.src = '../assets/loading.gif';
 
 export default function PictureShow(props) {
-  const pageSize = 20;
   let imgBoxHeight = 0;
   let contentDom = document.getElementById('home-content-main');
-  let LoadingImg = new Image();
-  LoadingImg.src = '../assets/loading.gif';
   const [dataSource, setDataSource] = useState([]);
   const [showDataSource, setShowDataSource] = useState([]);
   const [showPicSource, setShowPicSource] = useState([]);
@@ -39,21 +39,17 @@ export default function PictureShow(props) {
     sliceShowDataSource();
   }, [pageNum, dataSource.length]);
   useEffect(() => {
-    if (showDataSource.length === dataSource.length) {
-      setShowBottomText('true');
-    } else {
-      setShowBottomText('false');
-    }
+    showDataSource.length === dataSource.length ? setShowBottomText('true') : setShowBottomText('false');
   }, [showDataSource.length]);
   useEffect(() => {
-    let loadedLength = showPicSource.length;
+    const loadedLength = showPicSource.length;
     let arr = [...showPicSource];
     arr.length = showDataSource.length;
     arr = arr.fill('../assets/loading.gif', loadedLength);
     setShowPicSource([...arr]);
     for (let i = loadedLength; i < showDataSource.length; i++) {
-      let item = showDataSource[i];
-      let img = new Image();
+      const item = showDataSource[i];
+      const img = new Image();
       img.src = item.picUrl;
       img.onload = function () {
         arr[i] = item.picUrl;
@@ -85,7 +81,7 @@ export default function PictureShow(props) {
     setTotalCount(totalCount);
   }
   const onScroll = () => {
-    let maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);
+    const maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);
     if (imgBoxHeight === 0 && articleContent.current) {
       imgBoxHeight = articleContent.current.offsetHeight;
     }

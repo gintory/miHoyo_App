@@ -5,17 +5,13 @@ import { request } from '../../network/request';
 import { DraggableBodyRow } from '../../components/dragTable';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import update from 'immutability-helper';
+import { handleState, articleItem } from '../../utils/common';
 import './pictureResume.css';
 import { isNumber } from 'lodash';
-const handleState = {
-  1: '审核中',
-  2: '审核通过',
-  3: '审核未通过'
-};
+
+const LoadingImg = new Image();
+LoadingImg.src = '../assets/loading.gif';
 export default function Index(props) {
-  let LoadingImg = new Image();
-  LoadingImg.src = '../assets/loading.gif';
   const [dataSource, setDataSource] = useState([]);
   const [showPicSource, setShowPicSource] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -213,7 +209,7 @@ export default function Index(props) {
   }, []);
   const table = useMemo(() => {
     let arr = showPicSource;
-    let len = arr.length;
+    const len = arr.length;
     arr.length = dataSource.length;
     arr = arr.fill('../assets/loading.gif', len);
     setShowPicSource([...arr]);
@@ -221,7 +217,7 @@ export default function Index(props) {
       if (isNumber(item.articleState)) {
         item.articleState = handleState[Number(item.articleState)];
       }
-      let img = new Image();
+      const img = new Image();
       img.src = item.picUrl;
       img.onload = function () {
         arr[index] = item.picUrl;
@@ -264,7 +260,6 @@ export default function Index(props) {
         }
         getDataSource();
       });
-
     },
     [table, filterInfo]
   );
@@ -283,7 +278,7 @@ export default function Index(props) {
     });
   }
   function handleStatusChange(type, item) {
-    let data = Object.assign({}, item);
+    let data = JSON.parse(JSON.stringify(item));
     if (type === '审核通过') {
       data.articleState = 2;
     } else if (type === '审核未通过') {
@@ -354,6 +349,14 @@ export default function Index(props) {
   function handlePageChange(event, pageSize) {
     const index = event;
     setFilterInfo({ ...filterInfo, pageSize, currIndex: index, index: index });
+  }
+  function renderArticleDetail() {
+    return Object.keys(articleItem).map((item, index) => (
+      <div key={index} className="article-detail-item">
+        <div className="article-detail-key">{articleItem[item]}</div>
+        <div className="article-detail-value">{showDetail[item]}</div>
+      </div>
+    ));
   }
 
   return (
@@ -428,22 +431,7 @@ export default function Index(props) {
         ]}
       >
         <div className="article-detail">
-          <div className="article-detail-item">
-            <div className="article-detail-key">文章编号：</div>
-            <div className="article-detail-value">{showDetail.articleId}</div>
-          </div>
-          <div className="article-detail-item">
-            <div className="article-detail-key">文章标题：</div>
-            <div className="article-detail-value">{showDetail.articleTitle}</div>
-          </div>
-          <div className="article-detail-item">
-            <div className="article-detail-key">作者：</div>
-            <div className="article-detail-value">{showDetail.userName}</div>
-          </div>
-          <div className="article-detail-item">
-            <div className="article-detail-key">目前状态：</div>
-            <div className="article-detail-value">{showDetail.articleState}</div>
-          </div>
+          {renderArticleDetail()}
           <div className="article-detail-item">
             <div className="article-detail-key">置顶状态：</div>
             <div className="article-detail-value">{Number(showDetail.articleType) === 2 ? '置顶中' : '未置顶'}</div>

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { encrypt } from '../../components/encrypt';
 import './login.css';
 
-export default function Login(props) {
+export default function Login() {
   const navigate = useNavigate();
   const { TabPane } = Tabs;
   const [loginInfo, setLoginInfo] = useState({
@@ -17,74 +17,7 @@ export default function Login(props) {
     password: '',
     confirmPassword: ''
   });
-  const renderMenu = () => (
-    <div className="login-content">
-      <Tabs defaultActiveKey="1" tabPosition="top">
-        <TabPane tab="登录" key="1">
-          <div className="login-form">
-            <div className="login-form-item">
-              <span className="login-form-span">账号：</span>
-              <Input
-                className="login-form-input"
-                value={loginInfo.userName}
-                onChange={handleInputChange}
-                name="userName"
-              ></Input>
-            </div>
-            <div className="login-form-item">
-              <span className="login-form-span">密码：</span>
-              <Input
-                className="login-form-input"
-                type="password"
-                value={loginInfo.password}
-                onChange={handleInputChange}
-                name="password"
-              ></Input>
-            </div>
-            <Button className="login-form-btn" type="primary" onClick={handleLogin}>
-              登录
-            </Button>
-          </div>
-        </TabPane>
-        <TabPane tab="注册" key="2">
-          <div className="login-form">
-            <div className="login-form-item">
-              <span className="login-form-span">账号：</span>
-              <Input
-                className="login-form-input"
-                value={registerInfo.userName}
-                onChange={handleRegisterInputChange}
-                name="userName"
-              ></Input>
-            </div>
-            <div className="login-form-item">
-              <span className="login-form-span">密码：</span>
-              <Input
-                className="login-form-input"
-                type="password"
-                value={registerInfo.password}
-                onChange={handleRegisterInputChange}
-                name="password"
-              ></Input>
-            </div>
-            <div className="login-form-item">
-              <span className="login-form-span">确认密码：</span>
-              <Input
-                className="login-form-input"
-                type="password"
-                value={registerInfo.confirmPassword}
-                onChange={handleRegisterInputChange}
-                name="confirmPassword"
-              ></Input>
-            </div>
-            <Button className="login-form-btn" type="primary" onClick={handleRegister}>
-              注册
-            </Button>
-          </div>
-        </TabPane>
-      </Tabs>
-    </div>
-  );
+
   function handleLogin() {
     if (!loginInfo.userName.length || !loginInfo.password.length) {
       notification.error({
@@ -153,28 +86,28 @@ export default function Login(props) {
     }
   }
   function check() {
-   if (!registerInfo.userName.length || !registerInfo.password.length || !registerInfo.confirmPassword.length) {
-     notification.error({
-       description: '账号和密码不能为空，请重新输入！',
-       message: '警告',
-       duration: 2
-     });
-     return false;
-   } else if (registerInfo.password !== registerInfo.confirmPassword) {
-     notification.error({
-       description: '两次密码不一致，请重新输入！',
-       message: '警告',
-       duration: 2
-     });
-     setRegisterInfo({
-       userName: '',
-       password: '',
-       confirmPassword: ''
-     });
-     return false;
-   } else {
-     return true;
-   }
+    if (!registerInfo.userName.length || !registerInfo.password.length || !registerInfo.confirmPassword.length) {
+      notification.error({
+        description: '账号和密码不能为空，请重新输入！',
+        message: '警告',
+        duration: 2
+      });
+      return false;
+    } else if (registerInfo.password !== registerInfo.confirmPassword) {
+      notification.error({
+        description: '两次密码不一致，请重新输入！',
+        message: '警告',
+        duration: 2
+      });
+      setRegisterInfo({
+        userName: '',
+        password: '',
+        confirmPassword: ''
+      });
+      return false;
+    } else {
+      return true;
+    }
   }
   function handleInputChange(event) {
     const value = event.target.value;
@@ -184,6 +117,74 @@ export default function Login(props) {
     const value = event.target.value;
     setRegisterInfo({ ...registerInfo, [event.target.name]: value });
   }
+  const renderMenu = () => (
+    <div className="login-content">
+      <Tabs defaultActiveKey="1" tabPosition="top">
+        <TabPane tab="登录" key="1">
+          <div className="login-form">
+            <div className="login-form-item">
+              <span className="login-form-span">账号：</span>
+              <Input
+                className="login-form-input"
+                value={loginInfo.userName}
+                onChange={handleInputChange}
+                name="userName"
+              ></Input>
+            </div>
+            <div className="login-form-item">
+              <span className="login-form-span">密码：</span>
+              <Input
+                className="login-form-input"
+                type="password"
+                value={loginInfo.password}
+                onChange={handleInputChange}
+                name="password"
+              ></Input>
+            </div>
+            <Button className="login-form-btn" type="primary" onClick={handleLogin}>
+              登录
+            </Button>
+          </div>
+        </TabPane>
+        <TabPane tab="注册" key="2">
+          <div className="login-form">
+            <div className="login-form-item">
+              <span className="login-form-span">账号：</span>
+              <Input
+                className="login-form-input"
+                value={registerInfo.userName}
+                onChange={handleRegisterInputChange}
+                name="userName"
+              ></Input>
+            </div>
+            <div className="login-form-item">
+              <span className="login-form-span">密码：</span>
+              <Input
+                className="login-form-input"
+                type="password"
+                value={registerInfo.password}
+                onChange={handleRegisterInputChange}
+                name="password"
+              ></Input>
+            </div>
+            <div className="login-form-item">
+              <span className="login-form-span">确认密码：</span>
+              <Input
+                className="login-form-input"
+                type="password"
+                value={registerInfo.confirmPassword}
+                onChange={handleRegisterInputChange}
+                name="confirmPassword"
+              ></Input>
+            </div>
+            <Button className="login-form-btn" type="primary" onClick={handleRegister}>
+              注册
+            </Button>
+          </div>
+        </TabPane>
+      </Tabs>
+    </div>
+  );
 
   return (
     <div className="login">

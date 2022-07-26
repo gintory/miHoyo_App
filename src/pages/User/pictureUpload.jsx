@@ -25,12 +25,12 @@ export default function Index(props) {
     uploadFile.current.click();
   }
   function handlePictureChange(event) {
-    let files = event.target.files;
+    const files = event.target.files;
     [...files].forEach((file, index) => {
-      let re = new FileReader();
+      const re = new FileReader();
       re.readAsDataURL(file);
       re.onload = function () {
-        let img = new Image();
+        const img = new Image();
         img.src = re.result;
         img.onload = function () {
           filterInfo.articlePictures.push({ picFile: file, picUrl: re.result, width: img.width, height: img.height });
@@ -45,7 +45,7 @@ export default function Index(props) {
   }
   function handleDelete() {
     let list = filterInfo.articlePictures;
-    let index = list.findIndex((item) => {
+    const index = list.findIndex((item) => {
       return item.picUrl === showPicUrl;
     });
     if (index != -1) {
@@ -55,9 +55,9 @@ export default function Index(props) {
     setShowPicTab(false);
   }
   function handleDeleteImg(item) {
-    let url = item.picUrl;
+    const url = item.picUrl;
     let list = filterInfo.articlePictures;
-    let index = list.findIndex((item) => {
+    const index = list.findIndex((item) => {
       return item.picUrl === url;
     });
     if (index !== -1) {
@@ -75,30 +75,8 @@ export default function Index(props) {
   function handleBack() {
     setShowBackTab(false);
   }
-  async function handleUploadPicture(data, formData) {
-    let list = [];
-    await request({
-      url: '/api/uploadPhoto',
-      method: 'post',
-      data: formData
-    }).then((res) => {
-      if (res.data.data.code === 200) {
-        data.articlePictures.forEach((item, index) => {
-          let temp = {
-            picFinalUrl: res.data.data.url[index],
-            width: item.width,
-            height: item.height
-          };
-          let itemRes = temp;
-          list.push(itemRes);
-        });
-      }
-    });
-    console.log(list);
-    return false;
-  }
   async function handleSubmit() {
-    let data = { ...filterInfo };
+    const data = { ...filterInfo };
     if (data.articleTitle === '' || data.articlePictures.length === 0) {
       notification.error({
         description: '标题或上传的图片不能为空！',
@@ -120,13 +98,12 @@ export default function Index(props) {
     }).then((res) => {
       if (res.data.data.code === 200) {
         data.articlePictures.forEach((item, index) => {
-          let temp = {
+          const temp = {
             picFinalUrl: res.data.data.url[index],
             width: item.width,
             height: item.height
           };
-          let itemRes = temp;
-          list.push(itemRes);
+          list.push(temp);
         });
         request({
           url: '/api/uploadArticle',
@@ -137,7 +114,6 @@ export default function Index(props) {
             articlePictures: list
           }
         }).then((res) => {
-          console.log('add');
           setShowLoading(false);
           setShowBackTab(true);
           setFilterInfo({
@@ -150,11 +126,9 @@ export default function Index(props) {
             duration: 2,
             onClose: () => {}
           });
-          return false;
         });
       }
     });
-    return false;
   }
   function renderSelectedPicture() {
     return filterInfo.articlePictures.map((item, index) => (

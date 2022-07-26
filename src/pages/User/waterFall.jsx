@@ -5,13 +5,13 @@ import { request } from '../../network/request';
 import './waterFall.css';
 import { useMemo } from 'react';
 import { divideLine, getPageNum, getMaxPageNum, getRenderData } from '../../utils/common.js';
+const pageSize = 20;
+const LoadingImg = new Image();
+LoadingImg.src = '../assets/loading.gif';
 
 export default function WaterFall(props) {
-  const pageSize = 20;
   let imgBoxHeight = 0;
   let contentDom = document.getElementById('home-content-main');
-  let LoadingImg = new Image();
-  LoadingImg.src = '../assets/loading.gif';
   const [dataSource, setDataSource] = useState([]);
   const [showDataSource, setShowDataSource] = useState([]);
   const [showPicSource, setShowPicSource] = useState([]);
@@ -48,7 +48,7 @@ export default function WaterFall(props) {
     }
   }, [showDataSource.length]);
   useMemo(() => {
-    let loadedLength = showPicSource.length;
+    const loadedLength = showPicSource.length;
     let arr = [...showDataSource];
     for (let i = 0; i < loadedLength; i++) {
       arr[i].loadingUrl = showPicSource[i].loadingUrl;
@@ -58,8 +58,8 @@ export default function WaterFall(props) {
     }
     setShowPicSource([...arr]);
     for (let i = loadedLength; i < showDataSource.length; i++) {
-      let item = showDataSource[i];
-      let img = new Image();
+      const item = showDataSource[i];
+      const img = new Image();
       img.src = item.picUrl;
       img.onload = function () {
         arr[i].loadingUrl = item.picUrl;
@@ -91,10 +91,10 @@ export default function WaterFall(props) {
     setTotalCount(totalCount);
   }
   const onScroll = () => {
-    let maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);
-    let lineNum = document.body.clientWidth <= 992 ? 2 : 4;
+    const maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);
+    const lineNum = document.body.clientWidth <= 992 ? 2 : 4;
     if (imgBoxHeight === 0) {
-      let LineHeight = waterLineDom.current.offsetHeight;
+      const LineHeight = waterLineDom.current.offsetHeight;
       imgBoxHeight = LineHeight / (pageSize / lineNum + 1);
     }
     const scrollPageNum = getPageNum(contentDom, {
@@ -115,7 +115,7 @@ export default function WaterFall(props) {
     setShowPicTab(true);
   }
   function handleChangePic(num) {
-    let newIndex = (showPicIndex + num + dataSource.length) % dataSource.length;
+    const newIndex = (showPicIndex + num + dataSource.length) % dataSource.length;
     setShowPicIndex(newIndex);
     setShowPicUrl(dataSource[newIndex].picUrl);
   }

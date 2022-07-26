@@ -2,50 +2,10 @@ import React, { useRef, createRef } from 'react';
 import { Menu, Dropdown } from 'antd';
 import { UserOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useLocation, Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { ManagerMenuList, UserMenuList } from '../../utils/common';
 import './home.css';
 
 export default function Home(props) {
-  //管理员菜单
-  const ManagerMenuList = [
-    {
-      title: '图片',
-      key: 'pictureShow',
-      url: 'picture-show'
-    },
-    {
-      title: '图片瀑布流',
-      key: 'waterFall',
-      url: 'water-fall'
-    },
-    {
-      title: '图片上传',
-      key: 'pictureUpload',
-      url: 'picture-upload'
-    },
-    {
-      title: '图片管理',
-      key: 'pictureResume',
-      url: 'picture-resume'
-    }
-  ];
-  //用户菜单
-  const UserMenuList = [
-    {
-      title: '图片',
-      key: 'pictureShow',
-      url: 'picture-show'
-    },
-    {
-      title: '图片瀑布流',
-      key: 'waterFall',
-      url: 'water-fall'
-    },
-    {
-      title: '图片上传',
-      key: 'pictureUpload',
-      url: 'picture-upload'
-    }
-  ];
   const loginMenu = (
     <Menu>
       <Menu.Item key="login_changePassword">
@@ -65,7 +25,7 @@ export default function Home(props) {
   }
   function getMenuList() {
     //userType的值标识了用户的类型，1为管理员，2为用户
-    let userType = Number(localStorage.getItem('userType'));
+    const userType = Number(localStorage.getItem('userType'));
     const MenuMap = {
       1: ManagerMenuList,
       2: UserMenuList
@@ -86,11 +46,7 @@ export default function Home(props) {
     return title;
   }
   function openMenu() {
-    if (mobileMenu.current.style.display === 'block') {
-      mobileMenu.current.style.display = 'none';
-    } else {
-      mobileMenu.current.style.display = 'block';
-    }
+    mobileMenu.current.style.display = mobileMenu.current.style.display === 'block' ? 'none' : 'block';
   }
   //生成菜单元素
   function renderMenu() {

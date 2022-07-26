@@ -14,7 +14,7 @@ export default function ChangePassword(props) {
   });
   function handleChangePassword() {
     if (check()) {
-      let data = {
+      const data = {
         userId: Number(localStorage.getItem('userId')),
         oldPassword: encrypt(filterInfo.oldPassword),
         newPassword: encrypt(filterInfo.newPassword)

@@ -64,7 +64,7 @@ const router = new Router();
 console.log(path.join(__dirname, './uploads'));
 
 // 设置图片缓存30000 ms
-app.use(Koa_static(__dirname, { maxage: 30000 })).use(
+app.use(Koa_static(__dirname, { maxage: 300000 })).use(
   body({
     multipart: true,
     formidable: {

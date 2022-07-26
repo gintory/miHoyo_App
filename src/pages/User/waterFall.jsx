@@ -39,7 +39,7 @@ export default function WaterFall(props) {
   }, []);
   useEffect(() => {
     sliceShowDataSource();
-  }, [pageNum, dataSource.length]);
+  }, [pageNum, dataSource, dataSource.length]);
   useEffect(() => {
     if (showDataSource.length === dataSource.length) {
       setShowBottomText('true');
@@ -91,6 +91,11 @@ export default function WaterFall(props) {
     setTotalCount(totalCount);
   }
   const onScroll = () => {
+    if (contentDom.scrollTop === 0) {
+      loading.current.style.display = 'block';
+      setTimeout(getDataSource, 1000);
+      return;
+    }
     const maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);
     const lineNum = document.body.clientWidth <= 992 ? 2 : 4;
     if (imgBoxHeight === 0) {

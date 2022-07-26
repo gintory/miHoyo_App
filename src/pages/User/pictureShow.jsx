@@ -37,7 +37,7 @@ export default function PictureShow(props) {
   }, []);
   useEffect(() => {
     sliceShowDataSource();
-  }, [pageNum, dataSource.length]);
+  }, [pageNum, dataSource, dataSource.length]);
   useEffect(() => {
     showDataSource.length === dataSource.length ? setShowBottomText('true') : setShowBottomText('false');
   }, [showDataSource.length]);
@@ -81,6 +81,11 @@ export default function PictureShow(props) {
     setTotalCount(totalCount);
   }
   const onScroll = () => {
+    if (contentDom.scrollTop === 0) {
+      loading.current.style.display = 'block';
+      setTimeout(getDataSource, 1000);
+      return;
+    }
     const maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);
     if (imgBoxHeight === 0 && articleContent.current) {
       imgBoxHeight = articleContent.current.offsetHeight;

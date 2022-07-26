@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 connection.connect();
 const fileSqlUrl = 'http://localhost:3000/uploads/';
 const storage = multer.diskStorage({
-  destination: path.resolve(__dirname, '../public/uploads'),
+  destination: path.resolve(__dirname, '../test/uploads'),
   filename: function (req, file, cb) {
     console.log(file);
     const fileFormat = file.originalname.split('.');
@@ -66,12 +66,12 @@ app
     body({
       multipart: true,
       formidable: {
-        uploadDir: path.join(__dirname, '../public/uploads'),
+        uploadDir: path.join(__dirname, '../test/uploads'),
         keepExtensions: true
       }
     })
   )
-  .use(Koa_static(__dirname, 'public'));
+  .use(Koa_static(__dirname, 'test'));
 
 async function getData(sql) {
   return new Promise(function (resolve, reject) {
@@ -183,11 +183,32 @@ router.post('/uploadPicture', imageUploader.single('file'), async (ctx, next) =>
     url: fileName,
     message: '上传成功！'
   };
+  console.log('upload file: ', fileName);
+  ctx.response.body = { data };
+});
+router.post('/uploadPhoto', imageUploader.array('file'), (ctx, next) => {
+  const file = ctx.request.files.file;
+  let fileName;
+  if (file.length) {
+    fileName = file.map((item) => {
+      return fileSqlUrl + path.basename(item.path);
+    });
+  } else {
+    fileName = [fileSqlUrl + path.basename(file.path)];
+  }
+  let data = {
+    code: 200,
+    url: fileName,
+    message: '上传成功！'
+  };
+  console.log('upload pic:', fileName);
+  console.log(data);
   ctx.response.body = { data };
 });
 router.post('/uploadArticle', async function (ctx, next) {
+  console.log('start upload article...');
   const config = ctx.request.body;
-  const finalSql = `select * from article order by articleId DESC limit 1`;
+  const finalSql = `select * from article order by position DESC limit 1`;
   const finalRow = await getData(finalSql);
   let title = "'" + config.articleTitle + "'";
   let userId = config.userId;
@@ -213,7 +234,7 @@ router.post('/uploadArticle', async function (ctx, next) {
     }
     sql = sql + '(' + item + ')';
   });
-  console.log(sql);
+  console.log('upload article successfully');
   await getData(sql);
   let data = {
     code: 200,
@@ -250,11 +271,9 @@ router.post('/updateArticle', async function (ctx, next) {
 });
 router.post('/updateArticleSort', async function (ctx, next) {
   const config = ctx.request.body;
-  console.log(config);
   const insertRowEndIndex = `select * from article where articleId = ${config.hoverIndex}`;
   const insertRowEnd = await getData(insertRowEndIndex);
   const newPosition = (insertRowEnd[0].position + config.hoverIndexBefore) / 2;
-  console.log(newPosition);
   const updateSql = `update article set position = ${newPosition} where articleId = ${config.dragIndex}`;
   await getData(updateSql);
   let data = {

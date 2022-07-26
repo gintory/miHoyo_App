@@ -178,6 +178,19 @@ router.post('/uploadPicture', imageUploader.single('file'), (ctx, next) => {
   console.log('upload pic!');
   ctx.response.body = { data };
 });
+router.post('/uploadPhoto', imageUploader.any(), (ctx, next) => {
+  console.log('????', ctx.request);
+  const file = ctx.request.files.file;
+  console.log('file: ', file, ctx.request.files);
+  let fileName = fileSqlUrl + path.basename(file.path);
+  let data = {
+    code: 200,
+    url: fileName,
+    message: '上传成功！'
+  };
+  console.log('upload pic!');
+  ctx.response.body = { data };
+});
 router.post('/uploadArticle', function (ctx, next) {
   const config = ctx.request.body;
   let title = config.articleTitle;

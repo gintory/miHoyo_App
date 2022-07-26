@@ -4,11 +4,9 @@ import { PlusCircleFilled, CloseOutlined, LoadingOutlined } from '@ant-design/ic
 import { request } from '../../network/request';
 import { useNavigate } from 'react-router-dom';
 import './pictureUpload.css';
-import { reject } from 'lodash';
 
 export default function Index(props) {
   const navigate = useNavigate();
-  const [test, setTest] = useState([]);
   const [showPicTab, setShowPicTab] = useState(false);
   const [showPicUrl, setShowPicUrl] = useState('');
   const [showBackTab, setShowBackTab] = useState(false);
@@ -77,39 +75,30 @@ export default function Index(props) {
   function handleBack() {
     setShowBackTab(false);
   }
-  function handleUpload(data) {
-    const articleData = {
-      articleTitle: data.articleTitle,
-      articlePictures: []
-    };
-    const list = [];
-    console.log('begin pics');
-    data.articlePictures.forEach(function (item) {
-      console.log('single pic');
-      let formData = new FormData();
-      formData.append('file', item.picFile);
-      list.push(
-        request({
-          url: '/api/uploadPicture',
-          method: 'post',
-          data: formData
-        }).then((res) => {
-          if (res.data.data.code === 200) {
-            let temp = {
-              picFinalUrl: res.data.data.url,
-              width: item.width,
-              height: item.height
-            };
-            return temp;
-          }
-        })
-      );
+  async function handleUploadPicture(data, formData) {
+    let list = [];
+    await request({
+      url: '/api/uploadPhoto',
+      method: 'post',
+      data: formData
+    }).then((res) => {
+      if (res.data.data.code === 200) {
+        data.articlePictures.forEach((item, index) => {
+          let temp = {
+            picFinalUrl: res.data.data.url[index],
+            width: item.width,
+            height: item.height
+          };
+          let itemRes = temp;
+          list.push(itemRes);
+        });
+      }
     });
-    articleData.articlePictures = list;
-    return articleData;
+    console.log(list);
+    return false;
   }
   async function handleSubmit() {
-    let data = filterInfo;
+    let data = { ...filterInfo };
     if (data.articleTitle === '' || data.articlePictures.length === 0) {
       notification.error({
         description: '标题或上传的图片不能为空！',
@@ -119,27 +108,38 @@ export default function Index(props) {
       return;
     }
     setShowLoading(true);
-    console.log('begin await');
-    let res = await handleUpload(data);
-    console.log('end await');
-    let list = res.articlePictures;
-    console.log('begin pro all');
-    Promise.all(list)
-      .then((listRes) => {
-        setShowLoading(false);
-        return listRes;
-      })
-      .then((listRes) => {
-        console.log('begin upload article');
+    let formData = new FormData();
+    data.articlePictures.forEach((item) => {
+      formData.append('file', item.picFile);
+    });
+    let list = [];
+    request({
+      url: '/api/uploadPhoto',
+      method: 'post',
+      data: formData
+    }).then((res) => {
+      if (res.data.data.code === 200) {
+        data.articlePictures.forEach((item, index) => {
+          let temp = {
+            picFinalUrl: res.data.data.url[index],
+            width: item.width,
+            height: item.height
+          };
+          let itemRes = temp;
+          list.push(itemRes);
+        });
         request({
           url: '/api/uploadArticle',
           method: 'post',
           data: {
             userId: Number(localStorage.getItem('userId')),
-            articleTitle: res.articleTitle,
-            articlePictures: listRes
+            articleTitle: data.articleTitle,
+            articlePictures: list
           }
         }).then((res) => {
+          console.log('add');
+          setShowLoading(false);
+          setShowBackTab(true);
           setFilterInfo({
             articleTitle: '',
             articlePictures: []
@@ -150,9 +150,11 @@ export default function Index(props) {
             duration: 2,
             onClose: () => {}
           });
-          setShowBackTab(true);
+          return false;
         });
-      });
+      }
+    });
+    return false;
   }
   function renderSelectedPicture() {
     return filterInfo.articlePictures.map((item, index) => (

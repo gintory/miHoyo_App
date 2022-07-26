@@ -262,15 +262,9 @@ export default function Index(props) {
             onClose: () => {}
           });
         }
-        setDataSource(
-          update(table, {
-            $splice: [
-              [dragFullIndex, 1],
-              [hoverFullIndex, 0, dragRow]
-            ]
-          })
-        );
+        getDataSource();
       });
+
     },
     [table, filterInfo]
   );

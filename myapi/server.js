@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 connection.connect();
 const fileSqlUrl = 'http://localhost:3000/uploads/';
 const storage = multer.diskStorage({
-  destination: path.resolve(__dirname, '../test/uploads'),
+  destination: path.resolve(__dirname, '/uploads'),
   filename: function (req, file, cb) {
     console.log(file);
     const fileFormat = file.originalname.split('.');
@@ -61,17 +61,16 @@ const decrypt = function (rsaPassWord) {
 };
 const app = new Koa();
 const router = new Router();
-app
-  .use(
-    body({
-      multipart: true,
-      formidable: {
-        uploadDir: path.join(__dirname, '../test/uploads'),
-        keepExtensions: true
-      }
-    })
-  )
-  .use(Koa_static(__dirname, 'test'));
+console.log(__dirname, __filename);
+app.use(Koa_static(__dirname, '/uploads')).use(
+  body({
+    multipart: true,
+    formidable: {
+      uploadDir: path.join(__dirname, '/uploads'),
+      keepExtensions: true
+    }
+  })
+);
 
 async function getData(sql) {
   return new Promise(function (resolve, reject) {

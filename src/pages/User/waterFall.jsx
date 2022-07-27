@@ -93,7 +93,7 @@ export default function WaterFall(props) {
   const onScroll = () => {
     if (contentDom.scrollTop === 0) {
       loading.current.style.display = 'block';
-      setTimeout(getDataSource, 1000);
+      getDataSource();
       return;
     }
     const maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);

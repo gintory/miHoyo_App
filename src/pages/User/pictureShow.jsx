@@ -6,7 +6,7 @@ import './pictureShow.css';
 import { getPageNum, getMaxPageNum, getRenderData } from '../../utils/common.js';
 const pageSize = 20;
 const LoadingImg = new Image();
-LoadingImg.src = '../assets/loading.gif';
+LoadingImg.src = 'http://localhost:3000/uploads/loading.gif';
 
 export default function PictureShow(props) {
   let imgBoxHeight = 0;
@@ -45,7 +45,7 @@ export default function PictureShow(props) {
     const loadedLength = showPicSource.length;
     let arr = [...showPicSource];
     arr.length = showDataSource.length;
-    arr = arr.fill('../assets/loading.gif', loadedLength);
+    arr = arr.fill('http://localhost:3000/uploads/loading.gif', loadedLength);
     setShowPicSource([...arr]);
     for (let i = loadedLength; i < showDataSource.length; i++) {
       const item = showDataSource[i];
@@ -83,7 +83,7 @@ export default function PictureShow(props) {
   const onScroll = () => {
     if (contentDom.scrollTop === 0) {
       loading.current.style.display = 'block';
-      setTimeout(getDataSource, 1000);
+      getDataSource();
       return;
     }
     const maxPageNum = getMaxPageNum(contentDom, pageSize, imgBoxHeight);

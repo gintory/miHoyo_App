@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Popconfirm, Table, notification, Modal, Button } from 'antd';
+import { Popconfirm, Table, notification, Modal, Button, message } from 'antd';
 import { CheckCircleFilled, CloseCircleFilled, UpCircleFilled, EditFilled, DeleteFilled } from '@ant-design/icons';
 import { request } from '../../network/request';
 import { DraggableBodyRow } from '../../components/dragTable';
@@ -229,6 +229,10 @@ export default function Index(props) {
   }, [dataSource]);
   const moveRow = useCallback(
     (dragIndex, hoverIndex) => {
+      if (table[dragIndex].articleType === 2 || table[hoverIndex].articleType === 2) {
+        message.error('不可以对置顶的文章进行拖拽操作~');
+        return;
+      }
       const dragFullIndex = (filterInfo.currIndex - 1) * filterInfo.pageSize + dragIndex;
       const hoverFullIndex = (filterInfo.currIndex - 1) * filterInfo.pageSize + hoverIndex;
       const dragRow = table[dragFullIndex];
@@ -239,8 +243,9 @@ export default function Index(props) {
       } else if (betweenIndex === table.length) {
         betweenPosition = table[table.length - 1].position + 1;
       } else {
-        betweenPosition = table[betweenIndex].articleId;
+        betweenPosition = table[betweenIndex].position;
       }
+      console.log(table[dragFullIndex].articleId, table[hoverFullIndex].articleId, betweenPosition);
       request({
         url: '/api/updateArticleSort',
         method: 'post',

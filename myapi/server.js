@@ -18,7 +18,6 @@ const fileSqlUrl = 'http://localhost:3000/uploads/';
 const storage = multer.diskStorage({
   destination: path.resolve(__dirname, '/uploads'),
   filename: function (req, file, cb) {
-    console.log(file);
     const fileFormat = file.originalname.split('.');
     cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1]);
   }
@@ -61,7 +60,6 @@ const decrypt = function (rsaPassWord) {
 };
 const app = new Koa();
 const router = new Router();
-console.log(path.join(__dirname, './uploads'));
 
 // 设置图片缓存30000 ms
 app.use(Koa_static(__dirname, { maxage: 300000 })).use(
@@ -90,9 +88,6 @@ async function getData(sql) {
 // ctx.response.set('Cache-Control', 'max-age=300');
 // ctx.response.set('Expires', new Date(Date.now() + 300000).toGMTString());
 
-router.get('/upload', async function (ctx, next) {
-  console.log(ctx.request);
-});
 router.prefix('/api');
 router.post('/userLogin', async function (ctx, next) {
   const config = ctx.request.body;
@@ -157,6 +152,7 @@ router.post('/changePassword', async function (ctx, next) {
   ctx.response.body = { data };
 });
 router.get('/getPicture', async function (ctx, next) {
+  console.log('start load article...');
   const data = {};
   const sql =
     'select A.*, U.userName from article as A left join user as U on A.userId = U.userId where A.articleState = 2 order by A.articleType desc,A.position asc';
@@ -171,6 +167,7 @@ router.get('/getPicture', async function (ctx, next) {
   ctx.response.body = { data };
 });
 router.get('/getAllPicture', async function (ctx, next) {
+  console.log('start load all article...');
   const data = {};
   const sql =
     'select A.*, U.userName from article as A left join user as U on A.userId = U.userId order by A.articleType desc,A.position asc';
@@ -192,10 +189,10 @@ router.post('/uploadPicture', imageUploader.single('file'), async (ctx, next) =>
     url: fileName,
     message: '上传成功！'
   };
-  console.log('upload file: ', fileName);
   ctx.response.body = { data };
 });
 router.post('/uploadPhoto', imageUploader.array('file'), (ctx, next) => {
+  console.log('start upload picture...');
   const file = ctx.request.files.file;
   let fileName;
   if (file.length) {
@@ -210,8 +207,6 @@ router.post('/uploadPhoto', imageUploader.array('file'), (ctx, next) => {
     url: fileName,
     message: '上传成功！'
   };
-  console.log('upload pic:', fileName);
-  console.log(data);
   ctx.response.body = { data };
 });
 router.post('/uploadArticle', async function (ctx, next) {

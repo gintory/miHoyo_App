@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, notification } from 'antd'
+import { Menu } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 const { SubMenu } = Menu;
 
@@ -53,9 +53,7 @@ export default function Header(props) {
     }
   ];
 
-  function handleMenuClick(event) {
-    console.log(event);
-  }
+  function handleMenuClick(event) {}
 
   function getMenuList() {
     const roleSid = JSON.parse(localStorage.userInfo).roleSid;

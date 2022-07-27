@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Modal, notification, Button, Input } from 'antd';
+import { Modal, Button } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import './waterFall.css';

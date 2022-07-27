@@ -244,7 +244,6 @@ export default function Index(props) {
       } else {
         betweenPosition = table[betweenIndex].position;
       }
-      console.log(table[dragFullIndex].articleId, table[hoverFullIndex].articleId, betweenPosition);
       request({
         url: '/api/updateArticleSort',
         method: 'post',

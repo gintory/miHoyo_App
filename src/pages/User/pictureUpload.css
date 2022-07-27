@@ -59,6 +59,19 @@
   background-size: cover;
   background-position: 50% 50%;
 }
+.btn-info {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  color: red;
+  border-radius: 50%;
+  position: absolute;
+  left: 15px;
+  top: 5%;
+  z-index: 900;
+}
 .btn-delete {
   width: 20px;
   height: 20px;

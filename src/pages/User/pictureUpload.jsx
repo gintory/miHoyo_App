@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { notification, Popconfirm, Modal, Button, Input } from 'antd';
-import { PlusCircleFilled, CloseOutlined, LoadingOutlined } from '@ant-design/icons';
+import { PlusCircleFilled, CloseOutlined, LoadingOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { request } from '../../network/request';
 import { useNavigate } from 'react-router-dom';
 import './pictureUpload.css';
@@ -33,7 +33,9 @@ export default function Index(props) {
         const img = new Image();
         img.src = re.result;
         img.onload = function () {
-          filterInfo.articlePictures.push({ picFile: file, picUrl: re.result, width: img.width, height: img.height });
+          const pic = { picFile: file, picUrl: re.result, width: img.width, height: img.height };
+          pic.badSize = img.height / img.width > 10 || img.width / img.height > 10 ? true : false;
+          filterInfo.articlePictures.push(pic);
           setFilterInfo({ ...filterInfo });
         };
       };
@@ -77,9 +79,18 @@ export default function Index(props) {
   }
   async function handleSubmit() {
     const data = { ...filterInfo };
+    const findPic = data.articlePictures.findIndex((item) => item.badSize === true);
     if (data.articleTitle === '' || data.articlePictures.length === 0) {
       notification.error({
         description: '标题或上传的图片不能为空！',
+        message: '警告',
+        duration: 2
+      });
+      return;
+    }
+    if (findPic !== -1) {
+      notification.error({
+        description: '存在比例异常图片！',
         message: '警告',
         duration: 2
       });
@@ -133,6 +144,9 @@ export default function Index(props) {
   function renderSelectedPicture() {
     return filterInfo.articlePictures.map((item, index) => (
       <div className="upload-item" key={item.picUrl + Math.random()}>
+        <div className="btn-info" style={{ display: item.badSize ? 'block' : 'none' }}>
+          <ExclamationCircleOutlined />
+        </div>
         <div className="upload-item-box" onClick={() => handleClickImg(item, index)}>
           <div className="upload-item-image" style={{ backgroundImage: `url(${item.picUrl})` }}></div>
         </div>

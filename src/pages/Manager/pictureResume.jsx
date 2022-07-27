@@ -235,7 +235,6 @@ export default function Index(props) {
       }
       const dragFullIndex = (filterInfo.currIndex - 1) * filterInfo.pageSize + dragIndex;
       const hoverFullIndex = (filterInfo.currIndex - 1) * filterInfo.pageSize + hoverIndex;
-      const dragRow = table[dragFullIndex];
       const betweenIndex = dragFullIndex > hoverFullIndex ? hoverFullIndex - 1 : hoverFullIndex + 1;
       let betweenPosition;
       if (betweenIndex < 0) {

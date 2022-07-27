@@ -1,12 +1,5 @@
-import axios from 'axios'
-import { notification } from 'antd'
-let cache = {};
-const EXPIRE_TIME = 30000;
-const CancelToken = axios.CancelToken;
+import axios from 'axios';
 
-function getExpireTime() {
-  return new Date().getTime();
-}
 export function request(config) {
   const http = axios.create({
     baseURL: 'http://localhost:3000/',

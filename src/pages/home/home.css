@@ -5,6 +5,7 @@
 }
 .submenu:hover {
   font-size: 17px;
+  background-color: #626262 !important;
 }
 ul.ant-menu {
   background-color: #2d2f33;
@@ -63,7 +64,7 @@ ul.ant-menu {
   font-size: 14px;
   font-weight: bold;
   color: #fff;
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid #626262;
 }
 .home-content {
   display: flex;
@@ -88,7 +89,7 @@ ul.ant-menu {
     min-width: 140px;
     text-align: center;
     padding: 0 30px 0 30px;
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 1px solid #626262;
   }
   .header .header-menu {
     width: 70%;
@@ -126,7 +127,7 @@ ul.ant-menu {
   }
   .header .header-text {
     padding: 0 1rem 0 1rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 1px solid #626262;
   }
   .header .header-menu,
   .header-user {

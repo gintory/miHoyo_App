@@ -43,7 +43,7 @@ export default function Home(props) {
   }
   function getSelectedKey() {
     const title = [location.pathname.split('/')[location.pathname.split('/').length - 1]];
-    return title;
+    return title[0];
   }
   function openMenu() {
     mobileMenu.current.style.display = mobileMenu.current.style.display === 'block' ? 'none' : 'block';
@@ -54,7 +54,11 @@ export default function Home(props) {
     const list = getMenuList();
     if (list) {
       return list.map((item) => (
-        <Menu.Item className="submenu" key={item.key}>
+        <Menu.Item
+          className="submenu"
+          key={item.key}
+          style={item.url === getSelectedKey() ? { backgroundColor: '#626262', fontSize: '17px' } : {}}
+        >
           <NavLink to={item.url}>
             <span>{item.title}</span>
           </NavLink>

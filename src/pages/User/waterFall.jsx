@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { divideLine, getPageNum, getMaxPageNum, getRenderData } from '../../utils/common.js';
 const pageSize = 20;
 const LoadingImg = new Image();
-LoadingImg.src = '../assets/loading.gif';
+LoadingImg.src = 'http://localhost:3000/uploads/loading.gif';
 
 export default function WaterFall(props) {
   let imgBoxHeight = 0;
@@ -54,7 +54,7 @@ export default function WaterFall(props) {
       arr[i].loadingUrl = showPicSource[i].loadingUrl;
     }
     for (let i = loadedLength; i < arr.length; i++) {
-      arr[i].loadingUrl = '../assets/loading.gif';
+      arr[i].loadingUrl = 'http://localhost:3000/uploads/loading.gif';
     }
     setShowPicSource([...arr]);
     for (let i = loadedLength; i < showDataSource.length; i++) {

@@ -10,7 +10,7 @@ import './pictureResume.css';
 import { isNumber } from 'lodash';
 
 const LoadingImg = new Image();
-LoadingImg.src = '../assets/loading.gif';
+LoadingImg.src = 'http://localhost:3000/uploads/loading.gif';
 export default function Index(props) {
   const [dataSource, setDataSource] = useState([]);
   const [showPicSource, setShowPicSource] = useState([]);
@@ -211,7 +211,7 @@ export default function Index(props) {
     let arr = showPicSource;
     const len = arr.length;
     arr.length = dataSource.length;
-    arr = arr.fill('../assets/loading.gif', len);
+    arr = arr.fill('http://localhost:3000/uploads/loading.gif', len);
     setShowPicSource([...arr]);
     dataSource.forEach((item, index) => {
       if (isNumber(item.articleState)) {

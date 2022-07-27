@@ -282,7 +282,7 @@ export default function Index(props) {
     });
   }
   function handleStatusChange(type, item) {
-    let data = JSON.parse(JSON.stringify(item));
+    const data = JSON.parse(JSON.stringify(item));
     if (type === '审核通过') {
       data.articleState = 2;
     } else if (type === '审核未通过') {
@@ -298,7 +298,7 @@ export default function Index(props) {
     });
   }
   function handleStatusChangeByModal(type) {
-    let data = dataSource[showPicIndex];
+    const data = dataSource[showPicIndex];
     data.articleState = type;
     request({
       url: '/api/updateArticle',
@@ -310,7 +310,7 @@ export default function Index(props) {
     });
   }
   function handleTopChange(item) {
-    let data = JSON.parse(JSON.stringify(item));
+    const data = JSON.parse(JSON.stringify(item));
     data.articleType = Number(data.articleType) === 1 ? 2 : 1;
     data.articleState = data.articleState === '审核通过' ? 2 : 3;
     request({

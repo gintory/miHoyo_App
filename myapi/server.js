@@ -96,7 +96,7 @@ router.get('/upload', async function (ctx, next) {
 router.prefix('/api');
 router.post('/userLogin', async function (ctx, next) {
   const config = ctx.request.body;
-  let data = {};
+  const data = {};
   const sql =
     'select * from user where userName = "' + config.userName + '" and password = ' + decrypt(config.password);
   const res = await getData(sql);
@@ -120,7 +120,7 @@ router.post('/userLogin', async function (ctx, next) {
 });
 router.post('/register', async function (ctx, next) {
   const config = ctx.request.body;
-  let data = {};
+  const data = {};
   let sql = 'select * from user where userName = "' + config.userName + '"';
   const res = await getData(sql);
   if (res.length === 0) {
@@ -141,7 +141,7 @@ router.post('/register', async function (ctx, next) {
 });
 router.post('/changePassword', async function (ctx, next) {
   const config = ctx.request.body;
-  let data = {};
+  const data = {};
   let sql =
     'select * from user where userId = ' + config.userId + ' and password = "' + decrypt(config.oldPassword) + '"';
   const res = await getData(sql);
@@ -157,7 +157,7 @@ router.post('/changePassword', async function (ctx, next) {
   ctx.response.body = { data };
 });
 router.get('/getPicture', async function (ctx, next) {
-  let data = {};
+  const data = {};
   const sql =
     'select A.*, U.userName from article as A left join user as U on A.userId = U.userId where A.articleState = 2 order by A.articleType desc,A.position asc';
   const res = await getData(sql);
@@ -171,7 +171,7 @@ router.get('/getPicture', async function (ctx, next) {
   ctx.response.body = { data };
 });
 router.get('/getAllPicture', async function (ctx, next) {
-  let data = {};
+  const data = {};
   const sql =
     'select A.*, U.userName from article as A left join user as U on A.userId = U.userId order by A.articleType desc,A.position asc';
   const res = await getData(sql);

@@ -101,20 +101,14 @@ export default function Index(props) {
     data.articlePictures.forEach((item) => {
       formData.append('file', item.picFile);
     });
-    let list = [];
     request({
       url: '/api/uploadPhoto',
       method: 'post',
       data: formData
     }).then((res) => {
       if (res.data.data.code === 200) {
-        data.articlePictures.forEach((item, index) => {
-          const temp = {
-            picFinalUrl: res.data.data.url[index],
-            width: item.width,
-            height: item.height
-          };
-          list.push(temp);
+        const list = data.articlePictures.map((item, index) => {
+          return { picFinalUrl: res.data.data.url[index], width: item.width, height: item.height };
         });
         request({
           url: '/api/uploadArticle',
